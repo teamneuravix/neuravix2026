@@ -167,12 +167,19 @@ class LaneFollowerNode(Node):
             # Esik taramasi (viraj kesiti / duz kesit, iki-fit orani | IQR):
             #     1.0 -> %58.4 / %88.2   IQR 51/40   (ESKI)
             #     2.0 -> %72.0 / %100    IQR 54/39
-            #     2.5 -> ~%75  / %100    IQR ~55/39  <- SECILEN
-            #     3.0 -> %78.5 / %100    IQR 56/39
-            #     5.0 -> %86.7 / %100    IQR 78/39   <- IQR firliyor = COP giriyor
-            # IQR 3.0'a kadar sabit; 2.5 kazancin cogunu alip 5.0 ucurumundan
-            # emniyetli uzaklikta kaliyor. Yatay cizgileri (dur cizgisi, yaya
-            # gecidi) elemeye devam eder -- onlarin egimi cok daha buyuktur.
+            #     3.0 -> %78.5 / %100    IQR 56/39   <- SECILEN
+            #     5.0 -> %86.7 / %100    IQR 78/39
+            # TUM BAG (814 kare) ile de dogrulandi: 1.0->%62.2, 2.5->%72.6,
+            # 3.0->%74.9, 5.0->%81.1 iki-fit; genislik medyani (457-461 px) ve
+            # IQR'i (42-46) TUM esiklerde sabit -> gevsetme cop fit getirmiyor.
+            # Kararlilik (ardisik karelerde merkez degisimi) 3.6->5.1 px'e
+            # cikiyor; 3.0'da 4.5 px ile makul.
+            # SECIM GEREKCESI (fiziksel): y_eval'de egim ~3.0, yaklasik 5.6 m
+            # viraj yaricapina karsilik gelir. Aracin tam kilitle alabilecegi en
+            # dar viraj L/tan(29 derece) ~ 3.4 m oldugundan 3.0 her surulebilir
+            # viraji kapsar. Daha yukarisi fiziksel gerekce olmadan gurultuye
+            # kapi acar. Yatay cizgiler (dur cizgisi, yaya gecidi) yine elenir --
+            # onlarin egimi bundan cok daha buyuktur.
             slope = float(np.polyval(np.polyder(poly), self.y_eval))
             if abs(slope) > self.fit_max_slope:
                 return None
@@ -500,7 +507,7 @@ class LaneFollowerNode(Node):
         # Egim kilavuzu: bkz. fit_lane_poly icindeki ayrintili olcum notu.
         # Eski sabit 1.0 virajda gecerli fitleri eliyordu (tek-fit karelerinin
         # %81.5'i bu kurala takiliyordu).
-        self.declare_parameter("fit_max_slope", 2.5)      # eski sabit: 1.0
+        self.declare_parameter("fit_max_slope", 3.0)      # eski sabit: 1.0
         self.fit_max_slope = float(self.get_parameter("fit_max_slope").value)
         self.fit_min_points = int(self.get_parameter("fit_min_points").value)
         self.fit_min_span_frac = float(
