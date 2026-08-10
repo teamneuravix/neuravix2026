@@ -1,0 +1,64 @@
+[0.005s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/neuravix/Desktop/carla-ros2-ws/src/smart_can_msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs
+[0.107s] -- The C compiler identification is GNU 11.4.0
+[0.171s] -- The CXX compiler identification is GNU 11.4.0
+[0.178s] -- Detecting C compiler ABI info
+[0.226s] -- Detecting C compiler ABI info - done
+[0.229s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.229s] -- Detecting C compile features
+[0.230s] -- Detecting C compile features - done
+[0.232s] -- Detecting CXX compiler ABI info
+[0.283s] -- Detecting CXX compiler ABI info - done
+[0.286s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.286s] -- Detecting CXX compile features
+[0.286s] -- Detecting CXX compile features - done
+[0.290s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.374s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.410s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.431s] -- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.434s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.438s] -- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.463s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.570s] CMake Error at /opt/ros/humble/share/rosidl_adapter/cmake/rosidl_adapt_interfaces.cmake:59 (message):
+[0.570s]   execute_process(/usr/bin/python3 -m rosidl_adapter --package-name
+[0.570s]   smart_can_msgs --arguments-file
+[0.570s]   /home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs/rosidl_adapter__arguments__smart_can_msgs.json
+[0.570s]   --output-dir
+[0.570s]   /home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs/rosidl_adapter/smart_can_msgs
+[0.570s]   --output-file
+[0.570s]   /home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs/rosidl_adapter/smart_can_msgs.idls)
+[0.570s]   returned error code 1:
+[0.570s] 
+[0.570s]   Error processing 'uint8 RC_Ignition' of 'smart_can_msgs/RcUnittoOmux':
+[0.570s]   ''RC_Ignition' is an invalid field name.  It should have the pattern
+[0.570s]   '^(?!.*__)(?!.*_$)[a-z][a-z0-9_]*$''
+[0.570s] 
+[0.570s]   Traceback (most recent call last):
+[0.570s] 
+[0.570s]     File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+[0.570s]       return _run_code(code, main_globals, None,
+[0.570s]     File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+[0.570s]       exec(code, run_globals)
+[0.570s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/__main__.py", line 19, in <module>
+[0.570s]       sys.exit(main())
+[0.570s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/main.py", line 53, in main
+[0.570s]       abs_idl_file = convert_to_idl(
+[0.570s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/__init__.py", line 19, in convert_to_idl
+[0.570s]       return convert_msg_to_idl(
+[0.570s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/msg/__init__.py", line 28, in convert_msg_to_idl
+[0.570s]       msg = parse_message_string(package_name, input_file.stem, content)
+[0.570s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/parser.py", line 519, in parse_message_string
+[0.570s]       fields.append(Field(
+[0.570s]     File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/parser.py", line 354, in __init__
+[0.571s]       raise NameError(
+[0.571s] 
+[0.571s]   NameError: 'RC_Ignition' is an invalid field name.  It should have the
+[0.571s]   pattern '^(?!.*__)(?!.*_$)[a-z][a-z0-9_]*$'
+[0.571s] 
+[0.571s] Call Stack (most recent call first):
+[0.571s]   /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:130 (rosidl_adapt_interfaces)
+[0.571s]   CMakeLists.txt:5 (rosidl_generate_interfaces)
+[0.571s] 
+[0.571s] 
+[0.571s] -- Configuring incomplete, errors occurred!
+[0.571s] See also "/home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs/CMakeFiles/CMakeOutput.log".
+[0.573s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs' returned '1': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/neuravix/Desktop/carla-ros2-ws/src/smart_can_msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs

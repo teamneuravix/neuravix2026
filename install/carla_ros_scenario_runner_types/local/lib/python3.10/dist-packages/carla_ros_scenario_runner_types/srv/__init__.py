@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_ros_scenario_runner_types/rosidl_generator_py/carla_ros_scenario_runner_types/srv/__init__.py

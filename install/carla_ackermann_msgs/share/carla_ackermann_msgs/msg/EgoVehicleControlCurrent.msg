@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_ackermann_msgs/msg/EgoVehicleControlCurrent.msg

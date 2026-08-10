@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/rosidl_cmake/srv/GetPointMap_Request.msg

@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/rqt_carla_control/setup.py

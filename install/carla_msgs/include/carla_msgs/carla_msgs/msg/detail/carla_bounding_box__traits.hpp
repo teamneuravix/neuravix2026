@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/rosidl_generator_cpp/carla_msgs/msg/detail/carla_bounding_box__traits.hpp

@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/rosidl_generator_rs/carla_msgs/rust/src/srv/rmw.rs

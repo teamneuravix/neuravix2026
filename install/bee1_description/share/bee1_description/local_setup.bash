@@ -1,0 +1,1 @@
+/home/taha/Desktop/carla-ros2-ws/build/bee1_description/ament_cmake_environment_hooks/local_setup.bash

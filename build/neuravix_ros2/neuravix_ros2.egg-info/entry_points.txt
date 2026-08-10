@@ -1,0 +1,9 @@
+[console_scripts]
+lane_follower = neuravix_ros2.lane_follower_node:main
+mjpeg_server = neuravix_ros2.mjpeg_server:main
+neuravix_control = neuravix_ros2.neuravix_control_node:main
+neuravix_control_real = neuravix_ros2.neuravix_control_node_real:main
+obstacle_lidar = neuravix_ros2.obstacle_lidar_node:main
+tabela_overlay = neuravix_ros2.camera_overlay_node:main
+tabela_tespit = neuravix_ros2.tabela_tespit_node:main
+

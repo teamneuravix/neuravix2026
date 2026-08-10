@@ -1,0 +1,98 @@
+[0.000000] (-) TimerEvent: {}
+[0.000074] (-) JobUnselected: {'identifier': 'bee1_description'}
+[0.000114] (-) JobUnselected: {'identifier': 'carla_ackermann_control'}
+[0.000133] (-) JobUnselected: {'identifier': 'carla_ackermann_msgs'}
+[0.000184] (-) JobUnselected: {'identifier': 'carla_ad_agent'}
+[0.000201] (-) JobUnselected: {'identifier': 'carla_ad_demo'}
+[0.000221] (-) JobUnselected: {'identifier': 'carla_common'}
+[0.000237] (-) JobUnselected: {'identifier': 'carla_manual_control'}
+[0.000288] (-) JobUnselected: {'identifier': 'carla_msgs'}
+[0.000304] (-) JobUnselected: {'identifier': 'carla_ros_bridge'}
+[0.000319] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner'}
+[0.000343] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner_types'}
+[0.000359] (-) JobUnselected: {'identifier': 'carla_spawn_objects'}
+[0.000401] (-) JobUnselected: {'identifier': 'carla_twist_to_control'}
+[0.000420] (-) JobUnselected: {'identifier': 'carla_walker_agent'}
+[0.000459] (-) JobUnselected: {'identifier': 'carla_waypoint_publisher'}
+[0.000475] (-) JobUnselected: {'identifier': 'carla_waypoint_types'}
+[0.000516] (-) JobUnselected: {'identifier': 'fast_lio'}
+[0.000532] (-) JobUnselected: {'identifier': 'livox_ros_driver2'}
+[0.000547] (-) JobUnselected: {'identifier': 'neuravix_ros2'}
+[0.000671] (-) JobUnselected: {'identifier': 'pcl_recorder'}
+[0.000687] (-) JobUnselected: {'identifier': 'ros_compatibility'}
+[0.000723] (-) JobUnselected: {'identifier': 'rqt_carla_control'}
+[0.000740] (-) JobUnselected: {'identifier': 'rviz_carla_plugin'}
+[0.000757] (smart_can_msgs) JobQueued: {'identifier': 'smart_can_msgs', 'dependencies': OrderedDict()}
+[0.000796] (smart_can_msgs) JobStarted: {'identifier': 'smart_can_msgs'}
+[0.004405] (smart_can_msgs) JobProgress: {'identifier': 'smart_can_msgs', 'progress': 'cmake'}
+[0.004817] (smart_can_msgs) Command: {'cmd': ['/usr/bin/cmake', '/home/neuravix/Desktop/carla-ros2-ws/src/smart_can_msgs', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs'], 'cwd': '/home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/home/neuravix'), ('VSCODE_ESM_ENTRYPOINT', 'vs/workbench/api/node/extensionHostProcess'), ('AI_AGENT', 'claude-code_2-1-204_agent'), ('USER', 'neuravix'), ('SNAP_COMMON', '/var/snap/code/common'), ('CLAUDE_CODE_ENTRYPOINT', 'claude-vscode'), ('LC_TIME', 'tr_TR.UTF-8'), ('VSCODE_NLS_CONFIG', '{"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"/snap/code/247/usr/share/code/resources/app/out/nls.messages.json","locale":"en-us","availableLanguages":{}}'), ('FONTCONFIG_PATH', '/etc/fonts'), ('GIT_EDITOR', 'true'), ('GIO_MODULE_DIR', '/home/neuravix/snap/code/common/.cache/gio-modules'), ('VSCODE_HANDLES_UNCAUGHT_ERRORS', 'true'), ('XDG_SESSION_TYPE', 'x11'), ('CLAUDE_AGENT_SDK_VERSION', '0.3.204'), ('SNAP_UID', '1000'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/neuravix'), ('CHROME_DESKTOP', 'code.desktop'), ('SNAP_LIBRARY_PATH', '/var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32'), ('OLDPWD', '/home/neuravix/Desktop/carla-ros2-ws'), ('DESKTOP_SESSION', 'ubuntu'), ('SNAP_USER_DATA', '/home/neuravix/snap/code/247'), ('GTK_PATH', '/snap/code/247/usr/lib/x86_64-linux-gnu/gtk-3.0'), ('VSCODE_IPC_HOOK', '/run/user/1000/vscode-ca0c86c9-1.12-main.sock'), ('GTK_IM_MODULE_FILE', '/home/neuravix/snap/code/common/.cache/immodules/immodules.cache'), ('GIO_LAUNCHED_DESKTOP_FILE', '/var/lib/snapd/desktop/applications/code_code.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('CLAUDE_CODE_CHILD_SESSION', '1'), ('LC_MONETARY', 'tr_TR.UTF-8'), ('MANAGERPID', '2277'), ('SYSTEMD_EXEC_PID', '2556'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('SNAP_REVISION', '247'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '10145'), ('VSCODE_CRASH_REPORTER_PROCESS_TYPE', 'extensionHost'), ('VSCODE_L10N_BUNDLE_LOCATION', ''), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'neuravix'), ('SNAP_CONTEXT', 'bOYu5qIJBeFL9udVCKziIvte12JsZMo3a7-4SoXkO83fPJKIRB7w'), ('JOURNAL_STREAM', '8:1894'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_CONFIG_DIRS_VSCODE_SNAP_ORIG', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_SESSION_CLASS', 'user'), ('SNAP_VERSION', '1b50d58d'), ('XDG_DATA_DIRS_VSCODE_SNAP_ORIG', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('USERNAME', 'neuravix'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('SNAP_INSTANCE_NAME', 'code'), ('FC_FONTATIONS', '1'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('MCP_CONNECTION_NONBLOCKING', 'true'), ('PATH', '/home/neuravix/.local/bin:/home/neuravix/.local/bin:/opt/ros/humble/bin:/home/neuravix/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/neuravix:@/tmp/.ICE-unix/2529,unix/neuravix:/tmp/.ICE-unix/2529'), ('GTK_EXE_PREFIX', '/snap/code/247/usr'), ('INVOCATION_ID', '2cbcb08f34f04cadae1f682bffabf083'), ('COREPACK_ENABLE_AUTO_PIN', '0'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'tr_TR.UTF-8'), ('SNAP_DATA', '/var/snap/code/247'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'x11'), ('CLAUDE_EFFORT', 'high'), ('DISPLAY', ':1'), ('LOCPATH', '/snap/code/247/usr/lib/locale'), ('NoDefaultCurrentDirectoryInExePath', '1'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'tr_TR.UTF-8'), ('XDG_DATA_HOME', '/home/neuravix/snap/code/247/.local/share'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SNAP_USER_COMMON', '/home/neuravix/snap/code/common'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('GSETTINGS_SCHEMA_DIR', '/home/neuravix/snap/code/247/.local/share/glib-2.0/schemas'), ('SNAP_ARCH', 'amd64'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SNAP_COOKIE', 'bOYu5qIJBeFL9udVCKziIvte12JsZMo3a7-4SoXkO83fPJKIRB7w'), ('SHELL', '/bin/bash'), ('LC_NAME', 'tr_TR.UTF-8'), ('GDK_PIXBUF_MODULEDIR', '/snap/code/247/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders'), ('QT_ACCESSIBILITY', '1'), ('ELECTRON_RUN_AS_NODE', '1'), ('GDMSESSION', 'ubuntu'), ('CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING', 'true'), ('CLAUDE_CODE_SESSION_ID', '38b60198-4e97-4a7d-abe6-36d4a3c6f93e'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('SNAP_NAME', 'code'), ('FONTCONFIG_FILE', '/etc/fonts/fonts.conf'), ('CLAUDECODE', '1'), ('LC_MEASUREMENT', 'tr_TR.UTF-8'), ('GDK_PIXBUF_MODULE_FILE', '/home/neuravix/snap/code/common/.cache/gdk-pixbuf-loaders.cache'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'tr_TR.UTF-8'), ('SNAP_LAUNCHER_ARCH_TRIPLET', 'x86_64-linux-gnu'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs'), ('VSCODE_CLI', '1'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('SNAP_REAL_HOME', '/home/neuravix'), ('VSCODE_CODE_CACHE_PATH', '/home/neuravix/.config/Code/CachedData/1b50d58d73426c9171299ec4037d01365d995b78'), ('XDG_DATA_DIRS', '/home/neuravix/snap/code/247/.local/share:/home/neuravix/snap/code/247:/snap/code/247/usr/share:/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('CLAUDE_CODE_EXECPATH', '/home/neuravix/.vscode/extensions/anthropic.claude-code-2.1.204-linux-x64/resources/native-binary/claude'), ('SNAP_EUID', '1000'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('SNAP', '/snap/code/247'), ('LC_NUMERIC', 'tr_TR.UTF-8'), ('CLAUDE_CODE_ENABLE_TASKS', '0'), ('LC_PAPER', 'tr_TR.UTF-8'), ('COLCON', '1'), ('ELECTRON_NO_ATTACH_CONSOLE', '1'), ('VSCODE_PID', '10206'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.099613] (-) TimerEvent: {}
+[0.107746] (smart_can_msgs) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.171744] (smart_can_msgs) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.178852] (smart_can_msgs) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.199692] (-) TimerEvent: {}
+[0.226230] (smart_can_msgs) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.229873] (smart_can_msgs) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.230106] (smart_can_msgs) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.230587] (smart_can_msgs) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.232566] (smart_can_msgs) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.283371] (smart_can_msgs) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.286658] (smart_can_msgs) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.286820] (smart_can_msgs) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.287057] (smart_can_msgs) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.290295] (smart_can_msgs) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.299753] (-) TimerEvent: {}
+[0.375016] (smart_can_msgs) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.399836] (-) TimerEvent: {}
+[0.410896] (smart_can_msgs) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[0.431915] (smart_can_msgs) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[0.434513] (smart_can_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.438369] (smart_can_msgs) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.463336] (smart_can_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.499918] (-) TimerEvent: {}
+[0.570428] (smart_can_msgs) StderrLine: {'line': b'CMake Error at /opt/ros/humble/share/rosidl_adapter/cmake/rosidl_adapt_interfaces.cmake:59 (message):\n'}
+[0.570578] (smart_can_msgs) StderrLine: {'line': b'  execute_process(/usr/bin/python3 -m rosidl_adapter --package-name\n'}
+[0.570611] (smart_can_msgs) StderrLine: {'line': b'  smart_can_msgs --arguments-file\n'}
+[0.570638] (smart_can_msgs) StderrLine: {'line': b'  /home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs/rosidl_adapter__arguments__smart_can_msgs.json\n'}
+[0.570662] (smart_can_msgs) StderrLine: {'line': b'  --output-dir\n'}
+[0.570687] (smart_can_msgs) StderrLine: {'line': b'  /home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs/rosidl_adapter/smart_can_msgs\n'}
+[0.570713] (smart_can_msgs) StderrLine: {'line': b'  --output-file\n'}
+[0.570736] (smart_can_msgs) StderrLine: {'line': b'  /home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs/rosidl_adapter/smart_can_msgs.idls)\n'}
+[0.570759] (smart_can_msgs) StderrLine: {'line': b'  returned error code 1:\n'}
+[0.570782] (smart_can_msgs) StderrLine: {'line': b'\n'}
+[0.570811] (smart_can_msgs) StderrLine: {'line': b"  Error processing 'uint8 RC_Ignition' of 'smart_can_msgs/RcUnittoOmux':\n"}
+[0.570835] (smart_can_msgs) StderrLine: {'line': b"  ''RC_Ignition' is an invalid field name.  It should have the pattern\n"}
+[0.570857] (smart_can_msgs) StderrLine: {'line': b"  '^(?!.*__)(?!.*_$)[a-z][a-z0-9_]*$''\n"}
+[0.570879] (smart_can_msgs) StderrLine: {'line': b'\n'}
+[0.570901] (smart_can_msgs) StderrLine: {'line': b'  Traceback (most recent call last):\n'}
+[0.570923] (smart_can_msgs) StderrLine: {'line': b'\n'}
+[0.570946] (smart_can_msgs) StderrLine: {'line': b'    File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main\n'}
+[0.570971] (smart_can_msgs) StderrLine: {'line': b'      return _run_code(code, main_globals, None,\n'}
+[0.570995] (smart_can_msgs) StderrLine: {'line': b'    File "/usr/lib/python3.10/runpy.py", line 86, in _run_code\n'}
+[0.571018] (smart_can_msgs) StderrLine: {'line': b'      exec(code, run_globals)\n'}
+[0.571040] (smart_can_msgs) StderrLine: {'line': b'    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/__main__.py", line 19, in <module>\n'}
+[0.571063] (smart_can_msgs) StderrLine: {'line': b'      sys.exit(main())\n'}
+[0.571086] (smart_can_msgs) StderrLine: {'line': b'    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/main.py", line 53, in main\n'}
+[0.571109] (smart_can_msgs) StderrLine: {'line': b'      abs_idl_file = convert_to_idl(\n'}
+[0.571131] (smart_can_msgs) StderrLine: {'line': b'    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/__init__.py", line 19, in convert_to_idl\n'}
+[0.571154] (smart_can_msgs) StderrLine: {'line': b'      return convert_msg_to_idl(\n'}
+[0.571175] (smart_can_msgs) StderrLine: {'line': b'    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/msg/__init__.py", line 28, in convert_msg_to_idl\n'}
+[0.571197] (smart_can_msgs) StderrLine: {'line': b'      msg = parse_message_string(package_name, input_file.stem, content)\n'}
+[0.571221] (smart_can_msgs) StderrLine: {'line': b'    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/parser.py", line 519, in parse_message_string\n'}
+[0.571245] (smart_can_msgs) StderrLine: {'line': b'      fields.append(Field(\n'}
+[0.571268] (smart_can_msgs) StderrLine: {'line': b'    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/parser.py", line 354, in __init__\n'}
+[0.571292] (smart_can_msgs) StderrLine: {'line': b'      raise NameError(\n'}
+[0.571315] (smart_can_msgs) StderrLine: {'line': b'\n'}
+[0.571339] (smart_can_msgs) StderrLine: {'line': b"  NameError: 'RC_Ignition' is an invalid field name.  It should have the\n"}
+[0.571363] (smart_can_msgs) StderrLine: {'line': b"  pattern '^(?!.*__)(?!.*_$)[a-z][a-z0-9_]*$'\n"}
+[0.571393] (smart_can_msgs) StderrLine: {'line': b'\n'}
+[0.571416] (smart_can_msgs) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[0.571440] (smart_can_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:130 (rosidl_adapt_interfaces)\n'}
+[0.571465] (smart_can_msgs) StderrLine: {'line': b'  CMakeLists.txt:5 (rosidl_generate_interfaces)\n'}
+[0.571490] (smart_can_msgs) StderrLine: {'line': b'\n'}
+[0.571513] (smart_can_msgs) StderrLine: {'line': b'\n'}
+[0.571538] (smart_can_msgs) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[0.571563] (smart_can_msgs) StdoutLine: {'line': b'See also "/home/neuravix/Desktop/carla-ros2-ws/build/smart_can_msgs/CMakeFiles/CMakeOutput.log".\n'}
+[0.573848] (smart_can_msgs) CommandEnded: {'returncode': 1}
+[0.585130] (smart_can_msgs) JobEnded: {'identifier': 'smart_can_msgs', 'rc': 1}
+[0.595332] (-) EventReactorShutdown: {}

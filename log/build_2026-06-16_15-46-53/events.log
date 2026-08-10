@@ -1,0 +1,162 @@
+[0.000000] (-) TimerEvent: {}
+[0.000326] (-) JobUnselected: {'identifier': 'bee1_description'}
+[0.000414] (-) JobUnselected: {'identifier': 'carla_ackermann_control'}
+[0.000472] (-) JobUnselected: {'identifier': 'carla_ackermann_msgs'}
+[0.000501] (-) JobUnselected: {'identifier': 'carla_ad_agent'}
+[0.000538] (-) JobUnselected: {'identifier': 'carla_ad_demo'}
+[0.000618] (-) JobUnselected: {'identifier': 'carla_common'}
+[0.000676] (-) JobUnselected: {'identifier': 'carla_manual_control'}
+[0.000694] (-) JobUnselected: {'identifier': 'carla_msgs'}
+[0.000711] (-) JobUnselected: {'identifier': 'carla_ros_bridge'}
+[0.000731] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner'}
+[0.000792] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner_types'}
+[0.000809] (-) JobUnselected: {'identifier': 'carla_spawn_objects'}
+[0.000826] (-) JobUnselected: {'identifier': 'carla_twist_to_control'}
+[0.000848] (-) JobUnselected: {'identifier': 'carla_walker_agent'}
+[0.000869] (-) JobUnselected: {'identifier': 'carla_waypoint_publisher'}
+[0.000920] (-) JobUnselected: {'identifier': 'carla_waypoint_types'}
+[0.000949] (-) JobUnselected: {'identifier': 'fast_lio'}
+[0.000995] (-) JobUnselected: {'identifier': 'map_msgs'}
+[0.001037] (-) JobUnselected: {'identifier': 'neuravix_ros2'}
+[0.001056] (-) JobUnselected: {'identifier': 'pcl_recorder'}
+[0.001074] (-) JobUnselected: {'identifier': 'ros_compatibility'}
+[0.001276] (-) JobUnselected: {'identifier': 'rqt_carla_control'}
+[0.001298] (-) JobUnselected: {'identifier': 'rviz_carla_plugin'}
+[0.001380] (livox_ros_driver2) JobQueued: {'identifier': 'livox_ros_driver2', 'dependencies': OrderedDict()}
+[0.001402] (livox_ros_driver2) JobStarted: {'identifier': 'livox_ros_driver2'}
+[0.005767] (livox_ros_driver2) JobProgress: {'identifier': 'livox_ros_driver2', 'progress': 'cmake'}
+[0.006141] (livox_ros_driver2) Command: {'cmd': ['/usr/bin/cmake', '/home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2', '-DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2'], 'cwd': '/home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'neuravix'), ('LC_TIME', 'tr_TR.UTF-8'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/rviz_carla_plugin/lib:/home/neuravix/Desktop/carla-ros2-ws/install/map_msgs/lib:/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib:/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:/home/neuravix/Desktop/carla-ros2-ws/install/carla_waypoint_types/lib:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_scenario_runner_types/lib:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ackermann_msgs/lib:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/neuravix'), ('OLDPWD', '/home/neuravix/Desktop/carla-ros2-ws'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'tr_TR.UTF-8'), ('MANAGERPID', '1947'), ('SYSTEMD_EXEC_PID', '2225'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5352'), ('COLCON_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'neuravix'), ('JOURNAL_STREAM', '8:17942'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'neuravix'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/home/neuravix/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/neuravix:@/tmp/.ICE-unix/2197,unix/neuravix:/tmp/.ICE-unix/2197'), ('INVOCATION_ID', '9d84d97ca5504a78a0377387a2540539'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'tr_TR.UTF-8'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('LC_TELEPHONE', 'tr_TR.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/carla_ad_demo:/home/neuravix/Desktop/carla-ros2-ws/install/rviz_carla_plugin:/home/neuravix/Desktop/carla-ros2-ws/install/rqt_carla_control:/home/neuravix/Desktop/carla-ros2-ws/install/carla_waypoint_publisher:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ackermann_control:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_bridge:/home/neuravix/Desktop/carla-ros2-ws/install/carla_spawn_objects:/home/neuravix/Desktop/carla-ros2-ws/install/carla_manual_control:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ad_agent:/home/neuravix/Desktop/carla-ros2-ws/install/ros_compatibility:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2:/home/neuravix/Desktop/carla-ros2-ws/install/map_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio:/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/home/neuravix/Desktop/carla-ros2-ws/install/carla_waypoint_types:/home/neuravix/Desktop/carla-ros2-ws/install/carla_walker_agent:/home/neuravix/Desktop/carla-ros2-ws/install/carla_twist_to_control:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_scenario_runner:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_scenario_runner_types:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ackermann_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_common:/home/neuravix/Desktop/carla-ros2-ws/install/bee1_description:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'tr_TR.UTF-8'), ('TERMINATOR_UUID', 'urn:uuid:a0a3e4ff-8ff3-4736-a649-1fe3be29447e'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'tr_TR.UTF-8'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'tr_TR.UTF-8'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/neuravix/Desktop/carla-ros2-ws/build/rqt_carla_control/src:/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_publisher/src:/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_control/src:/home/neuravix/Desktop/carla-ros2-ws/build/carla_ros_bridge/src:/home/neuravix/Desktop/carla-ros2-ws/build/carla_spawn_objects:/home/neuravix/Desktop/carla-ros2-ws/build/carla_manual_control/src:/home/neuravix/Desktop/carla-ros2-ws/build/carla_ad_agent/src:/home/neuravix/Desktop/carla-ros2-ws/build/ros_compatibility/src:/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2:/home/neuravix/Desktop/carla-ros2-ws/build/carla_walker_agent/src:/home/neuravix/Desktop/carla-ros2-ws/build/carla_twist_to_control/src:/home/neuravix/Desktop/carla-ros2-ws/build/carla_ros_scenario_runner/src:/home/neuravix/Desktop/carla-ros2-ws/build/carla_common/src:/home/neuravix/Desktop/carla-ros2-ws/install/rqt_carla_control/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_waypoint_publisher/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ackermann_control/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_bridge/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_spawn_objects/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_manual_control/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ad_agent/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/ros_compatibility/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/map_msgs/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_waypoint_types/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_walker_agent/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_twist_to_control/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_scenario_runner/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_scenario_runner_types/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ackermann_msgs/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_common/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'tr_TR.UTF-8'), ('LC_PAPER', 'tr_TR.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/carla_ad_demo:/home/neuravix/Desktop/carla-ros2-ws/install/rviz_carla_plugin:/home/neuravix/Desktop/carla-ros2-ws/install/map_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio:/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/home/neuravix/Desktop/carla-ros2-ws/install/carla_waypoint_types:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_scenario_runner_types:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ackermann_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/bee1_description:/home/neuravix/Desktop/carla-ros2-ws/install/rqt_carla_control:/home/neuravix/Desktop/carla-ros2-ws/install/carla_waypoint_publisher:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ackermann_control:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_bridge:/home/neuravix/Desktop/carla-ros2-ws/install/carla_spawn_objects:/home/neuravix/Desktop/carla-ros2-ws/install/carla_manual_control:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ad_agent:/home/neuravix/Desktop/carla-ros2-ws/install/ros_compatibility:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2:/home/neuravix/Desktop/carla-ros2-ws/install/carla_walker_agent:/home/neuravix/Desktop/carla-ros2-ws/install/carla_twist_to_control:/home/neuravix/Desktop/carla-ros2-ws/install/carla_ros_scenario_runner:/home/neuravix/Desktop/carla-ros2-ws/install/carla_common:/opt/ros/humble')]), 'shell': False}
+[0.045535] (livox_ros_driver2) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.083594] (livox_ros_driver2) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.087775] (livox_ros_driver2) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.099764] (-) TimerEvent: {}
+[0.132117] (livox_ros_driver2) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.135700] (livox_ros_driver2) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.135841] (livox_ros_driver2) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.136049] (livox_ros_driver2) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.137581] (livox_ros_driver2) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.193925] (livox_ros_driver2) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.198372] (livox_ros_driver2) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.198522] (livox_ros_driver2) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.198756] (livox_ros_driver2) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.199439] (livox_ros_driver2) StdoutLine: {'line': b'-- livox_ros_driver2 version: 1.2.6\n'}
+[0.199808] (-) TimerEvent: {}
+[0.201371] (livox_ros_driver2) StdoutLine: {'line': b'-- Found ament_cmake_auto: 1.3.14 (/opt/ros/humble/share/ament_cmake_auto/cmake)\n'}
+[0.299895] (-) TimerEvent: {}
+[0.312328] (livox_ros_driver2) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.399974] (-) TimerEvent: {}
+[0.424765] (livox_ros_driver2) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.429542] (livox_ros_driver2) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.455187] (livox_ros_driver2) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.500056] (-) TimerEvent: {}
+[0.510698] (livox_ros_driver2) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[0.513005] (livox_ros_driver2) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[0.570415] (livox_ros_driver2) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[0.586584] (livox_ros_driver2) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[0.600140] (-) TimerEvent: {}
+[0.613273] (livox_ros_driver2) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[0.619252] (livox_ros_driver2) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[0.668852] (livox_ros_driver2) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[0.669030] (livox_ros_driver2) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[0.700221] (-) TimerEvent: {}
+[0.717270] (livox_ros_driver2) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[0.718216] (livox_ros_driver2) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[0.800289] (-) TimerEvent: {}
+[0.809854] (livox_ros_driver2) StdoutLine: {'line': b"-- Checking for module 'eigen3'\n"}
+[0.819793] (livox_ros_driver2) StdoutLine: {'line': b'--   Found eigen3, version 3.4.0\n'}
+[0.840683] (livox_ros_driver2) StdoutLine: {'line': b'-- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") \n'}
+[0.840800] (livox_ros_driver2) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[0.866698] (livox_ros_driver2) StdoutLine: {'line': b"-- Checking for module 'flann'\n"}
+[0.877330] (livox_ros_driver2) StdoutLine: {'line': b'--   Found flann, version 1.9.1\n'}
+[0.900379] (-) TimerEvent: {}
+[0.904518] (livox_ros_driver2) StdoutLine: {'line': b'-- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  \n'}
+[0.904628] (livox_ros_driver2) StdoutLine: {'line': b'-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)\n'}
+[1.000463] (-) TimerEvent: {}
+[1.100654] (-) TimerEvent: {}
+[1.200850] (-) TimerEvent: {}
+[1.301031] (-) TimerEvent: {}
+[1.401234] (-) TimerEvent: {}
+[1.481697] (livox_ros_driver2) StdoutLine: {'line': b"-- Checking for module 'libusb-1.0'\n"}
+[1.492514] (livox_ros_driver2) StdoutLine: {'line': b'--   Found libusb-1.0, version 1.0.25\n'}
+[1.501297] (-) TimerEvent: {}
+[1.517898] (livox_ros_driver2) StdoutLine: {'line': b'-- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  \n'}
+[1.518647] (livox_ros_driver2) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[1.556041] (livox_ros_driver2) StdoutLine: {'line': b'-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)\n'}
+[1.601468] (-) TimerEvent: {}
+[1.654516] (livox_ros_driver2) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[1.658368] (livox_ros_driver2) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[1.663171] (livox_ros_driver2) StdoutLine: {'line': b'-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)\n'}
+[1.701555] (-) TimerEvent: {}
+[1.749884] (livox_ros_driver2) StdoutLine: {'line': b'-- Found Qhull version 8.0.2\n'}
+[1.801648] (-) TimerEvent: {}
+[1.846900] (livox_ros_driver2) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[1.901740] (-) TimerEvent: {}
+[1.935186] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  \n'}
+[1.935543] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  \n'}
+[1.935973] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  \n'}
+[1.936377] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  \n'}
+[1.936800] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  \n'}
+[1.937204] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  \n'}
+[1.937409] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_2D: /usr/include/pcl-1.12  \n'}
+[1.937594] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_GEOMETRY: /usr/include/pcl-1.12  \n'}
+[1.937988] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  \n'}
+[1.938463] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  \n'}
+[1.938922] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  \n'}
+[1.939339] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  \n'}
+[1.939818] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  \n'}
+[1.940294] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  \n'}
+[1.940742] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  \n'}
+[1.941209] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  \n'}
+[1.941643] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  \n'}
+[1.942078] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  \n'}
+[1.942566] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  \n'}
+[1.942986] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  \n'}
+[1.943399] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  \n'}
+[1.943576] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_MODELER: /usr/include/pcl-1.12  \n'}
+[1.944043] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  \n'}
+[1.944484] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  \n'}
+[1.944960] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  \n'}
+[1.971490] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") \n'}
+[1.972443] (livox_ros_driver2) StdoutLine: {'line': b"-- Checking for module 'apr-1'\n"}
+[1.974764] (livox_ros_driver2) StdoutLine: {'line': b"--   No package 'apr-1' found\n"}
+[2.001827] (-) TimerEvent: {}
+[2.102079] (-) TimerEvent: {}
+[2.116136] (livox_ros_driver2) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)\n'}
+[2.202152] (-) TimerEvent: {}
+[2.257130] (livox_ros_driver2) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[2.302233] (-) TimerEvent: {}
+[2.402418] (-) TimerEvent: {}
+[2.443476] (livox_ros_driver2) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[2.459965] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") \n'}
+[2.461332] (livox_ros_driver2) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[2.480190] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") \n'}
+[2.480312] (livox_ros_driver2) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[2.480343] (livox_ros_driver2) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10\n'}
+[2.480368] (livox_ros_driver2) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so\n'}
+[2.496346] (livox_ros_driver2) StdoutLine: {'line': b'-- Found PythonExtra: .so  \n'}
+[2.502508] (-) TimerEvent: {}
+[2.600001] (livox_ros_driver2) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[2.602577] (-) TimerEvent: {}
+[2.616421] (livox_ros_driver2) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[2.619139] (livox_ros_driver2) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[2.619584] (livox_ros_driver2) StdoutLine: {'line': b'-- Configured cppcheck include dirs: /home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2/3rdparty;/home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2/src\n'}
+[2.619646] (livox_ros_driver2) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[2.622431] (livox_ros_driver2) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[2.622607] (livox_ros_driver2) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[2.623053] (livox_ros_driver2) StdoutLine: {'line': b"-- Added test 'flake8' to check Python code syntax and style conventions\n"}
+[2.623910] (livox_ros_driver2) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[2.624483] (livox_ros_driver2) StdoutLine: {'line': b"-- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257\n"}
+[2.626917] (livox_ros_driver2) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[2.627057] (livox_ros_driver2) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[2.627544] (livox_ros_driver2) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[2.628998] (livox_ros_driver2) StdoutLine: {'line': b'-- Configuring done\n'}
+[2.631591] (livox_ros_driver2) StderrLine: {'line': b'\x1b[0mCMake Error: The following variables are used in this project, but they are set to NOTFOUND.\n'}
+[2.631724] (livox_ros_driver2) StderrLine: {'line': b'Please set them or make sure they are set and tested correctly in the CMake files:\n'}
+[2.631790] (livox_ros_driver2) StderrLine: {'line': b'/home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2/LIVOX_INTERFACES_INCLUDE_DIRECTORIES\n'}
+[2.631847] (livox_ros_driver2) StderrLine: {'line': b'   used as include directory in directory /home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2\n'}
+[2.631900] (livox_ros_driver2) StderrLine: {'line': b'\x1b[0m\n'}
+[2.661729] (livox_ros_driver2) StdoutLine: {'line': b'-- Generating done\n'}
+[2.663114] (livox_ros_driver2) StderrLine: {'line': b'\x1b[0mCMake Generate step failed.  Build files cannot be regenerated correctly.\x1b[0m\n'}
+[2.674418] (livox_ros_driver2) CommandEnded: {'returncode': 1}
+[2.687752] (livox_ros_driver2) JobEnded: {'identifier': 'livox_ros_driver2', 'rc': 1}
+[2.698234] (-) EventReactorShutdown: {}

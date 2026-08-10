@@ -1,0 +1,79 @@
+{
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target"
+		],
+		"files" : 
+		[
+			"/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/map_msgs__py/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 34,
+				"parent" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "map_msgs::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "map_msgs__py::@d0973546d0639854b6a7",
+	"name" : "map_msgs__py",
+	"paths" : 
+	{
+		"build" : "map_msgs__py",
+		"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/map_msgs__py"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"isGenerated" : true,
+			"path" : "/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/map_msgs__py/CMakeFiles/map_msgs__py",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/map_msgs__py/CMakeFiles/map_msgs__py.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/rosidl_generator_py/map_msgs/_map_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

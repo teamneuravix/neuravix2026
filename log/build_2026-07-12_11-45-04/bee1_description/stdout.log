@@ -1,0 +1,41 @@
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/urdf/bee1_robotaxi.urdf.xacro
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/astar_planner.launch.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/bee1_bringup.launch.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/localization.launch.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/localization_local.launch.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_localization.launch.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_localization_real.launch.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_slam.launch.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_slam_real.launch.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/ekf_navsat.yaml
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/pointcloud_to_laserscan_pist.yaml
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/pointcloud_to_laserscan_real.yaml
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist.yaml
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist_localization.yaml
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist_localization_real.yaml
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist_real.yaml
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/astar_planner.py
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/package_run_dependencies/bee1_description
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/parent_prefix_path/bee1_description
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/path.sh
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/path.dsv
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.bash
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.sh
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.zsh
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.dsv
+-- Symlinking: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/package.dsv
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/packages/bee1_description
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/cmake/bee1_descriptionConfig.cmake
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/cmake/bee1_descriptionConfig-version.cmake
+-- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/package.xml
+-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/pointcloud_filter
+-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/odom_relay
+-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/gps_relay
+-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/pist_odom_tf
+-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/astar_planner_node
+-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/lidar_echo
+-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/can_odom

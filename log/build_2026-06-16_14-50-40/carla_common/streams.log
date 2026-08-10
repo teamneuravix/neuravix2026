@@ -1,0 +1,22 @@
+[0.801s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/carla_common': PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/build/carla_common/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/neuravix/Desktop/carla-ros2-ws/install/carla_common/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/neuravix/Desktop/carla-ros2-ws/build/carla_common/build --no-deps symlink_data
+[0.922s] running develop
+[0.989s] running egg_info
+[0.989s] creating src/carla_common.egg-info
+[0.989s] writing src/carla_common.egg-info/PKG-INFO
+[0.990s] writing dependency_links to src/carla_common.egg-info/dependency_links.txt
+[0.990s] writing requirements to src/carla_common.egg-info/requires.txt
+[0.990s] writing top-level names to src/carla_common.egg-info/top_level.txt
+[0.990s] writing manifest file 'src/carla_common.egg-info/SOURCES.txt'
+[0.990s] reading manifest file 'src/carla_common.egg-info/SOURCES.txt'
+[0.991s] writing manifest file 'src/carla_common.egg-info/SOURCES.txt'
+[0.991s] running build_ext
+[0.991s] Creating /home/neuravix/Desktop/carla-ros2-ws/install/carla_common/lib/python3.10/site-packages/carla-common.egg-link (link to src)
+[0.992s] 
+[0.992s] Installed /home/neuravix/Desktop/carla-ros2-ws/build/carla_common/src
+[0.992s] running symlink_data
+[0.992s] creating /home/neuravix/Desktop/carla-ros2-ws/install/carla_common/share/ament_index
+[0.992s] creating /home/neuravix/Desktop/carla-ros2-ws/install/carla_common/share/ament_index/resource_index
+[0.992s] creating /home/neuravix/Desktop/carla-ros2-ws/install/carla_common/share/ament_index/resource_index/packages
+[0.992s] symbolically linking /home/neuravix/Desktop/carla-ros2-ws/build/carla_common/resource/carla_common -> /home/neuravix/Desktop/carla-ros2-ws/install/carla_common/share/ament_index/resource_index/packages
+[0.993s] symbolically linking /home/neuravix/Desktop/carla-ros2-ws/build/carla_common/package.xml -> /home/neuravix/Desktop/carla-ros2-ws/install/carla_common/share/carla_common
+[1.006s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/carla_common' returned '0': PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/build/carla_common/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/neuravix/Desktop/carla-ros2-ws/install/carla_common/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/neuravix/Desktop/carla-ros2-ws/build/carla_common/build --no-deps symlink_data

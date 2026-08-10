@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_ros_scenario_runner_types/rosidl_generator_rs/carla_ros_scenario_runner_types/rust/src/srv/rmw.rs

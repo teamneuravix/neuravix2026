@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/ament_cmake_environment_hooks/local_setup.sh

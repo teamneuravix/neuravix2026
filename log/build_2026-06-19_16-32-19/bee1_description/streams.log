@@ -1,0 +1,35 @@
+[0.009s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/bee1_description': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/neuravix/Desktop/carla-ros2-ws/build/bee1_description -- -j20 -l20
+[0.036s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/bee1_description' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/neuravix/Desktop/carla-ros2-ws/build/bee1_description -- -j20 -l20
+[0.042s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/bee1_description': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/neuravix/Desktop/carla-ros2-ws/build/bee1_description
+[0.045s] -- Install configuration: ""
+[0.046s] -- Execute custom install script
+[0.046s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/urdf/bee1_robotaxi.urdf.xacro
+[0.046s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/bee1_bringup.launch.py
+[0.046s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/localization.launch.py
+[0.046s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/localization_local.launch.py
+[0.046s] -- Symlinking: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_localization.launch.py
+[0.051s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_slam.launch.py
+[0.051s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/ekf_navsat.yaml
+[0.051s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/pointcloud_to_laserscan_pist.yaml
+[0.051s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist.yaml
+[0.051s] -- Symlinking: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist_localization.yaml
+[0.058s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/package_run_dependencies/bee1_description
+[0.058s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/parent_prefix_path/bee1_description
+[0.058s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/ament_prefix_path.sh
+[0.058s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/ament_prefix_path.dsv
+[0.058s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/path.sh
+[0.059s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/path.dsv
+[0.059s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.bash
+[0.059s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.sh
+[0.059s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.zsh
+[0.059s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.dsv
+[0.059s] -- Symlinking: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/package.dsv
+[0.066s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/packages/bee1_description
+[0.066s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/cmake/bee1_descriptionConfig.cmake
+[0.066s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/cmake/bee1_descriptionConfig-version.cmake
+[0.066s] -- Up-to-date symlink: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/package.xml
+[0.066s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/pointcloud_filter
+[0.066s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/odom_relay
+[0.066s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/gps_relay
+[0.066s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/pist_odom_tf
+[0.067s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/bee1_description' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/neuravix/Desktop/carla-ros2-ws/build/bee1_description

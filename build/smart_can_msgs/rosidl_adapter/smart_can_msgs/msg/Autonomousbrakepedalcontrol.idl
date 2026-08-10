@@ -1,0 +1,18 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from smart_can_msgs/msg/Autonomousbrakepedalcontrol.msg
+// generated code does not contain a copyright notice
+
+
+module smart_can_msgs {
+  module msg {
+    struct Autonomousbrakepedalcontrol {
+      uint8 autonomous_brakemotor_voltage;
+
+      uint8 autonomous_brakepedalmotor_per;
+
+      uint16 autonomous_brakepedalmotor_acc;
+
+      uint8 autonomous_brakepedalmotor_en;
+    };
+  };
+};

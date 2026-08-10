@@ -1,0 +1,57 @@
+[0.000000] (-) TimerEvent: {}
+[0.000090] (-) JobUnselected: {'identifier': 'bee1_description'}
+[0.000216] (-) JobUnselected: {'identifier': 'carla_ackermann_control'}
+[0.000228] (-) JobUnselected: {'identifier': 'carla_ackermann_msgs'}
+[0.000304] (-) JobUnselected: {'identifier': 'carla_ad_agent'}
+[0.000360] (-) JobUnselected: {'identifier': 'carla_ad_demo'}
+[0.000383] (-) JobUnselected: {'identifier': 'carla_common'}
+[0.000427] (-) JobUnselected: {'identifier': 'carla_manual_control'}
+[0.000437] (-) JobUnselected: {'identifier': 'carla_msgs'}
+[0.000453] (-) JobUnselected: {'identifier': 'carla_ros_bridge'}
+[0.000462] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner'}
+[0.000473] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner_types'}
+[0.000560] (-) JobUnselected: {'identifier': 'carla_spawn_objects'}
+[0.000581] (-) JobUnselected: {'identifier': 'carla_twist_to_control'}
+[0.000619] (-) JobUnselected: {'identifier': 'carla_walker_agent'}
+[0.000629] (-) JobUnselected: {'identifier': 'carla_waypoint_publisher'}
+[0.000644] (-) JobUnselected: {'identifier': 'carla_waypoint_types'}
+[0.000653] (-) JobUnselected: {'identifier': 'fast_lio'}
+[0.000753] (-) JobUnselected: {'identifier': 'livox_ros_driver2'}
+[0.000769] (-) JobUnselected: {'identifier': 'pcl_recorder'}
+[0.000779] (-) JobUnselected: {'identifier': 'ros_compatibility'}
+[0.000789] (-) JobUnselected: {'identifier': 'rqt_carla_control'}
+[0.000900] (-) JobUnselected: {'identifier': 'rviz_carla_plugin'}
+[0.000921] (-) JobUnselected: {'identifier': 'smart_can_msgs'}
+[0.000939] (neuravix_ros2) JobQueued: {'identifier': 'neuravix_ros2', 'dependencies': OrderedDict([('carla_msgs', '/home/taha/Desktop/carla-ros2-ws/install/carla_msgs'), ('smart_can_msgs', '/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs')])}
+[0.000964] (neuravix_ros2) JobStarted: {'identifier': 'neuravix_ros2'}
+[0.099826] (-) TimerEvent: {}
+[0.199976] (-) TimerEvent: {}
+[0.300126] (-) TimerEvent: {}
+[0.400284] (-) TimerEvent: {}
+[0.454113] (neuravix_ros2) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/build', '--no-deps', 'symlink_data'], 'cwd': '/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'USE_LOCAL_OAUTH': '', 'AI_AGENT': 'claude-code_2-1-215_agent', 'USER': 'taha', 'CLAUDE_CODE_ENTRYPOINT': 'claude-desktop', 'LC_TIME': 'tr_TR.UTF-8', 'GIT_EDITOR': 'true', 'XDG_SESSION_TYPE': 'wayland', 'CLAUDE_AGENT_SDK_VERSION': '0.3.215', 'SHLVL': '0', 'LD_LIBRARY_PATH': '/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/taha', 'CHROME_DESKTOP': 'com.anthropic.Claude.desktop', 'DISABLE_MICROCOMPACT': '1', 'OLDPWD': '/home/taha/Desktop/carla-ros2-ws', 'USE_STAGING_OAUTH': '', 'DESKTOP_SESSION': 'ubuntu', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/com.anthropic.Claude.desktop', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'CLAUDE_CODE_CHILD_SESSION': '1', 'LC_MONETARY': 'tr_TR.UTF-8', 'MANAGERPID': '2378', 'SYSTEMD_EXEC_PID': '2556', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '5516', 'CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH': '1', 'BAGGAGE': 'sentry-environment=production,sentry-release=Claude%401.22209.3,sentry-public_key=2f98127cbffe4740b1f767a2de77d23b,sentry-trace_id=a39597b187ff43eb8df1200399fc99de,sentry-org_id=1158394', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'API_TIMEOUT_MS': '900000', 'ROS_DISTRO': 'humble', 'LOGNAME': 'taha', 'JOURNAL_STREAM': '8:32161', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'taha', 'ANTHROPIC_BASE_URL': 'https://api.anthropic.com', 'CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL': 'true', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'FC_FONTATIONS': '1', 'ROS_LOCALHOST_ONLY': '0', 'MCP_CONNECTION_NONBLOCKING': 'true', 'PATH': '/home/taha/.local/bin:/home/taha/.local/bin:/home/taha/.local/bin:/opt/ros/humble/bin:/home/taha/.local/bin:/home/taha/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/taha/.config/Claude/local-agent-mode-sessions/skills-plugin/634c0886-cc63-4875-b9fc-e060ae35d0f1/00a6bf48-bd6e-4ea7-84fe-341b728aeba3/bin', 'SESSION_MANAGER': 'local/taha-SLAYER-R9T:@/tmp/.ICE-unix/2528,unix/taha-SLAYER-R9T:/tmp/.ICE-unix/2528', 'INVOCATION_ID': '4be19497459f4adcb5b4d23954a31e64', 'COREPACK_ENABLE_AUTO_PIN': '0', 'XDG_MENU_PREFIX': 'gnome-', 'LC_ADDRESS': 'tr_TR.UTF-8', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'wayland', 'CLAUDE_EFFORT': 'max', 'DISPLAY': ':0', 'CLAUDE_PID': '5994', 'NoDefaultCurrentDirectoryInExePath': '1', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'LC_TELEPHONE': 'tr_TR.UTF-8', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.0FO0T3', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs:/opt/ros/humble', 'SHELL': '/bin/bash', 'LC_NAME': 'tr_TR.UTF-8', 'QT_ACCESSIBILITY': '1', 'CLAUDE_PREVIEW_CLASSIFIER_FLOOR': '1', 'GDMSESSION': 'ubuntu', 'CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES': 'false', 'CLAUDE_CODE_SESSION_ID': 'dae79b8c-7ee2-4712-aeb0-9f006ec5d7b0', 'CLAUDE_CODE_DISABLE_CRON': '', 'NODE_USE_SYSTEM_CA': '1', 'CLAUDECODE': '1', 'CLAUDE_CODE_OAUTH_SCOPES': 'user:inference user:file_upload user:profile user:sessions:claude_code', 'LC_MEASUREMENT': 'tr_TR.UTF-8', 'CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH': '1', 'GJS_DEBUG_OUTPUT': 'stderr', 'LC_IDENTIFICATION': 'tr_TR.UTF-8', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2', 'DISABLE_AUTOUPDATER': '1', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'CLAUDE_CODE_EXECPATH': '/home/taha/.config/Claude/claude-code/2.1.215/claude', 'PYTHONPATH': '/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'LC_NUMERIC': 'tr_TR.UTF-8', 'LC_PAPER': 'tr_TR.UTF-8', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs'}, 'shell': False}
+[0.500361] (-) TimerEvent: {}
+[0.585578] (neuravix_ros2) StdoutLine: {'line': b'running develop\n'}
+[0.600426] (-) TimerEvent: {}
+[0.658257] (neuravix_ros2) StdoutLine: {'line': b'running egg_info\n'}
+[0.658463] (neuravix_ros2) StdoutLine: {'line': b'writing neuravix_ros2.egg-info/PKG-INFO\n'}
+[0.658666] (neuravix_ros2) StdoutLine: {'line': b'writing dependency_links to neuravix_ros2.egg-info/dependency_links.txt\n'}
+[0.658736] (neuravix_ros2) StdoutLine: {'line': b'writing entry points to neuravix_ros2.egg-info/entry_points.txt\n'}
+[0.658776] (neuravix_ros2) StdoutLine: {'line': b'writing requirements to neuravix_ros2.egg-info/requires.txt\n'}
+[0.658813] (neuravix_ros2) StdoutLine: {'line': b'writing top-level names to neuravix_ros2.egg-info/top_level.txt\n'}
+[0.660532] (neuravix_ros2) StdoutLine: {'line': b"reading manifest file 'neuravix_ros2.egg-info/SOURCES.txt'\n"}
+[0.661324] (neuravix_ros2) StdoutLine: {'line': b"writing manifest file 'neuravix_ros2.egg-info/SOURCES.txt'\n"}
+[0.662058] (neuravix_ros2) StdoutLine: {'line': b'running build_ext\n'}
+[0.662176] (neuravix_ros2) StdoutLine: {'line': b'Creating /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix-ros2.egg-link (link to .)\n'}
+[0.662724] (neuravix_ros2) StdoutLine: {'line': b'Installing lane_follower script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2\n'}
+[0.662865] (neuravix_ros2) StdoutLine: {'line': b'Installing mjpeg_server script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2\n'}
+[0.662955] (neuravix_ros2) StdoutLine: {'line': b'Installing neuravix_control script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2\n'}
+[0.663040] (neuravix_ros2) StdoutLine: {'line': b'Installing neuravix_control_real script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2\n'}
+[0.663121] (neuravix_ros2) StdoutLine: {'line': b'Installing obstacle_lidar script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2\n'}
+[0.663205] (neuravix_ros2) StdoutLine: {'line': b'Installing tabela_overlay script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2\n'}
+[0.663289] (neuravix_ros2) StdoutLine: {'line': b'Installing tabela_tespit script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2\n'}
+[0.663432] (neuravix_ros2) StdoutLine: {'line': b'\n'}
+[0.663497] (neuravix_ros2) StdoutLine: {'line': b'Installed /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2\n'}
+[0.663533] (neuravix_ros2) StdoutLine: {'line': b'running symlink_data\n'}
+[0.682020] (neuravix_ros2) CommandEnded: {'returncode': 0}
+[0.689772] (neuravix_ros2) JobEnded: {'identifier': 'neuravix_ros2', 'rc': 0}
+[0.690207] (-) EventReactorShutdown: {}

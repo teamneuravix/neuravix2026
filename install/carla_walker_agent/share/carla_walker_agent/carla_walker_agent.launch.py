@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_walker_agent/launch/carla_walker_agent.launch.py

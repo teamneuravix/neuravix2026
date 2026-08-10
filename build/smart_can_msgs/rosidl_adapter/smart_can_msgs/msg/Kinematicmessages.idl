@@ -1,0 +1,20 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from smart_can_msgs/msg/Kinematicmessages.msg
+// generated code does not contain a copyright notice
+
+
+module smart_can_msgs {
+  module msg {
+    struct Kinematicmessages {
+      uint8 joint_type;
+
+      float angle;
+
+      float angle_y;
+
+      float angular_velocity;
+
+      float link_length;
+    };
+  };
+};

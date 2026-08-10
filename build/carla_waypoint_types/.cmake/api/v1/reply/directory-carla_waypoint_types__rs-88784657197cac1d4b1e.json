@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "carla_waypoint_types__rs",
+		"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types/carla_waypoint_types__rs"
+	}
+}

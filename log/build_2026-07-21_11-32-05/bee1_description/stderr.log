@@ -1,0 +1,4 @@
+CMake Error: The current CMakeCache.txt directory /home/taha/Desktop/carla-ros2-ws/build/bee1_description/CMakeCache.txt is different than the directory /home/neuravix/Desktop/carla-ros2-ws/build/bee1_description where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+CMake Error: The source directory "/home/neuravix/Desktop/carla-ros2-ws/src/bee1_description" does not exist.
+Specify --help for usage, or press the help button on the CMake GUI.
+gmake: *** [Makefile:226: cmake_check_build_system] Error 1

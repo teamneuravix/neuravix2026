@@ -1,0 +1,10 @@
+{
+  "package_name": "carla_ackermann_msgs",
+  "non_idl_tuples": [
+    "/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_ackermann_msgs:msg/EgoVehicleControlInfo.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_ackermann_msgs:msg/EgoVehicleControlCurrent.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_ackermann_msgs:msg/EgoVehicleControlMaxima.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_ackermann_msgs:msg/EgoVehicleControlStatus.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_ackermann_msgs:msg/EgoVehicleControlTarget.msg"
+  ]
+}

@@ -1,0 +1,4 @@
+source;share/bee1_description/local_setup.bash
+source;share/bee1_description/local_setup.dsv
+source;share/bee1_description/local_setup.sh
+source;share/bee1_description/local_setup.zsh

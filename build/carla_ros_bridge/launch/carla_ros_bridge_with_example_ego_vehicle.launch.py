@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_ros_bridge/launch/carla_ros_bridge_with_example_ego_vehicle.launch.py

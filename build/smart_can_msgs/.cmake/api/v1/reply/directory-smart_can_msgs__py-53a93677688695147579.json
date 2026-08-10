@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "smart_can_msgs__py",
+		"source" : "/home/taha/Desktop/carla-ros2-ws/build/smart_can_msgs/smart_can_msgs__py"
+	}
+}

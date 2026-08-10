@@ -1,0 +1,190 @@
+================================================================
+ TEKNOFEST 2026 ROBOTAKSI (Bee1) - ARAÇ GÜNÜ / TEST GÜNÜ REHBERİ
+ Son güncelleme: 2026-07-08
+================================================================
+
+Bu dosya üç bölümden oluşuyor:
+  1) BUGÜN NE YAPTIK (özet)
+  2) ARAÇ GÜNÜ NE KULLANACAĞIZ (paketler, node'lar, komutlar)
+  3) HENÜZ TAMAMLANMAMIŞ / TEST GÜNÜ DOĞRULANACAK ŞEYLER
+
+
+----------------------------------------------------------------
+1) BUGÜN NE YAPTIK (özet)
+----------------------------------------------------------------
+
+- Karar mantığını (FSM - şerit/tabela/engel'e göre direksiyon-hız-fren
+  kararı veren "beyin") CARLA'dan tamamen bağımsız hale getirdik:
+  yeni dosya -> src/neuravix_ros2/neuravix_ros2/decision_brain.py
+
+- Gerçek araç için yeni bir kontrol node'u yazdık (CARLA YOK, gerçek CAN
+  mesajlarını kullanıyor):
+  yeni dosya -> src/neuravix_ros2/neuravix_ros2/neuravix_control_node_real.py
+  çalıştırma adı -> neuravix_control_real
+
+- Gerçek araç CAN mesajlarını (4 PDF dökümandan çıkardığımız alan
+  tablolarına göre) tanımlayan TASLAK bir mesaj paketi oluşturduk:
+  yeni paket -> src/smart_can_msgs (9 mesaj dosyası)
+  NOT: Bu paket TASLAKTIR. Araç günü gerçek smart_can_msgs paketi
+  (aracın Advantech bilgisayarından) alınınca bunun yerine konacak.
+
+- Gerçek araç için (henüz test edilmemiş) bir odometri taslağı yazdık:
+  yeni dosya -> src/bee1_description/scripts/can_odom_node.py
+  çalıştırma adı -> can_odom
+  (CAN hız+direksiyon feedback'inden "odom" üretip slam_toolbox'a besler)
+
+- lane_follower_node.py'ye kamera topic parametresi eklendi (önceden
+  CARLA'ya hardcoded'dı, artık Zed2'ye de yönlendirilebilir).
+
+- camera_overlay_node.py (tabela_overlay) ve neuravix_kontrol.py dosyalarının
+  başına "SADECE CARLA SİMÜLASYONU, araca taşınmayacak" notu eklendi.
+
+- ~/robotaksi_deploy klasörünü (Docker ile araca yüklenecek image'ın
+  kaynağı) bu workspace'teki güncel kodla senkronladık ve BAŞARIYLA
+  test build ettik. Image adı: robotaksi_humble:latest
+
+- Workspace kökünde yanlışlıkla duran eski/bozuk bir robotaksi_deploy
+  kopyası silindi (colcon build çakışmasına sebep oluyordu).
+
+- Yeni bir script eklendi: export_deploy.sh (workspace kökünde)
+  Bu script bu workspace'teki neuravix_ros2 + smart_can_msgs paketlerini
+  ~/robotaksi_deploy/src'e kopyalar. Docker image'ını yeniden build
+  etmeden ÖNCE HER ZAMAN bu script çalıştırılmalı, yoksa image eski
+  kod ile kalır (bu daha önce başımıza geldi).
+
+
+----------------------------------------------------------------
+2) ARAÇ GÜNÜ NE KULLANACAĞIZ
+----------------------------------------------------------------
+
+--- 2.1) Kod güncelleme + Docker image hazırlama (araca gitmeden önce, buradan) ---
+
+    cd ~/Desktop/carla-ros2-ws
+
+    # 1. Kodu deploy klasörüne senkronla (önce --dry-run ile bir bak, sonra gerçek)
+    ./export_deploy.sh --dry-run
+    ./export_deploy.sh
+
+    # 2. Docker image'ını (yeniden) build et
+    cd ~/robotaksi_deploy
+    docker build -t robotaksi_humble:latest .
+
+    # 3. Image'ı dosyaya paketle
+    docker save -o robotaksi_humble.tar robotaksi_humble:latest
+
+    # 4. Araca gönder (SSH/SFTP)
+    scp robotaksi_humble.tar smart@192.168.30.100:/home/smart/
+
+--- 2.2) Araçta (SSH ile bağlanıp) ---
+
+    ssh smart@192.168.30.100
+    sudo docker load -i robotaksi_humble.tar
+
+    sudo docker run -it --gpus all --network host --privileged -v /dev:/dev \
+      -e ROS_DOMAIN_ID=<araçtaki_gerçek_değer> \
+      --name robotaksi_container robotaksi_humble:latest
+
+    ÖNEMLİ - araçta container'dan ÖNCE/paralelde çalışması gerekenler:
+      - Aracın kendi CAN köprüsü (bizim paketimiz değil, aracın kendi
+        paketi): "smart_can_stuff"
+          ROS1: roslaunch smart_can_stuff start_can_bus.launch
+          ROS2: ros2 launch smart_can_stuff can_launch.xml
+      - Aracın Foxy/Noetic tarafında da Cyclone DDS kurulu ve
+        RMW_IMPLEMENTATION=rmw_cyclonedds_cpp olarak ayarlı olmalı
+        (bizim image'da zaten kurulu/varsayılan). Bu yapılmazsa
+        topic'ler iki taraf arasında GÖRÜNMEZ (en kritik unutulmaması
+        gereken adım).
+      - ROS_DOMAIN_ID her iki tarafta da AYNI olmalı. Araçtaki değeri
+        önce öğrenin: echo $ROS_DOMAIN_ID
+
+--- 2.3) Container içinde çalıştırılacak node'lar ---
+
+    Container açıldığında bashrc otomatik ROS'u source ediyor.
+
+    ros2 run neuravix_ros2 lane_follower --ros-args \
+        -p camera_topic:=<gerçek zed2 topic'i>
+    ros2 run neuravix_ros2 tabela_tespit --ros-args \
+        -p camera_topic:=<gerçek zed2 topic'i>
+    ros2 run neuravix_ros2 obstacle_lidar --ros-args \
+        -p lidar_topic:=<gerçek velodyne topic'i>
+    ros2 run neuravix_ros2 neuravix_control_real
+
+    ÇALIŞTIRILMAYACAKLAR (CARLA'ya özel, araçta anlamsız/gereksiz):
+      - neuravix_control   (CARLA'ya konuşan sim node'u - bunun yerine
+                             neuravix_control_real kullanılacak)
+      - tabela_overlay (camera_overlay_node.py)
+      - neuravix_kontrol.py (bağımsız CARLA test scripti)
+
+--- 2.4) Kod bir şey değişince ---
+
+    Yukarıdaki 2.1'deki 4 adımı (export -> build -> save -> scp) ve
+    2.2'deki docker load + run adımlarını TEKRARLAYIN. export_deploy.sh
+    her seferinde çalıştırılmalı, elle kopyalama yapmayın.
+
+
+----------------------------------------------------------------
+3) HENÜZ TAMAMLANMAMIŞ / TEST GÜNÜ DOĞRULANACAK ŞEYLER
+----------------------------------------------------------------
+
+[ ] Gerçek smart_can_msgs / smart_can_stuff paketini araçtan almak
+    (SFTP: smart@192.168.30.100, konum: Projects/ros2_ws/src/smart_can_stuff/
+    - ROS2 tarafı için; ROS1 için Projects/ros_ws/src/...).
+    Bizim şu anki src/smart_can_msgs sadece dökümandan çıkarılmış
+    TASLAKTIR, gerçek paketle alan adı/tip karşılaştırması yapılmalı
+    (ros2 interface show ile).
+
+[ ] neuravix_control_node_real.py'deki açık sorular:
+    - /beemobs/steering_target_value ve /beemobs/speed_target_value
+      topic'lerinin gerçek birimi/aralığı NET DEĞİL (derece mi, km/h mi,
+      ham feedback birimi mi?). Araçta test edip steer_target_gain
+      parametresini buna göre kalibre etmek gerekiyor.
+    - Fren mesajındaki AUTONOMOUS_BrakePedalMotor_ACC değeri (şu an
+      10000 sabit) ve PER (şu an 0 veya 100, ikili) gerçek testte
+      ayarlanmalı - kademeli fren isteniyorsa PER'i FSM'den orantılı
+      almak gerekir.
+    - auto_ignition parametresi (varsayılan true) - node açılır açılmaz
+      kendi kendine RC_Ignition=1 + vites=DRIVE gönderiyor. Araçta ilk
+      testte kontağın elle/joystick ile açılması isteniyorsa bu
+      parametre false yapılmalı.
+    - El freni (AUTONOMOUS_HB_MotorControl) hiç kullanılmıyor, park
+      senaryosu netleşince eklenecek.
+    - Hiçbir CAN geri besleme (hız, direksiyon açısı, araç durumu)
+      şu an dinlenmiyor - yani komutların gerçekten uygulandığını
+      doğrulayan kapalı çevrim yok. İlk testlerde göz/RViz ile takip
+      şart.
+
+[ ] can_odom_node.py (odometri) TAMAMEN DOĞRULANMAMIŞ:
+    - steer_feedback_gain / steer_feedback_offset parametreleri bilinmiyor.
+      Kalibrasyon yöntemi: direksiyonu tam sola/sağa kilitleyip okunan
+      ham FeedbackSteeringAngle değerini, bilinen mekanik limitlerle
+      (iç teker 32.5 derece, dış teker 30.0 derece - "2026 Araç Teknik
+      Özellikleri" dokümanından) karşılaştırıp gain/offset/işaret ayarlanmalı.
+    - Bu node slam_toolbox'a HENÜZ BAĞLANMADI (launch dosyası yok).
+      bee1_description'daki pist_slam.launch.py / pist_localization.launch.py
+      CARLA'nın pist_odom_tf.py'sini kullanıyor - gerçek araç için
+      can_odom_node'u kullanan yeni bir launch dosyası yazılmalı.
+    - Bu iş bitene kadar neuravix_control_real konum/waypoint olmadan,
+      sadece şerit+tabela+engel ile (FSM-only) sürer - bu NORMAL bir
+      ara durum, hata değil.
+
+[ ] bee1_description paketi henüz Docker deploy image'ına dahil değil
+    (export_deploy.sh sadece neuravix_ros2 + smart_can_msgs kopyalıyor).
+    Gerçek lokalizasyon zinciri hazır olunca:
+      - export_deploy.sh'e bee1_description eklenmeli
+      - Dockerfile'a eksik apt paketleri eklenmeli: ros-humble-xacro,
+        ros-humble-robot-state-publisher, ros-humble-joint-state-publisher,
+        ros-humble-tf2-ros, ros-humble-slam-toolbox,
+        ros-humble-pointcloud-to-laserscan
+
+[ ] Gerçek sensör topic isimleri henüz bilinmiyor (Zed2 RGB topic'i,
+    Velodyne LiDAR topic'i) - araçta ros2 topic list ile öğrenilip
+    lane_follower/tabela_tespit/obstacle_lidar'ın camera_topic/lidar_topic
+    parametrelerine verilecek.
+
+[ ] Yarışma günü rota artık CARLA pist koordinatları (decision_brain.py
+    içindeki ROUTE) DEĞİL, GEOJSON dosyası ile (start/gorev_N/park_giris
+    lat-lon noktaları) verilecek - bir GeoJSON parser henüz yazılmadı.
+
+[ ] ROS_DOMAIN_ID ve Cyclone DDS ayarının araçta hâlâ doğrulanması gerekiyor
+    (bu rehberin 2.2 bölümündeki adımlar - daha önce test edilmiş ama
+    her yeni oturumda tekrar kontrol edilmeli).

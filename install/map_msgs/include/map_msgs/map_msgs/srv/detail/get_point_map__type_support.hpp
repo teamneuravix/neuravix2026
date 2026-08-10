@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/rosidl_generator_cpp/map_msgs/srv/detail/get_point_map__type_support.hpp

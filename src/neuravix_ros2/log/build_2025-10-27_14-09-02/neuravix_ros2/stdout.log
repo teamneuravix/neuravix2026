@@ -1,0 +1,17 @@
+running egg_info
+writing build/neuravix_ros2/neuravix_ros2.egg-info/PKG-INFO
+writing dependency_links to build/neuravix_ros2/neuravix_ros2.egg-info/dependency_links.txt
+writing entry points to build/neuravix_ros2/neuravix_ros2.egg-info/entry_points.txt
+writing requirements to build/neuravix_ros2/neuravix_ros2.egg-info/requires.txt
+writing top-level names to build/neuravix_ros2/neuravix_ros2.egg-info/top_level.txt
+reading manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+writing manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+running build
+running build_py
+copying neuravix_ros2/lane_follower_node.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2
+copying neuravix_ros2/__init__.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2
+running install
+running install_lib
+running install_data
+copying resource/neuravix_ros2 -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index/packages
+copying package.xml -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2

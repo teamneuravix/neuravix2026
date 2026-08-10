@@ -1,0 +1,373 @@
+[0.005s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2 -DROS_EDITION=ROS2 -DDISTRO_ROS=humble -DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2
+[0.039s] -- The C compiler identification is GNU 11.4.0
+[0.070s] -- The CXX compiler identification is GNU 11.4.0
+[0.073s] -- Detecting C compiler ABI info
+[0.115s] -- Detecting C compiler ABI info - done
+[0.118s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.119s] -- Detecting C compile features
+[0.119s] -- Detecting C compile features - done
+[0.120s] -- Detecting CXX compiler ABI info
+[0.168s] -- Detecting CXX compiler ABI info - done
+[0.171s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.172s] -- Detecting CXX compile features
+[0.172s] -- Detecting CXX compile features - done
+[0.172s] -- livox_ros_driver2 version: 1.2.6
+[0.173s] -- Found ament_cmake_auto: 1.3.14 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+[0.265s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.344s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.346s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.365s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.405s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.406s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.453s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.469s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.497s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.501s] -- Looking for pthread.h
+[0.544s] -- Looking for pthread.h - found
+[0.544s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.590s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.591s] -- Found Threads: TRUE  
+[0.665s] -- Checking for module 'eigen3'
+[0.672s] --   Found eigen3, version 3.4.0
+[0.692s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[0.693s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.708s] -- Checking for module 'flann'
+[0.716s] --   Found flann, version 1.9.1
+[0.741s] -- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  
+[0.742s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[1.324s] -- Checking for module 'libusb-1.0'
+[1.332s] --   Found libusb-1.0, version 1.0.25
+[1.355s] -- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+[1.356s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.392s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.486s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[1.492s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.497s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.579s] -- Found Qhull version 8.0.2
+[1.659s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.738s] -- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+[1.739s] -- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  
+[1.739s] -- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+[1.739s] -- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  
+[1.740s] -- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  
+[1.740s] -- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  
+[1.740s] -- Found PCL_2D: /usr/include/pcl-1.12  
+[1.741s] -- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+[1.741s] -- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+[1.741s] -- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  
+[1.742s] -- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  
+[1.742s] -- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  
+[1.743s] -- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  
+[1.743s] -- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  
+[1.744s] -- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  
+[1.744s] -- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  
+[1.745s] -- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  
+[1.745s] -- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  
+[1.745s] -- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  
+[1.746s] -- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  
+[1.746s] -- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+[1.746s] -- Found PCL_MODELER: /usr/include/pcl-1.12  
+[1.747s] -- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+[1.747s] -- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  
+[1.748s] -- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  
+[1.770s] -- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+[1.771s] -- Checking for module 'apr-1'
+[1.772s] --   No package 'apr-1' found
+[1.894s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[2.016s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.174s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.187s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[2.188s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[2.203s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[2.203s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[2.203s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[2.203s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[2.217s] -- Found PythonExtra: .so  
+[2.292s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[2.302s] -- Added test 'copyright' to check source files copyright and LICENSE
+[2.304s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[2.305s] -- Configured cppcheck include dirs: /home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2/3rdparty;/home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2/src
+[2.305s] -- Configured cppcheck exclude dirs and/or files: 
+[2.307s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[2.307s] -- Configured cpplint exclude dirs and/or files: 
+[2.308s] -- Added test 'flake8' to check Python code syntax and style conventions
+[2.308s] -- Added test 'lint_cmake' to check CMake code style
+[2.309s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[2.311s] -- Added test 'uncrustify' to check C / C++ code style
+[2.311s] -- Configured uncrustify additional arguments: 
+[2.312s] -- Added test 'xmllint' to check XML markup files
+[2.313s] -- Configuring done
+[2.346s] -- Generating done
+[2.357s] -- Build files have been written to: /home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2
+[2.369s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/neuravix/Desktop/carla-ros2-ws/src/livox_ros_driver2 -DROS_EDITION=ROS2 -DDISTRO_ROS=humble -DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2
+[2.370s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2 -- -j20 -l20
+[2.399s] [  1%] [34m[1mGenerating C code for ROS interfaces[0m
+[2.403s] [  3%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[2.403s] [  5%] [34m[1mGenerating Rust code for ROS interfaces[0m
+[2.406s] [  6%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2_node.dir/rclcpp_components/node_main_livox_ros_driver2_node.cpp.o[0m
+[2.408s] [  6%] Built target ament_cmake_python_copy_livox_ros_driver2
+[2.541s] running egg_info
+[2.542s] creating livox_ros_driver2.egg-info
+[2.542s] writing livox_ros_driver2.egg-info/PKG-INFO
+[2.542s] writing dependency_links to livox_ros_driver2.egg-info/dependency_links.txt
+[2.542s] writing top-level names to livox_ros_driver2.egg-info/top_level.txt
+[2.542s] writing manifest file 'livox_ros_driver2.egg-info/SOURCES.txt'
+[2.544s] reading manifest file 'livox_ros_driver2.egg-info/SOURCES.txt'
+[2.544s] writing manifest file 'livox_ros_driver2.egg-info/SOURCES.txt'
+[2.568s] [  6%] Built target ament_cmake_python_build_livox_ros_driver2_egg
+[2.599s] [  6%] Built target livox_interfaces2__rs
+[2.617s] [  6%] Built target livox_interfaces2__cpp
+[2.623s] [ 12%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[2.623s] [ 12%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[2.623s] [ 12%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[2.698s] [ 15%] [32mBuilding C object CMakeFiles/livox_interfaces2__rosidl_generator_c.dir/rosidl_generator_c/livox_ros_driver2/msg/detail/custom_msg__functions.c.o[0m
+[2.698s] [ 15%] [32mBuilding C object CMakeFiles/livox_interfaces2__rosidl_generator_c.dir/rosidl_generator_c/livox_ros_driver2/msg/detail/custom_point__functions.c.o[0m
+[2.734s] [ 17%] [32m[1mLinking C shared library liblivox_ros_driver2__rosidl_generator_c.so[0m
+[2.760s] [ 17%] Built target livox_interfaces2__rosidl_generator_c
+[2.766s] [ 18%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[2.767s] [ 22%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[2.768s] [ 22%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[2.818s] [ 24%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/livox_ros_driver2/msg/custom_point__type_support.cpp.o[0m
+[2.820s] [ 25%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/livox_ros_driver2/msg/custom_msg__type_support.cpp.o[0m
+[2.821s] [ 27%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/livox_ros_driver2/msg/detail/custom_msg__type_support.cpp.o[0m
+[2.823s] [ 29%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/livox_ros_driver2/msg/detail/custom_point__type_support.cpp.o[0m
+[2.900s] [ 32%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/livox_ros_driver2/msg/detail/dds_fastrtps/custom_point__type_support.cpp.o[0m
+[2.901s] [ 32%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/livox_ros_driver2/msg/detail/dds_fastrtps/custom_msg__type_support.cpp.o[0m
+[2.966s] [ 34%] [32m[1mLinking CXX shared library liblivox_ros_driver2__rosidl_typesupport_cpp.so[0m
+[2.997s] [ 34%] Built target livox_interfaces2__rosidl_typesupport_cpp
+[3.012s] [ 36%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/livox_ros_driver2.cpp.o[0m
+[3.012s] [ 39%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/driver_node.cpp.o[0m
+[3.012s] [ 39%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/lddc.cpp.o[0m
+[3.012s] [ 41%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/comm/ldq.cpp.o[0m
+[3.012s] [ 43%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/comm/comm.cpp.o[0m
+[3.013s] [ 44%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/lds_lidar.cpp.o[0m
+[3.013s] [ 48%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/comm/semaphore.cpp.o[0m
+[3.013s] [ 48%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/lds.cpp.o[0m
+[3.017s] [ 50%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/comm/lidar_imu_data_queue.cpp.o[0m
+[3.017s] [ 55%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/comm/pub_handler.cpp.o[0m
+[3.017s] [ 55%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/comm/cache_index.cpp.o[0m
+[3.017s] [ 55%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/parse_cfg_file/parse_cfg_file.cpp.o[0m
+[3.038s] [ 56%] [32mBuilding C object CMakeFiles/livox_interfaces2__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/livox_ros_driver2/msg/detail/custom_point__type_support.c.o[0m
+[3.067s] [ 58%] [32mBuilding C object CMakeFiles/livox_interfaces2__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/livox_ros_driver2/msg/detail/custom_msg__type_support.c.o[0m
+[3.074s] [ 60%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/parse_cfg_file/parse_livox_lidar_cfg.cpp.o[0m
+[3.122s] [ 62%] [32m[1mLinking C shared library liblivox_ros_driver2__rosidl_typesupport_introspection_c.so[0m
+[3.136s] [ 63%] [32m[1mLinking CXX shared library liblivox_ros_driver2__rosidl_typesupport_introspection_cpp.so[0m
+[3.163s] [ 63%] Built target livox_interfaces2__rosidl_typesupport_introspection_c
+[3.169s] [ 65%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/call_back/lidar_common_callback.cpp.o[0m
+[3.170s] [ 67%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/livox_ros_driver2/msg/detail/custom_point__type_support_c.cpp.o[0m
+[3.192s] [ 68%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_c.dir/rosidl_typesupport_c/livox_ros_driver2/msg/custom_point__type_support.cpp.o[0m
+[3.209s] [ 70%] [32mBuilding CXX object CMakeFiles/livox_ros_driver2.dir/src/call_back/livox_lidar_callback.cpp.o[0m
+[3.230s] [ 72%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_c.dir/rosidl_typesupport_c/livox_ros_driver2/msg/custom_msg__type_support.cpp.o[0m
+[3.232s] [ 74%] [32m[1mLinking CXX shared library liblivox_ros_driver2__rosidl_typesupport_fastrtps_cpp.so[0m
+[3.245s] [ 74%] Built target livox_interfaces2__rosidl_typesupport_introspection_cpp
+[3.261s] [ 75%] [32m[1mLinking CXX shared library liblivox_ros_driver2__rosidl_typesupport_c.so[0m
+[3.266s] [ 77%] [32mBuilding CXX object CMakeFiles/livox_interfaces2__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/livox_ros_driver2/msg/detail/custom_msg__type_support_c.cpp.o[0m
+[3.311s] [ 77%] Built target livox_interfaces2__rosidl_typesupport_fastrtps_cpp
+[3.320s] [ 77%] Built target livox_interfaces2__rosidl_typesupport_c
+[3.495s] [ 79%] [32m[1mLinking CXX shared library liblivox_ros_driver2__rosidl_typesupport_fastrtps_c.so[0m
+[3.556s] [ 79%] Built target livox_interfaces2__rosidl_typesupport_fastrtps_c
+[3.569s] [ 79%] Built target livox_interfaces2
+[3.584s] [ 81%] [34m[1mGenerating Python code for ROS interfaces[0m
+[3.913s] [ 81%] Built target livox_interfaces2__py
+[3.924s] [ 82%] [32mBuilding C object CMakeFiles/livox_interfaces2__rosidl_generator_py.dir/rosidl_generator_py/livox_ros_driver2/msg/_custom_point_s.c.o[0m
+[3.925s] [ 84%] [32mBuilding C object CMakeFiles/livox_interfaces2__rosidl_generator_py.dir/rosidl_generator_py/livox_ros_driver2/msg/_custom_msg_s.c.o[0m
+[3.997s] [ 86%] [32m[1mLinking C shared library rosidl_generator_py/livox_ros_driver2/liblivox_interfaces2__rosidl_generator_py.so[0m
+[4.023s] [ 86%] Built target livox_interfaces2__rosidl_generator_py
+[4.035s] [ 87%] [32mBuilding C object CMakeFiles/livox_ros_driver2__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/livox_ros_driver2/_livox_ros_driver2_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[4.035s] [ 89%] [32mBuilding C object CMakeFiles/livox_ros_driver2__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/livox_ros_driver2/_livox_ros_driver2_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[4.037s] [ 91%] [32mBuilding C object CMakeFiles/livox_ros_driver2__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/livox_ros_driver2/_livox_ros_driver2_s.ep.rosidl_typesupport_c.c.o[0m
+[4.085s] [ 94%] [32m[1mLinking C shared library rosidl_generator_py/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.085s] [ 94%] [32m[1mLinking C shared library rosidl_generator_py/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.086s] [ 96%] [32m[1mLinking C shared library rosidl_generator_py/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.106s] [ 96%] Built target livox_ros_driver2__rosidl_typesupport_introspection_c__pyext
+[4.106s] [ 96%] Built target livox_ros_driver2__rosidl_typesupport_fastrtps_c__pyext
+[4.109s] [ 96%] Built target livox_ros_driver2__rosidl_typesupport_c__pyext
+[4.371s] [ 98%] [32m[1mLinking CXX executable livox_ros_driver2_node[0m
+[4.440s] [ 98%] Built target livox_ros_driver2_node
+[7.605s] [100%] [32m[1mLinking CXX shared library liblivox_ros_driver2.so[0m
+[8.057s] [100%] Built target livox_ros_driver2
+[8.063s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2 -- -j20 -l20
+[8.069s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2
+[8.073s] -- Install configuration: ""
+[8.073s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/ament_index/resource_index/rosidl_interfaces/livox_ros_driver2
+[8.073s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2
+[8.073s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg
+[8.073s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/custom_point.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/custom_msg.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__struct.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__functions.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__functions.c
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__type_support.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__type_support.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__struct.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__functions.c
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__functions.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/rosidl_generator_c__visibility_control.h
+[8.074s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/environment/library_path.sh
+[8.075s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/environment/library_path.dsv
+[8.075s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_generator_c.so
+[8.075s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_generator_c.so" to ""
+[8.075s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2
+[8.075s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg
+[8.075s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[8.075s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail
+[8.075s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__rosidl_typesupport_fastrtps_c.h
+[8.075s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__rosidl_typesupport_fastrtps_c.h
+[8.075s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_fastrtps_c.so
+[8.075s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_fastrtps_c.so" to ""
+[8.075s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2
+[8.075s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[8.076s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__type_support.c
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__type_support.c
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__rosidl_typesupport_introspection_c.h
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__rosidl_typesupport_introspection_c.h
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_introspection_c.so
+[8.076s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_introspection_c.so" to ""
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_c.so
+[8.076s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_c.so" to ""
+[8.076s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2
+[8.076s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/custom_msg.hpp
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/rosidl_generator_cpp__visibility_control.hpp
+[8.076s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__type_support.hpp
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__traits.hpp
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__builder.hpp
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__struct.hpp
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__traits.hpp
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__struct.hpp
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__builder.hpp
+[8.076s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__type_support.hpp
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/custom_point.hpp
+[8.077s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2
+[8.077s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg
+[8.077s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__rosidl_typesupport_fastrtps_cpp.hpp
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/dds_fastrtps
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__rosidl_typesupport_fastrtps_cpp.hpp
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_fastrtps_cpp.so
+[8.077s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_fastrtps_cpp.so" to ""
+[8.077s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2
+[8.077s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg
+[8.077s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__rosidl_typesupport_introspection_cpp.hpp
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__rosidl_typesupport_introspection_cpp.hpp
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_point__type_support.cpp
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/include/livox_ros_driver2/livox_ros_driver2/msg/detail/custom_msg__type_support.cpp
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_introspection_cpp.so
+[8.077s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_introspection_cpp.so" to ""
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_cpp.so
+[8.077s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2__rosidl_typesupport_cpp.so" to ""
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/environment/pythonpath.sh
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/environment/pythonpath.dsv
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2-1.0.0-py3.10.egg-info
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2-1.0.0-py3.10.egg-info/PKG-INFO
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2-1.0.0-py3.10.egg-info/top_level.txt
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2-1.0.0-py3.10.egg-info/dependency_links.txt
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2-1.0.0-py3.10.egg-info/SOURCES.txt
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/_livox_ros_driver2_s.ep.rosidl_typesupport_c.c
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/__init__.py
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg/__init__.py
+[8.077s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg/_custom_point.py
+[8.078s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg/_custom_point_s.c
+[8.078s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg/_custom_msg.py
+[8.078s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg/_custom_msg_s.c
+[8.078s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/_livox_ros_driver2_s.ep.rosidl_typesupport_fastrtps_c.c
+[8.078s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[8.078s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[8.078s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/_livox_ros_driver2_s.ep.rosidl_typesupport_introspection_c.c
+[8.078s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/liblivox_interfaces2__rosidl_generator_py.so
+[8.095s] Listing '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2'...
+[8.095s] Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/__init__.py'...
+[8.095s] Listing '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg'...
+[8.095s] Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg/__init__.py'...
+[8.095s] Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg/_custom_msg.py'...
+[8.095s] Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/msg/_custom_point.py'...
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[8.098s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[8.098s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[8.098s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages/livox_ros_driver2/livox_ros_driver2_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_interfaces2__rosidl_generator_py.so
+[8.098s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_interfaces2__rosidl_generator_py.so" to ""
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/ament_index/resource_index/rust_packages/livox_ros_driver2
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/rust
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/rust/build.rs
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/rust/Cargo.toml
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/rust/src
+[8.098s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/rust/src/msg
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/rust/src/msg/rmw.rs
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/rust/src/lib.rs
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/rust/src/msg.rs
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/msg/CustomPoint.idl
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/msg/CustomMsg.idl
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/msg/CustomPoint.msg
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/msg/CustomMsg.msg
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/livox_ros_driver2/livox_ros_driver2_node
+[8.099s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/livox_ros_driver2/livox_ros_driver2_node" to ""
+[8.099s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2.so
+[8.101s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib/liblivox_ros_driver2.so" to ""
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/config
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/config/mixed_HAP_MID360_config.json
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/config/MID360s_config.json
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/config/display_point_cloud_ROS1.rviz
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/config/display_point_cloud_ROS2.rviz
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/config/HAP_config.json
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/config/MID360_config.json
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/launch_ROS2
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/launch_ROS2/msg_HAP_launch.py
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/launch_ROS2/rviz_HAP_launch.py
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/launch_ROS2/rviz_mixed.py
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/launch_ROS2/msg_MID360s_launch.py
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/launch_ROS2/rviz_MID360_launch.py
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/launch_ROS2/msg_MID360_launch.py
+[8.101s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/launch_ROS2/rviz_MID360s_launch.py
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/ament_index/resource_index/package_run_dependencies/livox_ros_driver2
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/ament_index/resource_index/parent_prefix_path/livox_ros_driver2
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/environment/ament_prefix_path.sh
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/environment/ament_prefix_path.dsv
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/environment/path.sh
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/environment/path.dsv
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/local_setup.bash
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/local_setup.sh
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/local_setup.zsh
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/local_setup.dsv
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/package.dsv
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/ament_index/resource_index/packages/livox_ros_driver2
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/ament_index/resource_index/rclcpp_components/livox_ros_driver2
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_generator_cExport.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_generator_cExport-noconfig.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_typesupport_fastrtps_cExport.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_interfaces2__rosidl_typesupport_introspection_cExport.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_interfaces2__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_interfaces2__rosidl_typesupport_cExport.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_interfaces2__rosidl_typesupport_cExport-noconfig.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_generator_cppExport.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_typesupport_fastrtps_cppExport.cmake
+[8.102s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_interfaces2__rosidl_typesupport_introspection_cppExport.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_interfaces2__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_interfaces2__rosidl_typesupport_cppExport.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_interfaces2__rosidl_typesupport_cppExport-noconfig.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_generator_pyExport.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/export_livox_interfaces2__rosidl_generator_pyExport-noconfig.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/rosidl_cmake-extras.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/ament_cmake_export_dependencies-extras.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/ament_cmake_export_include_directories-extras.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/ament_cmake_export_libraries-extras.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/ament_cmake_export_targets-extras.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_ros_driver2Config.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake/livox_ros_driver2Config-version.cmake
+[8.103s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/package.xml
+[8.104s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/neuravix/Desktop/carla-ros2-ws/build/livox_ros_driver2

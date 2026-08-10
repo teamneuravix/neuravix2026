@@ -1,0 +1,814 @@
+[0.000000] (-) TimerEvent: {}
+[0.000308] (-) JobUnselected: {'identifier': 'bee1_description'}
+[0.000463] (-) JobUnselected: {'identifier': 'carla_ackermann_control'}
+[0.000611] (-) JobUnselected: {'identifier': 'carla_ackermann_msgs'}
+[0.000629] (-) JobUnselected: {'identifier': 'carla_ad_agent'}
+[0.000666] (-) JobUnselected: {'identifier': 'carla_ad_demo'}
+[0.000698] (-) JobUnselected: {'identifier': 'carla_common'}
+[0.000747] (-) JobUnselected: {'identifier': 'carla_manual_control'}
+[0.000776] (-) JobUnselected: {'identifier': 'carla_msgs'}
+[0.000804] (-) JobUnselected: {'identifier': 'carla_ros_bridge'}
+[0.000847] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner'}
+[0.000864] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner_types'}
+[0.000940] (-) JobUnselected: {'identifier': 'carla_spawn_objects'}
+[0.000956] (-) JobUnselected: {'identifier': 'carla_twist_to_control'}
+[0.000972] (-) JobUnselected: {'identifier': 'carla_walker_agent'}
+[0.001001] (-) JobUnselected: {'identifier': 'carla_waypoint_publisher'}
+[0.001018] (-) JobUnselected: {'identifier': 'carla_waypoint_types'}
+[0.001074] (-) JobUnselected: {'identifier': 'livox_ros_driver2'}
+[0.001090] (-) JobUnselected: {'identifier': 'map_msgs'}
+[0.001135] (-) JobUnselected: {'identifier': 'neuravix_ros2'}
+[0.001153] (-) JobUnselected: {'identifier': 'pcl_recorder'}
+[0.001168] (-) JobUnselected: {'identifier': 'ros_compatibility'}
+[0.001187] (-) JobUnselected: {'identifier': 'rqt_carla_control'}
+[0.001263] (-) JobUnselected: {'identifier': 'rviz_carla_plugin'}
+[0.001281] (fast_lio) JobQueued: {'identifier': 'fast_lio', 'dependencies': OrderedDict([('livox_ros_driver2', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2')])}
+[0.001303] (fast_lio) JobStarted: {'identifier': 'fast_lio'}
+[0.006577] (fast_lio) JobProgress: {'identifier': 'fast_lio', 'progress': 'cmake'}
+[0.006914] (fast_lio) Command: {'cmd': ['/usr/bin/cmake', '/home/neuravix/Desktop/carla-ros2-ws/src/FAST_LIO', '-DROS_EDITION=ROS2', '-DDISTRO_ROS=humble', '-DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio'], 'cwd': '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'neuravix'), ('LC_TIME', 'tr_TR.UTF-8'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/neuravix'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'tr_TR.UTF-8'), ('MANAGERPID', '1947'), ('SYSTEMD_EXEC_PID', '2225'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5352'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'neuravix'), ('JOURNAL_STREAM', '8:17942'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'neuravix'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/home/neuravix/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/neuravix:@/tmp/.ICE-unix/2197,unix/neuravix:/tmp/.ICE-unix/2197'), ('INVOCATION_ID', '9d84d97ca5504a78a0377387a2540539'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'tr_TR.UTF-8'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('LC_TELEPHONE', 'tr_TR.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'tr_TR.UTF-8'), ('TERMINATOR_UUID', 'urn:uuid:e7256af4-8b40-48e5-bd5c-627a089d4b9c'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'tr_TR.UTF-8'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'tr_TR.UTF-8'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'tr_TR.UTF-8'), ('LC_PAPER', 'tr_TR.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble')]), 'shell': False}
+[0.041463] (fast_lio) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.070790] (fast_lio) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.074995] (fast_lio) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.099856] (-) TimerEvent: {}
+[0.117660] (fast_lio) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.122180] (fast_lio) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.122358] (fast_lio) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.122687] (fast_lio) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.124588] (fast_lio) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.172407] (fast_lio) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.176229] (fast_lio) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.176378] (fast_lio) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.176612] (fast_lio) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.176948] (fast_lio) StderrLine: {'line': b'\x1b[0mCurrent CPU archtecture: x86_64\x1b[0m\n'}
+[0.179453] (fast_lio) StderrLine: {'line': b'\x1b[0mProcesser number:  20\x1b[0m\n'}
+[0.179552] (fast_lio) StderrLine: {'line': b'\x1b[0mcore for MP: 3\x1b[0m\n'}
+[0.199952] (-) TimerEvent: {}
+[0.300175] (-) TimerEvent: {}
+[0.397288] (fast_lio) StdoutLine: {'line': b'-- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found version "3.10.12") \n'}
+[0.397976] (fast_lio) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.400236] (-) TimerEvent: {}
+[0.484179] (fast_lio) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.500335] (-) TimerEvent: {}
+[0.531242] (fast_lio) StdoutLine: {'line': b'-- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[0.547172] (fast_lio) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.549307] (fast_lio) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.553348] (fast_lio) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.558825] (fast_lio) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.566022] (fast_lio) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.591086] (fast_lio) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[0.592291] (fast_lio) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[0.600394] (-) TimerEvent: {}
+[0.644078] (fast_lio) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[0.660575] (fast_lio) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[0.685575] (fast_lio) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[0.691808] (fast_lio) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[0.700490] (-) TimerEvent: {}
+[0.742408] (fast_lio) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[0.742760] (fast_lio) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[0.787832] (fast_lio) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[0.788797] (fast_lio) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[0.800567] (-) TimerEvent: {}
+[0.818640] (fast_lio) StdoutLine: {'line': b'-- Found rclcpp_components: 16.0.19 (/opt/ros/humble/share/rclcpp_components/cmake)\n'}
+[0.831363] (fast_lio) StdoutLine: {'line': b'-- Found geometry_msgs: 4.9.1 (/opt/ros/humble/share/geometry_msgs/cmake)\n'}
+[0.837864] (fast_lio) StdoutLine: {'line': b'-- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)\n'}
+[0.846104] (fast_lio) StdoutLine: {'line': b'-- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[0.854842] (fast_lio) StdoutLine: {'line': b'-- Found std_srvs: 4.9.1 (/opt/ros/humble/share/std_srvs/cmake)\n'}
+[0.859539] (fast_lio) StdoutLine: {'line': b'-- Found visualization_msgs: 4.9.1 (/opt/ros/humble/share/visualization_msgs/cmake)\n'}
+[0.870464] (fast_lio) StdoutLine: {'line': b'-- Found pcl_ros: 2.4.5 (/opt/ros/humble/share/pcl_ros/cmake)\n'}
+[0.892559] (fast_lio) StdoutLine: {'line': b"-- Checking for module 'eigen3'\n"}
+[0.900656] (-) TimerEvent: {}
+[0.902032] (fast_lio) StdoutLine: {'line': b'--   Found eigen3, version 3.4.0\n'}
+[0.922032] (fast_lio) StdoutLine: {'line': b'-- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") \n'}
+[0.922221] (fast_lio) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[0.937961] (fast_lio) StdoutLine: {'line': b"-- Checking for module 'flann'\n"}
+[0.945538] (fast_lio) StdoutLine: {'line': b'--   Found flann, version 1.9.1\n'}
+[0.967689] (fast_lio) StdoutLine: {'line': b'-- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  \n'}
+[0.967895] (fast_lio) StdoutLine: {'line': b'-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)\n'}
+[1.000814] (-) TimerEvent: {}
+[1.101066] (-) TimerEvent: {}
+[1.201327] (-) TimerEvent: {}
+[1.301579] (-) TimerEvent: {}
+[1.401769] (-) TimerEvent: {}
+[1.501989] (-) TimerEvent: {}
+[1.530981] (fast_lio) StdoutLine: {'line': b"-- Checking for module 'libusb-1.0'\n"}
+[1.539985] (fast_lio) StdoutLine: {'line': b'--   Found libusb-1.0, version 1.0.25\n'}
+[1.563356] (fast_lio) StdoutLine: {'line': b'-- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  \n'}
+[1.564202] (fast_lio) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[1.598467] (fast_lio) StdoutLine: {'line': b'-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)\n'}
+[1.602059] (-) TimerEvent: {}
+[1.686770] (fast_lio) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[1.690489] (fast_lio) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[1.695034] (fast_lio) StdoutLine: {'line': b'-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)\n'}
+[1.702129] (-) TimerEvent: {}
+[1.786519] (fast_lio) StdoutLine: {'line': b'-- Found Qhull version 8.0.2\n'}
+[1.802217] (-) TimerEvent: {}
+[1.868754] (fast_lio) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[1.902396] (-) TimerEvent: {}
+[1.947932] (fast_lio) StdoutLine: {'line': b'-- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  \n'}
+[1.948323] (fast_lio) StdoutLine: {'line': b'-- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  \n'}
+[1.948714] (fast_lio) StdoutLine: {'line': b'-- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  \n'}
+[1.949102] (fast_lio) StdoutLine: {'line': b'-- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  \n'}
+[1.949543] (fast_lio) StdoutLine: {'line': b'-- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  \n'}
+[1.949938] (fast_lio) StdoutLine: {'line': b'-- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  \n'}
+[1.950135] (fast_lio) StdoutLine: {'line': b'-- Found PCL_2D: /usr/include/pcl-1.12  \n'}
+[1.950312] (fast_lio) StdoutLine: {'line': b'-- Found PCL_GEOMETRY: /usr/include/pcl-1.12  \n'}
+[1.950690] (fast_lio) StdoutLine: {'line': b'-- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  \n'}
+[1.951426] (fast_lio) StdoutLine: {'line': b'-- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  \n'}
+[1.951871] (fast_lio) StdoutLine: {'line': b'-- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  \n'}
+[1.952315] (fast_lio) StdoutLine: {'line': b'-- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  \n'}
+[1.953014] (fast_lio) StdoutLine: {'line': b'-- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  \n'}
+[1.953522] (fast_lio) StdoutLine: {'line': b'-- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  \n'}
+[1.953963] (fast_lio) StdoutLine: {'line': b'-- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  \n'}
+[1.954404] (fast_lio) StdoutLine: {'line': b'-- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  \n'}
+[1.954848] (fast_lio) StdoutLine: {'line': b'-- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  \n'}
+[1.955334] (fast_lio) StdoutLine: {'line': b'-- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  \n'}
+[1.955849] (fast_lio) StdoutLine: {'line': b'-- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  \n'}
+[1.956256] (fast_lio) StdoutLine: {'line': b'-- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  \n'}
+[1.956670] (fast_lio) StdoutLine: {'line': b'-- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  \n'}
+[1.956836] (fast_lio) StdoutLine: {'line': b'-- Found PCL_MODELER: /usr/include/pcl-1.12  \n'}
+[1.957011] (fast_lio) StdoutLine: {'line': b'-- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  \n'}
+[1.957428] (fast_lio) StdoutLine: {'line': b'-- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  \n'}
+[1.957864] (fast_lio) StdoutLine: {'line': b'-- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  \n'}
+[1.969776] (fast_lio) StdoutLine: {'line': b'-- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)\n'}
+[1.970472] (fast_lio) StdoutLine: {'line': b'-- Found Eigen3: TRUE (found version "3.4.0") \n'}
+[1.970546] (fast_lio) StdoutLine: {'line': b'-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target\n'}
+[2.002411] (-) TimerEvent: {}
+[2.006218] (fast_lio) StdoutLine: {'line': b'-- Found livox_ros_driver2: 1.0.0 (/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake)\n'}
+[2.016743] (fast_lio) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[2.023251] (fast_lio) StderrLine: {'line': b'\x1b[33mCMake Warning (dev) at CMakeLists.txt:81 (find_package):\n'}
+[2.023419] (fast_lio) StderrLine: {'line': b'  Policy CMP0074 is not set: find_package uses <PackageName>_ROOT variables.\n'}
+[2.023451] (fast_lio) StderrLine: {'line': b'  Run "cmake --help-policy CMP0074" for policy details.  Use the cmake_policy\n'}
+[2.023480] (fast_lio) StderrLine: {'line': b'  command to set the policy and suppress this warning.\n'}
+[2.023504] (fast_lio) StderrLine: {'line': b'\n'}
+[2.023525] (fast_lio) StderrLine: {'line': b'  CMake variable PCL_ROOT is set to:\n'}
+[2.023548] (fast_lio) StderrLine: {'line': b'\n'}
+[2.023569] (fast_lio) StderrLine: {'line': b'    /usr\n'}
+[2.023590] (fast_lio) StderrLine: {'line': b'\n'}
+[2.023610] (fast_lio) StderrLine: {'line': b'  For compatibility, CMake is ignoring the variable.\n'}
+[2.023632] (fast_lio) StderrLine: {'line': b'This warning is for project developers.  Use -Wno-dev to suppress it.\n'}
+[2.023653] (fast_lio) StderrLine: {'line': b'\x1b[0m\n'}
+[2.027339] (fast_lio) StderrLine: {'line': b'\x1b[0mEigen:/usr/include/eigen3\x1b[0m\n'}
+[2.027369] (fast_lio) StdoutLine: {'line': b'-- PCL: /usr/include/pcl-1.12\n'}
+[2.102498] (-) TimerEvent: {}
+[2.177879] (fast_lio) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)\n'}
+[2.202604] (-) TimerEvent: {}
+[2.302878] (-) TimerEvent: {}
+[2.350028] (fast_lio) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[2.402970] (-) TimerEvent: {}
+[2.419701] (fast_lio) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[2.433649] (fast_lio) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") \n'}
+[2.434295] (fast_lio) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[2.447103] (fast_lio) StdoutLine: {'line': b'-- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") \n'}
+[2.447288] (fast_lio) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[2.447353] (fast_lio) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10\n'}
+[2.447411] (fast_lio) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so\n'}
+[2.458459] (fast_lio) StdoutLine: {'line': b'-- Found PythonExtra: .so  \n'}
+[2.503055] (-) TimerEvent: {}
+[2.522566] (fast_lio) StdoutLine: {'line': b'-- Configuring done\n'}
+[2.559135] (fast_lio) StdoutLine: {'line': b'-- Generating done\n'}
+[2.560459] (fast_lio) StderrLine: {'line': b'\x1b[33mCMake Warning:\n'}
+[2.560501] (fast_lio) StderrLine: {'line': b'  Manually-specified variables were not used by the project:\n'}
+[2.560525] (fast_lio) StderrLine: {'line': b'\n'}
+[2.560549] (fast_lio) StderrLine: {'line': b'    DISTRO_ROS\n'}
+[2.560570] (fast_lio) StderrLine: {'line': b'    ROS_EDITION\n'}
+[2.560592] (fast_lio) StderrLine: {'line': b'\n'}
+[2.560612] (fast_lio) StderrLine: {'line': b'\x1b[0m\n'}
+[2.569525] (fast_lio) StdoutLine: {'line': b'-- Build files have been written to: /home/neuravix/Desktop/carla-ros2-ws/build/fast_lio\n'}
+[2.581659] (fast_lio) CommandEnded: {'returncode': 0}
+[2.582142] (fast_lio) JobProgress: {'identifier': 'fast_lio', 'progress': 'build'}
+[2.582577] (fast_lio) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio', '--', '-j20', '-l20'], 'cwd': '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'neuravix'), ('LC_TIME', 'tr_TR.UTF-8'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/neuravix'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'tr_TR.UTF-8'), ('MANAGERPID', '1947'), ('SYSTEMD_EXEC_PID', '2225'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5352'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'neuravix'), ('JOURNAL_STREAM', '8:17942'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'neuravix'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/home/neuravix/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/neuravix:@/tmp/.ICE-unix/2197,unix/neuravix:/tmp/.ICE-unix/2197'), ('INVOCATION_ID', '9d84d97ca5504a78a0377387a2540539'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'tr_TR.UTF-8'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('LC_TELEPHONE', 'tr_TR.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'tr_TR.UTF-8'), ('TERMINATOR_UUID', 'urn:uuid:e7256af4-8b40-48e5-bd5c-627a089d4b9c'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'tr_TR.UTF-8'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'tr_TR.UTF-8'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'tr_TR.UTF-8'), ('LC_PAPER', 'tr_TR.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble')]), 'shell': False}
+[2.603149] (-) TimerEvent: {}
+[2.609740] (fast_lio) StdoutLine: {'line': b'[  2%] \x1b[34m\x1b[1mGenerating C code for ROS interfaces\x1b[0m\n'}
+[2.614105] (fast_lio) StdoutLine: {'line': b'[  5%] \x1b[34m\x1b[1mGenerating C++ code for ROS interfaces\x1b[0m\n'}
+[2.614555] (fast_lio) StdoutLine: {'line': b'[  8%] \x1b[34m\x1b[1mGenerating Rust code for ROS interfaces\x1b[0m\n'}
+[2.619867] (fast_lio) StdoutLine: {'line': b'[  8%] Built target ament_cmake_python_copy_fast_lio\n'}
+[2.703222] (-) TimerEvent: {}
+[2.736006] (fast_lio) StdoutLine: {'line': b'running egg_info\n'}
+[2.736419] (fast_lio) StdoutLine: {'line': b'creating fast_lio.egg-info\n'}
+[2.736581] (fast_lio) StdoutLine: {'line': b'writing fast_lio.egg-info/PKG-INFO\n'}
+[2.736723] (fast_lio) StdoutLine: {'line': b'writing dependency_links to fast_lio.egg-info/dependency_links.txt\n'}
+[2.736866] (fast_lio) StdoutLine: {'line': b'writing top-level names to fast_lio.egg-info/top_level.txt\n'}
+[2.737007] (fast_lio) StdoutLine: {'line': b"writing manifest file 'fast_lio.egg-info/SOURCES.txt'\n"}
+[2.738570] (fast_lio) StdoutLine: {'line': b"reading manifest file 'fast_lio.egg-info/SOURCES.txt'\n"}
+[2.739080] (fast_lio) StdoutLine: {'line': b"writing manifest file 'fast_lio.egg-info/SOURCES.txt'\n"}
+[2.753584] (fast_lio) StdoutLine: {'line': b'[  8%] Built target ament_cmake_python_build_fast_lio_egg\n'}
+[2.766520] (fast_lio) StdoutLine: {'line': b'[  8%] Built target fast_lio__cpp\n'}
+[2.771187] (fast_lio) StdoutLine: {'line': b'[  8%] Built target fast_lio__rs\n'}
+[2.771534] (fast_lio) StdoutLine: {'line': b'[ 13%] \x1b[34m\x1b[1mGenerating C++ introspection for ROS interfaces\x1b[0m\n'}
+[2.771626] (fast_lio) StdoutLine: {'line': b'[ 13%] \x1b[34m\x1b[1mGenerating C++ type support for eProsima Fast-RTPS\x1b[0m\n'}
+[2.772020] (fast_lio) StdoutLine: {'line': b'[ 16%] \x1b[34m\x1b[1mGenerating C++ type support dispatch for ROS interfaces\x1b[0m\n'}
+[2.803316] (-) TimerEvent: {}
+[2.878506] (fast_lio) StdoutLine: {'line': b'[ 19%] \x1b[32mBuilding C object CMakeFiles/fast_lio__rosidl_generator_c.dir/rosidl_generator_c/fast_lio/msg/detail/pose6_d__functions.c.o\x1b[0m\n'}
+[2.903396] (-) TimerEvent: {}
+[2.929268] (fast_lio) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/fast_lio/msg/pose6_d__type_support.cpp.o\x1b[0m\n'}
+[2.930811] (fast_lio) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fast_lio/msg/detail/dds_fastrtps/pose6_d__type_support.cpp.o\x1b[0m\n'}
+[2.930933] (fast_lio) StdoutLine: {'line': b'[ 27%] \x1b[32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/fast_lio/msg/detail/pose6_d__type_support.cpp.o\x1b[0m\n'}
+[2.958679] (fast_lio) StdoutLine: {'line': b'[ 30%] \x1b[32m\x1b[1mLinking C shared library libfast_lio__rosidl_generator_c.so\x1b[0m\n'}
+[2.980936] (fast_lio) StdoutLine: {'line': b'[ 30%] Built target fast_lio__rosidl_generator_c\n'}
+[2.986499] (fast_lio) StdoutLine: {'line': b'[ 33%] \x1b[34m\x1b[1mGenerating C type support for eProsima Fast-RTPS\x1b[0m\n'}
+[2.987667] (fast_lio) StdoutLine: {'line': b'[ 36%] \x1b[34m\x1b[1mGenerating C introspection for ROS interfaces\x1b[0m\n'}
+[2.987769] (fast_lio) StdoutLine: {'line': b'[ 38%] \x1b[34m\x1b[1mGenerating C type support dispatch for ROS interfaces\x1b[0m\n'}
+[3.003476] (-) TimerEvent: {}
+[3.103747] (-) TimerEvent: {}
+[3.126674] (fast_lio) StdoutLine: {'line': b'[ 41%] \x1b[32m\x1b[1mLinking CXX shared library libfast_lio__rosidl_typesupport_introspection_cpp.so\x1b[0m\n'}
+[3.133590] (fast_lio) StdoutLine: {'line': b'[ 44%] \x1b[32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_c.dir/rosidl_typesupport_c/fast_lio/msg/pose6_d__type_support.cpp.o\x1b[0m\n'}
+[3.148550] (fast_lio) StdoutLine: {'line': b'[ 47%] \x1b[32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/fast_lio/msg/detail/pose6_d__type_support_c.cpp.o\x1b[0m\n'}
+[3.149343] (fast_lio) StdoutLine: {'line': b'[ 50%] \x1b[32m\x1b[1mLinking CXX shared library libfast_lio__rosidl_typesupport_c.so\x1b[0m\n'}
+[3.149885] (fast_lio) StdoutLine: {'line': b'[ 50%] Built target fast_lio__rosidl_typesupport_introspection_cpp\n'}
+[3.171566] (fast_lio) StdoutLine: {'line': b'[ 50%] Built target fast_lio__rosidl_typesupport_c\n'}
+[3.184218] (fast_lio) StdoutLine: {'line': b'[ 52%] \x1b[32m\x1b[1mLinking CXX shared library libfast_lio__rosidl_typesupport_fastrtps_cpp.so\x1b[0m\n'}
+[3.187225] (fast_lio) StdoutLine: {'line': b'[ 55%] \x1b[32m\x1b[1mLinking CXX shared library libfast_lio__rosidl_typesupport_cpp.so\x1b[0m\n'}
+[3.203835] (-) TimerEvent: {}
+[3.211707] (fast_lio) StdoutLine: {'line': b'[ 55%] Built target fast_lio__rosidl_typesupport_cpp\n'}
+[3.225666] (fast_lio) StdoutLine: {'line': b'[ 61%] \x1b[32mBuilding CXX object CMakeFiles/fastlio_mapping.dir/src/preprocess.cpp.o\x1b[0m\n'}
+[3.225813] (fast_lio) StdoutLine: {'line': b'[ 61%] \x1b[32mBuilding CXX object CMakeFiles/fastlio_mapping.dir/include/ikd-Tree/ikd_Tree.cpp.o\x1b[0m\n'}
+[3.226103] (fast_lio) StdoutLine: {'line': b'[ 63%] \x1b[32mBuilding CXX object CMakeFiles/fastlio_mapping.dir/src/laserMapping.cpp.o\x1b[0m\n'}
+[3.229586] (fast_lio) StdoutLine: {'line': b'[ 63%] Built target fast_lio__rosidl_typesupport_fastrtps_cpp\n'}
+[3.236481] (fast_lio) StdoutLine: {'line': b'[ 66%] \x1b[32mBuilding C object CMakeFiles/fast_lio__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/fast_lio/msg/detail/pose6_d__type_support.c.o\x1b[0m\n'}
+[3.274968] (fast_lio) StdoutLine: {'line': b'[ 69%] \x1b[32m\x1b[1mLinking C shared library libfast_lio__rosidl_typesupport_introspection_c.so\x1b[0m\n'}
+[3.296409] (fast_lio) StdoutLine: {'line': b'[ 69%] Built target fast_lio__rosidl_typesupport_introspection_c\n'}
+[3.303909] (-) TimerEvent: {}
+[3.360593] (fast_lio) StdoutLine: {'line': b'[ 72%] \x1b[32m\x1b[1mLinking CXX shared library libfast_lio__rosidl_typesupport_fastrtps_c.so\x1b[0m\n'}
+[3.404037] (-) TimerEvent: {}
+[3.405816] (fast_lio) StdoutLine: {'line': b'[ 72%] Built target fast_lio__rosidl_typesupport_fastrtps_c\n'}
+[3.418219] (fast_lio) StdoutLine: {'line': b'[ 72%] Built target fast_lio\n'}
+[3.433133] (fast_lio) StdoutLine: {'line': b'[ 75%] \x1b[34m\x1b[1mGenerating Python code for ROS interfaces\x1b[0m\n'}
+[3.504111] (-) TimerEvent: {}
+[3.604344] (-) TimerEvent: {}
+[3.644739] (fast_lio) StdoutLine: {'line': b'[ 75%] Built target fast_lio__py\n'}
+[3.659199] (fast_lio) StdoutLine: {'line': b'[ 77%] \x1b[32mBuilding C object CMakeFiles/fast_lio__rosidl_generator_py.dir/rosidl_generator_py/fast_lio/msg/_pose6_d_s.c.o\x1b[0m\n'}
+[3.704423] (-) TimerEvent: {}
+[3.768527] (fast_lio) StdoutLine: {'line': b'[ 80%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/fast_lio/libfast_lio__rosidl_generator_py.so\x1b[0m\n'}
+[3.797779] (fast_lio) StdoutLine: {'line': b'[ 80%] Built target fast_lio__rosidl_generator_py\n'}
+[3.804520] (-) TimerEvent: {}
+[3.806881] (fast_lio) StdoutLine: {'line': b'[ 83%] \x1b[32mBuilding C object CMakeFiles/fast_lio__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_c.c.o\x1b[0m\n'}
+[3.807051] (fast_lio) StdoutLine: {'line': b'[ 86%] \x1b[32mBuilding C object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_fastrtps_c.c.o\x1b[0m\n'}
+[3.812165] (fast_lio) StdoutLine: {'line': b'[ 88%] \x1b[32mBuilding C object CMakeFiles/fast_lio__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_introspection_c.c.o\x1b[0m\n'}
+[3.869035] (fast_lio) StdoutLine: {'line': b'[ 91%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[3.889055] (fast_lio) StdoutLine: {'line': b'[ 91%] Built target fast_lio__rosidl_typesupport_fastrtps_c__pyext\n'}
+[3.892434] (fast_lio) StdoutLine: {'line': b'[ 94%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[3.904607] (-) TimerEvent: {}
+[3.908879] (fast_lio) StdoutLine: {'line': b'[ 97%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[3.911847] (fast_lio) StdoutLine: {'line': b'[ 97%] Built target fast_lio__rosidl_typesupport_c__pyext\n'}
+[3.931348] (fast_lio) StdoutLine: {'line': b'[ 97%] Built target fast_lio__rosidl_typesupport_introspection_c__pyext\n'}
+[4.004690] (-) TimerEvent: {}
+[4.104914] (-) TimerEvent: {}
+[4.205124] (-) TimerEvent: {}
+[4.305323] (-) TimerEvent: {}
+[4.405517] (-) TimerEvent: {}
+[4.505719] (-) TimerEvent: {}
+[4.605927] (-) TimerEvent: {}
+[4.706157] (-) TimerEvent: {}
+[4.806360] (-) TimerEvent: {}
+[4.906563] (-) TimerEvent: {}
+[5.006770] (-) TimerEvent: {}
+[5.106976] (-) TimerEvent: {}
+[5.207187] (-) TimerEvent: {}
+[5.307440] (-) TimerEvent: {}
+[5.407667] (-) TimerEvent: {}
+[5.507904] (-) TimerEvent: {}
+[5.608124] (-) TimerEvent: {}
+[5.708324] (-) TimerEvent: {}
+[5.808530] (-) TimerEvent: {}
+[5.908724] (-) TimerEvent: {}
+[6.008927] (-) TimerEvent: {}
+[6.109145] (-) TimerEvent: {}
+[6.209352] (-) TimerEvent: {}
+[6.309564] (-) TimerEvent: {}
+[6.409787] (-) TimerEvent: {}
+[6.498617] (fast_lio) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22\x1b[m\x1b[K,\n'}
+[6.498749] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/smart_ptr/detail/yield_k.hpp:23\x1b[m\x1b[K,\n'}
+[6.498776] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14\x1b[m\x1b[K,\n'}
+[6.498806] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/smart_ptr/detail/spinlock.hpp:42\x1b[m\x1b[K,\n'}
+[6.498828] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25\x1b[m\x1b[K,\n'}
+[6.498849] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/smart_ptr/shared_ptr.hpp:29\x1b[m\x1b[K,\n'}
+[6.498869] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/shared_ptr.hpp:17\x1b[m\x1b[K,\n'}
+[6.498889] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/date_time/microsec_time_clock.hpp:18\x1b[m\x1b[K,\n'}
+[6.498911] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/interprocess/detail/posix_time_types_wrk.hpp:31\x1b[m\x1b[K,\n'}
+[6.498931] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/interprocess/detail/os_thread_functions.hpp:36\x1b[m\x1b[K,\n'}
+[6.498951] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/boost/interprocess/sync/file_lock.hpp:26\x1b[m\x1b[K,\n'}
+[6.498970] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/pcl-1.12/pcl/io/pcd_io.h:46\x1b[m\x1b[K,\n'}
+[6.498990] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/opt/ros/humble/include/pcl_conversions/pcl_conversions/pcl_conversions.h:73\x1b[m\x1b[K,\n'}
+[6.499010] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/neuravix/Desktop/carla-ros2-ws/src/FAST_LIO/src/IMU_Processing.hpp:18\x1b[m\x1b[K,\n'}
+[6.499029] (fast_lio) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/neuravix/Desktop/carla-ros2-ws/src/FAST_LIO/src/laserMapping.cpp:47\x1b[m\x1b[K:\n'}
+[6.499049] (fast_lio) StderrLine: {'line': b'\x1b[01m\x1b[K/usr/include/boost/bind.hpp:36:1:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[K#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.\x1b[m\x1b[K\xe2\x80\x99\n'}
+[6.499072] (fast_lio) StderrLine: {'line': b'   36 | \x1b[01;36m\x1b[KBOOST_PRAGMA_MESSAGE\x1b[m\x1b[K(\n'}
+[6.499094] (fast_lio) StderrLine: {'line': b'      | \x1b[01;36m\x1b[K^~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[6.509860] (-) TimerEvent: {}
+[6.610042] (-) TimerEvent: {}
+[6.710260] (-) TimerEvent: {}
+[6.810462] (-) TimerEvent: {}
+[6.910649] (-) TimerEvent: {}
+[7.010839] (-) TimerEvent: {}
+[7.111040] (-) TimerEvent: {}
+[7.211255] (-) TimerEvent: {}
+[7.311477] (-) TimerEvent: {}
+[7.411671] (-) TimerEvent: {}
+[7.511866] (-) TimerEvent: {}
+[7.612111] (-) TimerEvent: {}
+[7.712402] (-) TimerEvent: {}
+[7.812599] (-) TimerEvent: {}
+[7.912810] (-) TimerEvent: {}
+[8.013015] (-) TimerEvent: {}
+[8.113210] (-) TimerEvent: {}
+[8.213400] (-) TimerEvent: {}
+[8.313598] (-) TimerEvent: {}
+[8.413789] (-) TimerEvent: {}
+[8.513988] (-) TimerEvent: {}
+[8.614162] (-) TimerEvent: {}
+[8.714362] (-) TimerEvent: {}
+[8.814578] (-) TimerEvent: {}
+[8.914798] (-) TimerEvent: {}
+[9.015035] (-) TimerEvent: {}
+[9.115242] (-) TimerEvent: {}
+[9.215438] (-) TimerEvent: {}
+[9.315648] (-) TimerEvent: {}
+[9.415858] (-) TimerEvent: {}
+[9.516058] (-) TimerEvent: {}
+[9.616250] (-) TimerEvent: {}
+[9.716442] (-) TimerEvent: {}
+[9.816642] (-) TimerEvent: {}
+[9.916854] (-) TimerEvent: {}
+[10.017066] (-) TimerEvent: {}
+[10.117280] (-) TimerEvent: {}
+[10.217531] (-) TimerEvent: {}
+[10.317795] (-) TimerEvent: {}
+[10.418058] (-) TimerEvent: {}
+[10.518337] (-) TimerEvent: {}
+[10.618595] (-) TimerEvent: {}
+[10.718863] (-) TimerEvent: {}
+[10.819239] (-) TimerEvent: {}
+[10.919636] (-) TimerEvent: {}
+[11.019931] (-) TimerEvent: {}
+[11.120170] (-) TimerEvent: {}
+[11.220446] (-) TimerEvent: {}
+[11.320783] (-) TimerEvent: {}
+[11.421170] (-) TimerEvent: {}
+[11.521427] (-) TimerEvent: {}
+[11.621692] (-) TimerEvent: {}
+[11.721985] (-) TimerEvent: {}
+[11.822285] (-) TimerEvent: {}
+[11.922546] (-) TimerEvent: {}
+[12.022798] (-) TimerEvent: {}
+[12.123068] (-) TimerEvent: {}
+[12.223353] (-) TimerEvent: {}
+[12.323624] (-) TimerEvent: {}
+[12.423884] (-) TimerEvent: {}
+[12.524147] (-) TimerEvent: {}
+[12.624414] (-) TimerEvent: {}
+[12.724678] (-) TimerEvent: {}
+[12.824939] (-) TimerEvent: {}
+[12.925174] (-) TimerEvent: {}
+[13.025444] (-) TimerEvent: {}
+[13.125704] (-) TimerEvent: {}
+[13.225961] (-) TimerEvent: {}
+[13.326262] (-) TimerEvent: {}
+[13.426521] (-) TimerEvent: {}
+[13.526804] (-) TimerEvent: {}
+[13.627150] (-) TimerEvent: {}
+[13.727447] (-) TimerEvent: {}
+[13.827720] (-) TimerEvent: {}
+[13.927992] (-) TimerEvent: {}
+[14.028284] (-) TimerEvent: {}
+[14.128549] (-) TimerEvent: {}
+[14.228810] (-) TimerEvent: {}
+[14.329085] (-) TimerEvent: {}
+[14.429653] (-) TimerEvent: {}
+[14.529885] (-) TimerEvent: {}
+[14.630089] (-) TimerEvent: {}
+[14.730306] (-) TimerEvent: {}
+[14.830513] (-) TimerEvent: {}
+[14.930709] (-) TimerEvent: {}
+[15.030929] (-) TimerEvent: {}
+[15.131151] (-) TimerEvent: {}
+[15.231359] (-) TimerEvent: {}
+[15.331555] (-) TimerEvent: {}
+[15.431762] (-) TimerEvent: {}
+[15.531968] (-) TimerEvent: {}
+[15.632155] (-) TimerEvent: {}
+[15.732369] (-) TimerEvent: {}
+[15.832573] (-) TimerEvent: {}
+[15.932770] (-) TimerEvent: {}
+[16.032963] (-) TimerEvent: {}
+[16.133157] (-) TimerEvent: {}
+[16.233353] (-) TimerEvent: {}
+[16.333548] (-) TimerEvent: {}
+[16.433752] (-) TimerEvent: {}
+[16.533946] (-) TimerEvent: {}
+[16.634140] (-) TimerEvent: {}
+[16.734359] (-) TimerEvent: {}
+[16.834651] (-) TimerEvent: {}
+[16.934911] (-) TimerEvent: {}
+[17.035172] (-) TimerEvent: {}
+[17.135431] (-) TimerEvent: {}
+[17.235708] (-) TimerEvent: {}
+[17.336000] (-) TimerEvent: {}
+[17.436270] (-) TimerEvent: {}
+[17.536532] (-) TimerEvent: {}
+[17.636798] (-) TimerEvent: {}
+[17.737055] (-) TimerEvent: {}
+[17.837332] (-) TimerEvent: {}
+[17.937589] (-) TimerEvent: {}
+[18.037856] (-) TimerEvent: {}
+[18.138117] (-) TimerEvent: {}
+[18.238380] (-) TimerEvent: {}
+[18.338652] (-) TimerEvent: {}
+[18.438936] (-) TimerEvent: {}
+[18.539178] (-) TimerEvent: {}
+[18.639456] (-) TimerEvent: {}
+[18.739741] (-) TimerEvent: {}
+[18.840022] (-) TimerEvent: {}
+[18.940293] (-) TimerEvent: {}
+[19.040486] (-) TimerEvent: {}
+[19.140688] (-) TimerEvent: {}
+[19.240900] (-) TimerEvent: {}
+[19.341754] (-) TimerEvent: {}
+[19.441974] (-) TimerEvent: {}
+[19.542170] (-) TimerEvent: {}
+[19.642396] (-) TimerEvent: {}
+[19.742602] (-) TimerEvent: {}
+[19.842812] (-) TimerEvent: {}
+[19.943013] (-) TimerEvent: {}
+[20.043231] (-) TimerEvent: {}
+[20.143431] (-) TimerEvent: {}
+[20.243623] (-) TimerEvent: {}
+[20.343827] (-) TimerEvent: {}
+[20.444037] (-) TimerEvent: {}
+[20.544262] (-) TimerEvent: {}
+[20.644456] (-) TimerEvent: {}
+[20.744657] (-) TimerEvent: {}
+[20.844868] (-) TimerEvent: {}
+[20.945085] (-) TimerEvent: {}
+[21.045297] (-) TimerEvent: {}
+[21.145527] (-) TimerEvent: {}
+[21.245807] (-) TimerEvent: {}
+[21.346071] (-) TimerEvent: {}
+[21.446337] (-) TimerEvent: {}
+[21.546607] (-) TimerEvent: {}
+[21.646893] (-) TimerEvent: {}
+[21.747167] (-) TimerEvent: {}
+[21.847367] (-) TimerEvent: {}
+[21.947575] (-) TimerEvent: {}
+[22.048071] (-) TimerEvent: {}
+[22.148344] (-) TimerEvent: {}
+[22.248620] (-) TimerEvent: {}
+[22.348861] (-) TimerEvent: {}
+[22.449094] (-) TimerEvent: {}
+[22.549300] (-) TimerEvent: {}
+[22.649510] (-) TimerEvent: {}
+[22.749721] (-) TimerEvent: {}
+[22.849917] (-) TimerEvent: {}
+[22.950138] (-) TimerEvent: {}
+[23.050404] (-) TimerEvent: {}
+[23.150668] (-) TimerEvent: {}
+[23.250927] (-) TimerEvent: {}
+[23.351176] (-) TimerEvent: {}
+[23.451444] (-) TimerEvent: {}
+[23.551719] (-) TimerEvent: {}
+[23.652024] (-) TimerEvent: {}
+[23.752319] (-) TimerEvent: {}
+[23.852579] (-) TimerEvent: {}
+[23.952854] (-) TimerEvent: {}
+[24.053174] (-) TimerEvent: {}
+[24.153460] (-) TimerEvent: {}
+[24.253746] (-) TimerEvent: {}
+[24.354021] (-) TimerEvent: {}
+[24.454290] (-) TimerEvent: {}
+[24.554552] (-) TimerEvent: {}
+[24.654826] (-) TimerEvent: {}
+[24.755117] (-) TimerEvent: {}
+[24.855392] (-) TimerEvent: {}
+[24.955654] (-) TimerEvent: {}
+[25.055931] (-) TimerEvent: {}
+[25.156238] (-) TimerEvent: {}
+[25.256499] (-) TimerEvent: {}
+[25.356765] (-) TimerEvent: {}
+[25.457047] (-) TimerEvent: {}
+[25.557329] (-) TimerEvent: {}
+[25.657595] (-) TimerEvent: {}
+[25.757856] (-) TimerEvent: {}
+[25.858118] (-) TimerEvent: {}
+[25.958392] (-) TimerEvent: {}
+[26.058656] (-) TimerEvent: {}
+[26.158935] (-) TimerEvent: {}
+[26.259174] (-) TimerEvent: {}
+[26.359382] (-) TimerEvent: {}
+[26.459585] (-) TimerEvent: {}
+[26.559780] (-) TimerEvent: {}
+[26.660000] (-) TimerEvent: {}
+[26.760275] (-) TimerEvent: {}
+[26.860574] (-) TimerEvent: {}
+[26.960844] (-) TimerEvent: {}
+[27.061109] (-) TimerEvent: {}
+[27.161397] (-) TimerEvent: {}
+[27.261673] (-) TimerEvent: {}
+[27.361950] (-) TimerEvent: {}
+[27.462176] (-) TimerEvent: {}
+[27.562441] (-) TimerEvent: {}
+[27.662704] (-) TimerEvent: {}
+[27.762965] (-) TimerEvent: {}
+[27.863256] (-) TimerEvent: {}
+[27.963547] (-) TimerEvent: {}
+[28.063819] (-) TimerEvent: {}
+[28.164083] (-) TimerEvent: {}
+[28.264362] (-) TimerEvent: {}
+[28.364617] (-) TimerEvent: {}
+[28.464892] (-) TimerEvent: {}
+[28.565176] (-) TimerEvent: {}
+[28.665447] (-) TimerEvent: {}
+[28.765703] (-) TimerEvent: {}
+[28.865922] (-) TimerEvent: {}
+[28.966118] (-) TimerEvent: {}
+[29.066324] (-) TimerEvent: {}
+[29.166531] (-) TimerEvent: {}
+[29.266773] (-) TimerEvent: {}
+[29.366972] (-) TimerEvent: {}
+[29.467333] (-) TimerEvent: {}
+[29.567541] (-) TimerEvent: {}
+[29.667746] (-) TimerEvent: {}
+[29.767941] (-) TimerEvent: {}
+[29.868146] (-) TimerEvent: {}
+[29.968356] (-) TimerEvent: {}
+[30.068557] (-) TimerEvent: {}
+[30.168749] (-) TimerEvent: {}
+[30.268951] (-) TimerEvent: {}
+[30.369156] (-) TimerEvent: {}
+[30.469348] (-) TimerEvent: {}
+[30.569542] (-) TimerEvent: {}
+[30.669747] (-) TimerEvent: {}
+[30.769917] (-) TimerEvent: {}
+[30.870126] (-) TimerEvent: {}
+[30.970323] (-) TimerEvent: {}
+[31.070515] (-) TimerEvent: {}
+[31.170715] (-) TimerEvent: {}
+[31.270930] (-) TimerEvent: {}
+[31.371182] (-) TimerEvent: {}
+[31.471460] (-) TimerEvent: {}
+[31.571760] (-) TimerEvent: {}
+[31.672027] (-) TimerEvent: {}
+[31.772287] (-) TimerEvent: {}
+[31.872543] (-) TimerEvent: {}
+[31.972944] (-) TimerEvent: {}
+[32.073179] (-) TimerEvent: {}
+[32.173446] (-) TimerEvent: {}
+[32.273708] (-) TimerEvent: {}
+[32.373974] (-) TimerEvent: {}
+[32.474256] (-) TimerEvent: {}
+[32.574554] (-) TimerEvent: {}
+[32.674808] (-) TimerEvent: {}
+[32.775073] (-) TimerEvent: {}
+[32.875342] (-) TimerEvent: {}
+[32.975615] (-) TimerEvent: {}
+[33.075885] (-) TimerEvent: {}
+[33.176142] (-) TimerEvent: {}
+[33.276412] (-) TimerEvent: {}
+[33.376670] (-) TimerEvent: {}
+[33.476902] (-) TimerEvent: {}
+[33.577170] (-) TimerEvent: {}
+[33.677465] (-) TimerEvent: {}
+[33.777712] (-) TimerEvent: {}
+[33.877958] (-) TimerEvent: {}
+[33.978220] (-) TimerEvent: {}
+[34.078419] (-) TimerEvent: {}
+[34.178614] (-) TimerEvent: {}
+[34.278831] (-) TimerEvent: {}
+[34.379022] (-) TimerEvent: {}
+[34.479217] (-) TimerEvent: {}
+[34.579410] (-) TimerEvent: {}
+[34.679610] (-) TimerEvent: {}
+[34.779823] (-) TimerEvent: {}
+[34.880080] (-) TimerEvent: {}
+[34.980340] (-) TimerEvent: {}
+[35.080614] (-) TimerEvent: {}
+[35.180890] (-) TimerEvent: {}
+[35.281157] (-) TimerEvent: {}
+[35.381415] (-) TimerEvent: {}
+[35.481684] (-) TimerEvent: {}
+[35.581972] (-) TimerEvent: {}
+[35.682266] (-) TimerEvent: {}
+[35.782521] (-) TimerEvent: {}
+[35.882779] (-) TimerEvent: {}
+[35.983035] (-) TimerEvent: {}
+[36.083300] (-) TimerEvent: {}
+[36.183572] (-) TimerEvent: {}
+[36.283834] (-) TimerEvent: {}
+[36.384104] (-) TimerEvent: {}
+[36.484371] (-) TimerEvent: {}
+[36.584640] (-) TimerEvent: {}
+[36.684920] (-) TimerEvent: {}
+[36.785174] (-) TimerEvent: {}
+[36.885424] (-) TimerEvent: {}
+[36.985680] (-) TimerEvent: {}
+[37.085948] (-) TimerEvent: {}
+[37.186229] (-) TimerEvent: {}
+[37.286492] (-) TimerEvent: {}
+[37.386766] (-) TimerEvent: {}
+[37.487047] (-) TimerEvent: {}
+[37.587308] (-) TimerEvent: {}
+[37.687577] (-) TimerEvent: {}
+[37.787842] (-) TimerEvent: {}
+[37.888097] (-) TimerEvent: {}
+[37.988356] (-) TimerEvent: {}
+[38.088623] (-) TimerEvent: {}
+[38.188883] (-) TimerEvent: {}
+[38.289149] (-) TimerEvent: {}
+[38.389428] (-) TimerEvent: {}
+[38.489708] (-) TimerEvent: {}
+[38.589980] (-) TimerEvent: {}
+[38.690241] (-) TimerEvent: {}
+[38.790496] (-) TimerEvent: {}
+[38.890776] (-) TimerEvent: {}
+[38.991078] (-) TimerEvent: {}
+[39.091386] (-) TimerEvent: {}
+[39.191642] (-) TimerEvent: {}
+[39.291886] (-) TimerEvent: {}
+[39.392159] (-) TimerEvent: {}
+[39.492420] (-) TimerEvent: {}
+[39.592697] (-) TimerEvent: {}
+[39.692971] (-) TimerEvent: {}
+[39.793223] (-) TimerEvent: {}
+[39.893489] (-) TimerEvent: {}
+[39.993758] (-) TimerEvent: {}
+[40.094020] (-) TimerEvent: {}
+[40.194286] (-) TimerEvent: {}
+[40.294543] (-) TimerEvent: {}
+[40.394978] (-) TimerEvent: {}
+[40.495259] (-) TimerEvent: {}
+[40.595523] (-) TimerEvent: {}
+[40.695774] (-) TimerEvent: {}
+[40.796041] (-) TimerEvent: {}
+[40.896307] (-) TimerEvent: {}
+[40.996564] (-) TimerEvent: {}
+[41.096814] (-) TimerEvent: {}
+[41.197057] (-) TimerEvent: {}
+[41.297329] (-) TimerEvent: {}
+[41.334516] (fast_lio) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable fastlio_mapping\x1b[0m\n'}
+[41.397438] (-) TimerEvent: {}
+[41.497754] (-) TimerEvent: {}
+[41.598057] (-) TimerEvent: {}
+[41.698328] (-) TimerEvent: {}
+[41.798620] (-) TimerEvent: {}
+[41.898965] (-) TimerEvent: {}
+[41.933337] (fast_lio) StdoutLine: {'line': b'[100%] Built target fastlio_mapping\n'}
+[41.939741] (fast_lio) CommandEnded: {'returncode': 0}
+[41.940320] (fast_lio) JobProgress: {'identifier': 'fast_lio', 'progress': 'install'}
+[41.947416] (fast_lio) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio'], 'cwd': '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'neuravix'), ('LC_TIME', 'tr_TR.UTF-8'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/neuravix'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'tr_TR.UTF-8'), ('MANAGERPID', '1947'), ('SYSTEMD_EXEC_PID', '2225'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5352'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'neuravix'), ('JOURNAL_STREAM', '8:17942'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'neuravix'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/home/neuravix/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/neuravix:@/tmp/.ICE-unix/2197,unix/neuravix:/tmp/.ICE-unix/2197'), ('INVOCATION_ID', '9d84d97ca5504a78a0377387a2540539'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'tr_TR.UTF-8'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('LC_TELEPHONE', 'tr_TR.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'tr_TR.UTF-8'), ('TERMINATOR_UUID', 'urn:uuid:e7256af4-8b40-48e5-bd5c-627a089d4b9c'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'tr_TR.UTF-8'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'tr_TR.UTF-8'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'tr_TR.UTF-8'), ('LC_PAPER', 'tr_TR.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble')]), 'shell': False}
+[41.952266] (fast_lio) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[41.952376] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/rosidl_interfaces/fast_lio\n'}
+[41.952464] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio\n'}
+[41.953280] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg\n'}
+[41.953409] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail\n'}
+[41.953457] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__functions.h\n'}
+[41.953483] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__struct.h\n'}
+[41.953508] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.h\n'}
+[41.953544] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__functions.c\n'}
+[41.953570] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_generator_c__visibility_control.h\n'}
+[41.953592] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/pose6_d.h\n'}
+[41.953613] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/library_path.sh\n'}
+[41.953634] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/library_path.dsv\n'}
+[41.953656] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_generator_c.so\n'}
+[41.953702] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_generator_c.so" to ""\n'}
+[41.953745] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio\n'}
+[41.953767] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg\n'}
+[41.953789] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[41.953827] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail\n'}
+[41.953849] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_fastrtps_c.h\n'}
+[41.953870] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_c.so\n'}
+[41.953892] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_c.so" to ""\n'}
+[41.953914] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio\n'}
+[41.953935] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg\n'}
+[41.953957] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/pose6_d.hpp\n'}
+[41.953978] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_generator_cpp__visibility_control.hpp\n'}
+[41.954000] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail\n'}
+[41.954021] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__traits.hpp\n'}
+[41.954042] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__struct.hpp\n'}
+[41.954063] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__builder.hpp\n'}
+[41.954085] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.hpp\n'}
+[41.954106] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio\n'}
+[41.954154] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg\n'}
+[41.954178] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail\n'}
+[41.954201] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[41.954224] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/dds_fastrtps\n'}
+[41.954246] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[41.954296] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_cpp.so\n'}
+[41.954320] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_cpp.so" to ""\n'}
+[41.954371] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio\n'}
+[41.954394] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg\n'}
+[41.954416] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[41.954436] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail\n'}
+[41.954457] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.c\n'}
+[41.954478] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_introspection_c.h\n'}
+[41.954498] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_c.so\n'}
+[41.954520] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_c.so" to ""\n'}
+[41.954540] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_c.so\n'}
+[41.954561] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_c.so" to ""\n'}
+[41.954582] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio\n'}
+[41.954603] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg\n'}
+[41.954641] (fast_lio) StdoutLine: {'line': b'-- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail\n'}
+[41.954680] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_introspection_cpp.hpp\n'}
+[41.954703] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.cpp\n'}
+[41.954724] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_cpp.so\n'}
+[41.954744] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_cpp.so" to ""\n'}
+[41.954765] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_cpp.so\n'}
+[41.954786] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_cpp.so" to ""\n'}
+[41.954822] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/pythonpath.sh\n'}
+[41.954864] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/pythonpath.dsv\n'}
+[41.954886] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info\n'}
+[41.954907] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[41.954940] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[41.954959] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[41.954979] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[41.955095] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio\n'}
+[41.955133] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/__init__.py\n'}
+[41.955171] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg\n'}
+[41.955207] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/__init__.py\n'}
+[41.955242] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d.py\n'}
+[41.955277] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d_s.c\n'}
+[41.955310] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[41.955342] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_c.c\n'}
+[41.955379] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[41.955416] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/libfast_lio__rosidl_generator_py.so\n'}
+[41.955456] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[41.955493] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[41.955529] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[41.978845] (fast_lio) StdoutLine: {'line': b"Listing '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio'...\n"}
+[41.979019] (fast_lio) StdoutLine: {'line': b"Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/__init__.py'...\n"}
+[41.979084] (fast_lio) StdoutLine: {'line': b"Listing '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg'...\n"}
+[41.979149] (fast_lio) StdoutLine: {'line': b"Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/__init__.py'...\n"}
+[41.979219] (fast_lio) StdoutLine: {'line': b"Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d.py'...\n"}
+[41.982334] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[41.982470] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[41.982539] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[41.982648] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[41.982719] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[41.982825] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[41.982892] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_generator_py.so\n'}
+[41.982991] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_generator_py.so" to ""\n'}
+[41.983092] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/rust_packages/fast_lio\n'}
+[41.983153] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust\n'}
+[41.983208] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/build.rs\n'}
+[41.983669] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/Cargo.toml\n'}
+[41.983778] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src\n'}
+[41.983839] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src/msg\n'}
+[41.983902] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src/msg/rmw.rs\n'}
+[41.983958] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src/lib.rs\n'}
+[41.984010] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src/msg.rs\n'}
+[41.984062] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/msg/Pose6D.idl\n'}
+[41.984118] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/msg/Pose6D.msg\n'}
+[41.984184] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/fast_lio/fastlio_mapping\n'}
+[41.984661] (fast_lio) StdoutLine: {'line': b'-- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/fast_lio/fastlio_mapping" to ""\n'}
+[41.984748] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config\n'}
+[41.984802] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/horizon.yaml\n'}
+[41.984853] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/ouster64.yaml\n'}
+[41.984911] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/bee1.yaml\n'}
+[41.984975] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/avia.yaml\n'}
+[41.985041] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/velodyne.yaml\n'}
+[41.985108] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/mid360.yaml\n'}
+[41.985184] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/launch\n'}
+[41.985237] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/launch/gdb_debug_example.launch\n'}
+[41.985298] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/launch/mapping.launch.py\n'}
+[41.985368] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rviz\n'}
+[41.985419] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rviz/fastlio.rviz\n'}
+[41.985521] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/package_run_dependencies/fast_lio\n'}
+[41.985587] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/parent_prefix_path/fast_lio\n'}
+[41.985649] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/ament_prefix_path.sh\n'}
+[41.985717] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/ament_prefix_path.dsv\n'}
+[41.985777] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/path.sh\n'}
+[41.985846] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/path.dsv\n'}
+[41.985915] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/local_setup.bash\n'}
+[41.985976] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/local_setup.sh\n'}
+[41.986039] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/local_setup.zsh\n'}
+[41.986115] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/local_setup.dsv\n'}
+[41.986203] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/package.dsv\n'}
+[41.986267] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/packages/fast_lio\n'}
+[41.986334] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cExport.cmake\n'}
+[41.986423] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cExport-release.cmake\n'}
+[41.986502] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[41.986572] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cExport-release.cmake\n'}
+[41.986655] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cppExport.cmake\n'}
+[41.986724] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[41.986798] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cppExport-release.cmake\n'}
+[41.986878] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cExport.cmake\n'}
+[41.986968] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cExport-release.cmake\n'}
+[41.987045] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cExport.cmake\n'}
+[41.987128] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cExport-release.cmake\n'}
+[41.987197] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[41.987255] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cppExport-release.cmake\n'}
+[41.987310] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cppExport.cmake\n'}
+[41.987364] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cppExport-release.cmake\n'}
+[41.987417] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_pyExport.cmake\n'}
+[41.987467] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_pyExport-release.cmake\n'}
+[41.987524] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/rosidl_cmake-extras.cmake\n'}
+[41.987578] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[41.987639] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[41.987692] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[41.987746] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[41.987799] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[41.987852] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[41.987905] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lioConfig.cmake\n'}
+[41.987956] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lioConfig-version.cmake\n'}
+[41.988011] (fast_lio) StdoutLine: {'line': b'-- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/package.xml\n'}
+[41.988497] (fast_lio) CommandEnded: {'returncode': 0}
+[41.999037] (-) TimerEvent: {}
+[42.007637] (fast_lio) JobEnded: {'identifier': 'fast_lio', 'rc': 0}
+[42.008277] (-) EventReactorShutdown: {}

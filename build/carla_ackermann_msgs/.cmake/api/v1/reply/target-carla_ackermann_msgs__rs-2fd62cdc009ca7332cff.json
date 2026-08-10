@@ -1,0 +1,73 @@
+{
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target"
+		],
+		"files" : 
+		[
+			"/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs/carla_ackermann_msgs__rs/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 35,
+				"parent" : 0
+			}
+		]
+	},
+	"id" : "carla_ackermann_msgs__rs::@4bf3fa4ed53018ad133f",
+	"name" : "carla_ackermann_msgs__rs",
+	"paths" : 
+	{
+		"build" : "carla_ackermann_msgs__rs",
+		"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs/carla_ackermann_msgs__rs"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"isGenerated" : true,
+			"path" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs/carla_ackermann_msgs__rs/CMakeFiles/carla_ackermann_msgs__rs",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs/carla_ackermann_msgs__rs/CMakeFiles/carla_ackermann_msgs__rs.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs/rosidl_generator_rs/carla_ackermann_msgs/rust/src/lib.rs.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

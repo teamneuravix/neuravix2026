@@ -1,0 +1,68 @@
+[0.000000] (-) TimerEvent: {}
+[0.000435] (neuravix_ros2) JobQueued: {'identifier': 'neuravix_ros2', 'dependencies': OrderedDict()}
+[0.000653] (neuravix_ros2) JobStarted: {'identifier': 'neuravix_ros2'}
+[0.100020] (-) TimerEvent: {}
+[0.200248] (-) TimerEvent: {}
+[0.300861] (-) TimerEvent: {}
+[0.401078] (-) TimerEvent: {}
+[0.501313] (-) TimerEvent: {}
+[0.601571] (-) TimerEvent: {}
+[0.701858] (-) TimerEvent: {}
+[0.802080] (-) TimerEvent: {}
+[0.881297] (neuravix_ros2) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'egg_info', '--egg-base', 'build/neuravix_ros2', 'build', '--build-base', '/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build', 'install', '--record', '/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/install.log', '--single-version-externally-managed'], 'cwd': '/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'team1618', 'LC_TIME': 'en_US.UTF-8', 'XDG_SESSION_TYPE': 'x11', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/team1618', 'OLDPWD': '/home/team1618/Desktop/carla-ros2-ws', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'LC_MONETARY': 'en_US.UTF-8', 'DBUS_STARTER_BUS_TYPE': 'session', 'SYSTEMD_EXEC_PID': '1553', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus,guid=7ff7d7536c4c7a82aeb2ba2868ff3c3a', 'COLORTERM': 'truecolor', 'COLCON_PREFIX_PATH': '/home/team1618/Desktop/carla-ros2-ws/install', 'ROS_DISTRO': 'humble', 'GTK_IM_MODULE': 'ibus', 'LOGNAME': 'team1618', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'team1618', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'WINDOWPATH': '2', 'PATH': '/home/team1618/Desktop/carla-ros2-ws/install/neuravix_ros2/bin:/opt/ros/humble/bin:/home/team1618/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/team1618/.local/share/JetBrains/Toolbox/scripts', 'SESSION_MANAGER': 'local/team1618:@/tmp/.ICE-unix/1553,unix/team1618:/tmp/.ICE-unix/1553', 'PAPERSIZE': 'letter', 'XDG_MENU_PREFIX': 'gnome-', 'LC_ADDRESS': 'en_US.UTF-8', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/76ef5605_ec83_4263_b517_02b3c2da3842', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'LC_TELEPHONE': 'en_US.UTF-8', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'GNOME_TERMINAL_SERVICE': ':1.130', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/team1618/Desktop/carla-ros2-ws/install/neuravix_ros2:/opt/ros/humble', 'SHELL': '/bin/bash', 'LC_NAME': 'en_US.UTF-8', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'LC_MEASUREMENT': 'en_US.UTF-8', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'LC_IDENTIFICATION': 'en_US.UTF-8', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'DBUS_STARTER_ADDRESS': 'unix:path=/run/user/1000/bus,guid=7ff7d7536c4c7a82aeb2ba2868ff3c3a', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/prefix_override:/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages:/home/team1618/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'LC_NUMERIC': 'en_US.UTF-8', 'LC_PAPER': 'en_US.UTF-8', 'COLCON': '1', 'VTE_VERSION': '6800'}, 'shell': False}
+[0.902190] (-) TimerEvent: {}
+[1.002421] (-) TimerEvent: {}
+[1.015698] (neuravix_ros2) StderrLine: {'line': b"/home/team1618/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py:268: UserWarning: Unknown distribution option: 'tests_require'\n"}
+[1.015841] (neuravix_ros2) StderrLine: {'line': b'  warnings.warn(msg)\n'}
+[1.102026] (neuravix_ros2) StdoutLine: {'line': b'running egg_info\n'}
+[1.102299] (neuravix_ros2) StdoutLine: {'line': b'creating build/neuravix_ros2/neuravix_ros2.egg-info\n'}
+[1.102476] (-) TimerEvent: {}
+[1.118992] (neuravix_ros2) StdoutLine: {'line': b'writing build/neuravix_ros2/neuravix_ros2.egg-info/PKG-INFO\n'}
+[1.119417] (neuravix_ros2) StdoutLine: {'line': b'writing dependency_links to build/neuravix_ros2/neuravix_ros2.egg-info/dependency_links.txt\n'}
+[1.119650] (neuravix_ros2) StdoutLine: {'line': b'writing entry points to build/neuravix_ros2/neuravix_ros2.egg-info/entry_points.txt\n'}
+[1.119898] (neuravix_ros2) StdoutLine: {'line': b'writing requirements to build/neuravix_ros2/neuravix_ros2.egg-info/requires.txt\n'}
+[1.120051] (neuravix_ros2) StdoutLine: {'line': b'writing top-level names to build/neuravix_ros2/neuravix_ros2.egg-info/top_level.txt\n'}
+[1.120110] (neuravix_ros2) StdoutLine: {'line': b"writing manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'\n"}
+[1.155534] (neuravix_ros2) StdoutLine: {'line': b"reading manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'\n"}
+[1.156186] (neuravix_ros2) StdoutLine: {'line': b"writing manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'\n"}
+[1.156379] (neuravix_ros2) StdoutLine: {'line': b'running build\n'}
+[1.156457] (neuravix_ros2) StdoutLine: {'line': b'running build_py\n'}
+[1.156538] (neuravix_ros2) StdoutLine: {'line': b'creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build\n'}
+[1.156757] (neuravix_ros2) StdoutLine: {'line': b'creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib\n'}
+[1.156822] (neuravix_ros2) StdoutLine: {'line': b'creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2\n'}
+[1.156942] (neuravix_ros2) StdoutLine: {'line': b'copying neuravix_ros2/lane_follower_node.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2\n'}
+[1.157020] (neuravix_ros2) StdoutLine: {'line': b'copying neuravix_ros2/__init__.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2\n'}
+[1.157115] (neuravix_ros2) StdoutLine: {'line': b'running install\n'}
+[1.157344] (neuravix_ros2) StderrLine: {'line': b'/home/team1618/.local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.\n'}
+[1.157425] (neuravix_ros2) StderrLine: {'line': b'!!\n'}
+[1.157478] (neuravix_ros2) StderrLine: {'line': b'\n'}
+[1.157535] (neuravix_ros2) StderrLine: {'line': b'        ********************************************************************************\n'}
+[1.157588] (neuravix_ros2) StderrLine: {'line': b'        Please avoid running ``setup.py`` directly.\n'}
+[1.157637] (neuravix_ros2) StderrLine: {'line': b'        Instead, use pypa/build, pypa/installer or other\n'}
+[1.157684] (neuravix_ros2) StderrLine: {'line': b'        standards-based tools.\n'}
+[1.157731] (neuravix_ros2) StderrLine: {'line': b'\n'}
+[1.157778] (neuravix_ros2) StderrLine: {'line': b'        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.\n'}
+[1.157825] (neuravix_ros2) StderrLine: {'line': b'        ********************************************************************************\n'}
+[1.157873] (neuravix_ros2) StderrLine: {'line': b'\n'}
+[1.157920] (neuravix_ros2) StderrLine: {'line': b'!!\n'}
+[1.157967] (neuravix_ros2) StderrLine: {'line': b'  self.initialize_options()\n'}
+[1.161183] (neuravix_ros2) StdoutLine: {'line': b'running install_lib\n'}
+[1.178329] (neuravix_ros2) StdoutLine: {'line': b'creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2\n'}
+[1.178521] (neuravix_ros2) StdoutLine: {'line': b'copying /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2/lane_follower_node.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2\n'}
+[1.178600] (neuravix_ros2) StdoutLine: {'line': b'copying /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2/__init__.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2\n'}
+[1.179000] (neuravix_ros2) StdoutLine: {'line': b'byte-compiling /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/lane_follower_node.py to lane_follower_node.cpython-310.pyc\n'}
+[1.180525] (neuravix_ros2) StdoutLine: {'line': b'byte-compiling /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/__init__.py to __init__.cpython-310.pyc\n'}
+[1.180673] (neuravix_ros2) StdoutLine: {'line': b'running install_data\n'}
+[1.197379] (neuravix_ros2) StdoutLine: {'line': b'creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index\n'}
+[1.197615] (neuravix_ros2) StdoutLine: {'line': b'creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index\n'}
+[1.197726] (neuravix_ros2) StdoutLine: {'line': b'creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index/packages\n'}
+[1.197883] (neuravix_ros2) StdoutLine: {'line': b'copying resource/neuravix_ros2 -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index/packages\n'}
+[1.197980] (neuravix_ros2) StdoutLine: {'line': b'copying package.xml -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2\n'}
+[1.198073] (neuravix_ros2) StdoutLine: {'line': b'creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models\n'}
+[1.198124] (neuravix_ros2) StdoutLine: {'line': b'copying models/best_yolo11.pt -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models\n'}
+[1.202569] (-) TimerEvent: {}
+[1.237414] (neuravix_ros2) StdoutLine: {'line': b'copying models/best_250.pt -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models\n'}
+[1.253032] (neuravix_ros2) StderrLine: {'line': b"error: can't copy 'models/tabelatespit': doesn't exist or not a regular file\n"}
+[1.269946] (neuravix_ros2) CommandEnded: {'returncode': 1}
+[1.270247] (neuravix_ros2) JobEnded: {'identifier': 'neuravix_ros2', 'rc': 1}
+[1.280324] (-) EventReactorShutdown: {}

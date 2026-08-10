@@ -1,0 +1,364 @@
+[0.007s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/neuravix/Desktop/carla-ros2-ws/src/FAST_LIO -DROS_EDITION=ROS2 -DDISTRO_ROS=humble -DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio
+[0.040s] -- The C compiler identification is GNU 11.4.0
+[0.070s] -- The CXX compiler identification is GNU 11.4.0
+[0.074s] -- Detecting C compiler ABI info
+[0.116s] -- Detecting C compiler ABI info - done
+[0.121s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.121s] -- Detecting C compile features
+[0.121s] -- Detecting C compile features - done
+[0.123s] -- Detecting CXX compiler ABI info
+[0.171s] -- Detecting CXX compiler ABI info - done
+[0.175s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.175s] -- Detecting CXX compile features
+[0.175s] -- Detecting CXX compile features - done
+[0.176s] [0mCurrent CPU archtecture: x86_64[0m
+[0.178s] [0mProcesser number:  20[0m
+[0.178s] [0mcore for MP: 3[0m
+[0.396s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found version "3.10.12") 
+[0.397s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.483s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.530s] -- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)
+[0.546s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.548s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.552s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.558s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.565s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.590s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.591s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.643s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.659s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.684s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.691s] -- Looking for pthread.h
+[0.741s] -- Looking for pthread.h - found
+[0.741s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.787s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.788s] -- Found Threads: TRUE  
+[0.817s] -- Found rclcpp_components: 16.0.19 (/opt/ros/humble/share/rclcpp_components/cmake)
+[0.830s] -- Found geometry_msgs: 4.9.1 (/opt/ros/humble/share/geometry_msgs/cmake)
+[0.837s] -- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)
+[0.845s] -- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)
+[0.854s] -- Found std_srvs: 4.9.1 (/opt/ros/humble/share/std_srvs/cmake)
+[0.858s] -- Found visualization_msgs: 4.9.1 (/opt/ros/humble/share/visualization_msgs/cmake)
+[0.869s] -- Found pcl_ros: 2.4.5 (/opt/ros/humble/share/pcl_ros/cmake)
+[0.891s] -- Checking for module 'eigen3'
+[0.901s] --   Found eigen3, version 3.4.0
+[0.921s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[0.921s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.937s] -- Checking for module 'flann'
+[0.944s] --   Found flann, version 1.9.1
+[0.967s] -- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  
+[0.967s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[1.530s] -- Checking for module 'libusb-1.0'
+[1.539s] --   Found libusb-1.0, version 1.0.25
+[1.562s] -- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+[1.563s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.597s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.686s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[1.689s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.694s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.785s] -- Found Qhull version 8.0.2
+[1.868s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.947s] -- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+[1.947s] -- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  
+[1.947s] -- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+[1.948s] -- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  
+[1.948s] -- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  
+[1.949s] -- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  
+[1.949s] -- Found PCL_2D: /usr/include/pcl-1.12  
+[1.949s] -- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+[1.949s] -- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+[1.950s] -- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  
+[1.951s] -- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  
+[1.951s] -- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  
+[1.952s] -- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  
+[1.952s] -- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  
+[1.953s] -- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  
+[1.953s] -- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  
+[1.954s] -- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  
+[1.954s] -- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  
+[1.955s] -- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  
+[1.955s] -- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  
+[1.955s] -- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+[1.956s] -- Found PCL_MODELER: /usr/include/pcl-1.12  
+[1.956s] -- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+[1.956s] -- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  
+[1.957s] -- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  
+[1.969s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[1.969s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[1.969s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[2.005s] -- Found livox_ros_driver2: 1.0.0 (/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/share/livox_ros_driver2/cmake)
+[2.016s] -- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[2.022s] [33mCMake Warning (dev) at CMakeLists.txt:81 (find_package):
+[2.022s]   Policy CMP0074 is not set: find_package uses <PackageName>_ROOT variables.
+[2.022s]   Run "cmake --help-policy CMP0074" for policy details.  Use the cmake_policy
+[2.022s]   command to set the policy and suppress this warning.
+[2.022s] 
+[2.022s]   CMake variable PCL_ROOT is set to:
+[2.022s] 
+[2.022s]     /usr
+[2.022s] 
+[2.022s]   For compatibility, CMake is ignoring the variable.
+[2.022s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[2.022s] [0m
+[2.026s] [0mEigen:/usr/include/eigen3[0m
+[2.026s] -- PCL: /usr/include/pcl-1.12
+[2.177s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[2.349s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.419s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.432s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[2.433s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[2.446s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[2.446s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[2.446s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[2.446s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[2.457s] -- Found PythonExtra: .so  
+[2.521s] -- Configuring done
+[2.558s] -- Generating done
+[2.559s] [33mCMake Warning:
+[2.559s]   Manually-specified variables were not used by the project:
+[2.559s] 
+[2.559s]     DISTRO_ROS
+[2.559s]     ROS_EDITION
+[2.559s] 
+[2.559s] [0m
+[2.568s] -- Build files have been written to: /home/neuravix/Desktop/carla-ros2-ws/build/fast_lio
+[2.581s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio' returned '0': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/neuravix/Desktop/carla-ros2-ws/src/FAST_LIO -DROS_EDITION=ROS2 -DDISTRO_ROS=humble -DCMAKE_INSTALL_PREFIX=/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio
+[2.582s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/neuravix/Desktop/carla-ros2-ws/build/fast_lio -- -j20 -l20
+[2.609s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[2.613s] [  5%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[2.613s] [  8%] [34m[1mGenerating Rust code for ROS interfaces[0m
+[2.619s] [  8%] Built target ament_cmake_python_copy_fast_lio
+[2.735s] running egg_info
+[2.735s] creating fast_lio.egg-info
+[2.735s] writing fast_lio.egg-info/PKG-INFO
+[2.735s] writing dependency_links to fast_lio.egg-info/dependency_links.txt
+[2.736s] writing top-level names to fast_lio.egg-info/top_level.txt
+[2.736s] writing manifest file 'fast_lio.egg-info/SOURCES.txt'
+[2.737s] reading manifest file 'fast_lio.egg-info/SOURCES.txt'
+[2.738s] writing manifest file 'fast_lio.egg-info/SOURCES.txt'
+[2.752s] [  8%] Built target ament_cmake_python_build_fast_lio_egg
+[2.765s] [  8%] Built target fast_lio__cpp
+[2.770s] [  8%] Built target fast_lio__rs
+[2.770s] [ 13%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[2.770s] [ 13%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[2.771s] [ 16%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[2.877s] [ 19%] [32mBuilding C object CMakeFiles/fast_lio__rosidl_generator_c.dir/rosidl_generator_c/fast_lio/msg/detail/pose6_d__functions.c.o[0m
+[2.928s] [ 22%] [32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/fast_lio/msg/pose6_d__type_support.cpp.o[0m
+[2.930s] [ 25%] [32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/fast_lio/msg/detail/dds_fastrtps/pose6_d__type_support.cpp.o[0m
+[2.930s] [ 27%] [32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/fast_lio/msg/detail/pose6_d__type_support.cpp.o[0m
+[2.957s] [ 30%] [32m[1mLinking C shared library libfast_lio__rosidl_generator_c.so[0m
+[2.980s] [ 30%] Built target fast_lio__rosidl_generator_c
+[2.985s] [ 33%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[2.986s] [ 36%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[2.986s] [ 38%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[3.125s] [ 41%] [32m[1mLinking CXX shared library libfast_lio__rosidl_typesupport_introspection_cpp.so[0m
+[3.132s] [ 44%] [32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_c.dir/rosidl_typesupport_c/fast_lio/msg/pose6_d__type_support.cpp.o[0m
+[3.147s] [ 47%] [32mBuilding CXX object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/fast_lio/msg/detail/pose6_d__type_support_c.cpp.o[0m
+[3.148s] [ 50%] [32m[1mLinking CXX shared library libfast_lio__rosidl_typesupport_c.so[0m
+[3.149s] [ 50%] Built target fast_lio__rosidl_typesupport_introspection_cpp
+[3.170s] [ 50%] Built target fast_lio__rosidl_typesupport_c
+[3.183s] [ 52%] [32m[1mLinking CXX shared library libfast_lio__rosidl_typesupport_fastrtps_cpp.so[0m
+[3.186s] [ 55%] [32m[1mLinking CXX shared library libfast_lio__rosidl_typesupport_cpp.so[0m
+[3.211s] [ 55%] Built target fast_lio__rosidl_typesupport_cpp
+[3.224s] [ 61%] [32mBuilding CXX object CMakeFiles/fastlio_mapping.dir/src/preprocess.cpp.o[0m
+[3.225s] [ 61%] [32mBuilding CXX object CMakeFiles/fastlio_mapping.dir/include/ikd-Tree/ikd_Tree.cpp.o[0m
+[3.225s] [ 63%] [32mBuilding CXX object CMakeFiles/fastlio_mapping.dir/src/laserMapping.cpp.o[0m
+[3.228s] [ 63%] Built target fast_lio__rosidl_typesupport_fastrtps_cpp
+[3.235s] [ 66%] [32mBuilding C object CMakeFiles/fast_lio__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/fast_lio/msg/detail/pose6_d__type_support.c.o[0m
+[3.274s] [ 69%] [32m[1mLinking C shared library libfast_lio__rosidl_typesupport_introspection_c.so[0m
+[3.295s] [ 69%] Built target fast_lio__rosidl_typesupport_introspection_c
+[3.359s] [ 72%] [32m[1mLinking CXX shared library libfast_lio__rosidl_typesupport_fastrtps_c.so[0m
+[3.405s] [ 72%] Built target fast_lio__rosidl_typesupport_fastrtps_c
+[3.417s] [ 72%] Built target fast_lio
+[3.432s] [ 75%] [34m[1mGenerating Python code for ROS interfaces[0m
+[3.644s] [ 75%] Built target fast_lio__py
+[3.658s] [ 77%] [32mBuilding C object CMakeFiles/fast_lio__rosidl_generator_py.dir/rosidl_generator_py/fast_lio/msg/_pose6_d_s.c.o[0m
+[3.767s] [ 80%] [32m[1mLinking C shared library rosidl_generator_py/fast_lio/libfast_lio__rosidl_generator_py.so[0m
+[3.797s] [ 80%] Built target fast_lio__rosidl_generator_py
+[3.806s] [ 83%] [32mBuilding C object CMakeFiles/fast_lio__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_c.c.o[0m
+[3.806s] [ 86%] [32mBuilding C object CMakeFiles/fast_lio__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[3.811s] [ 88%] [32mBuilding C object CMakeFiles/fast_lio__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/fast_lio/_fast_lio_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[3.868s] [ 91%] [32m[1mLinking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.888s] [ 91%] Built target fast_lio__rosidl_typesupport_fastrtps_c__pyext
+[3.891s] [ 94%] [32m[1mLinking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.908s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.911s] [ 97%] Built target fast_lio__rosidl_typesupport_c__pyext
+[3.930s] [ 97%] Built target fast_lio__rosidl_typesupport_introspection_c__pyext
+[6.497s] In file included from [01m[K/usr/include/boost/smart_ptr/detail/sp_thread_sleep.hpp:22[m[K,
+[6.497s]                  from [01m[K/usr/include/boost/smart_ptr/detail/yield_k.hpp:23[m[K,
+[6.497s]                  from [01m[K/usr/include/boost/smart_ptr/detail/spinlock_gcc_atomic.hpp:14[m[K,
+[6.498s]                  from [01m[K/usr/include/boost/smart_ptr/detail/spinlock.hpp:42[m[K,
+[6.498s]                  from [01m[K/usr/include/boost/smart_ptr/detail/spinlock_pool.hpp:25[m[K,
+[6.498s]                  from [01m[K/usr/include/boost/smart_ptr/shared_ptr.hpp:29[m[K,
+[6.498s]                  from [01m[K/usr/include/boost/shared_ptr.hpp:17[m[K,
+[6.498s]                  from [01m[K/usr/include/boost/date_time/microsec_time_clock.hpp:18[m[K,
+[6.498s]                  from [01m[K/usr/include/boost/interprocess/detail/posix_time_types_wrk.hpp:31[m[K,
+[6.498s]                  from [01m[K/usr/include/boost/interprocess/detail/os_thread_functions.hpp:36[m[K,
+[6.498s]                  from [01m[K/usr/include/boost/interprocess/sync/file_lock.hpp:26[m[K,
+[6.498s]                  from [01m[K/usr/include/pcl-1.12/pcl/io/pcd_io.h:46[m[K,
+[6.498s]                  from [01m[K/opt/ros/humble/include/pcl_conversions/pcl_conversions/pcl_conversions.h:73[m[K,
+[6.498s]                  from [01m[K/home/neuravix/Desktop/carla-ros2-ws/src/FAST_LIO/src/IMU_Processing.hpp:18[m[K,
+[6.498s]                  from [01m[K/home/neuravix/Desktop/carla-ros2-ws/src/FAST_LIO/src/laserMapping.cpp:47[m[K:
+[6.498s] [01m[K/usr/include/boost/bind.hpp:36:1:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: The practice of declaring the Bind placeholders (_1, _2, ...) in the global namespace is deprecated. Please use <boost/bind/bind.hpp> + using namespace boost::placeholders, or define BOOST_BIND_GLOBAL_PLACEHOLDERS to retain the current behavior.[m[K’
+[6.498s]    36 | [01;36m[KBOOST_PRAGMA_MESSAGE[m[K(
+[6.498s]       | [01;36m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[41.333s] [100%] [32m[1mLinking CXX executable fastlio_mapping[0m
+[41.932s] [100%] Built target fastlio_mapping
+[41.939s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio' returned '0': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/neuravix/Desktop/carla-ros2-ws/build/fast_lio -- -j20 -l20
+[41.947s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/neuravix/Desktop/carla-ros2-ws/build/fast_lio
+[41.951s] -- Install configuration: "Release"
+[41.951s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/rosidl_interfaces/fast_lio
+[41.951s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__functions.h
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__struct.h
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.h
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__functions.c
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_generator_c__visibility_control.h
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/pose6_d.h
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/library_path.sh
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/library_path.dsv
+[41.952s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_generator_c.so
+[41.952s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_generator_c.so" to ""
+[41.952s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio
+[41.952s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_fastrtps_c.h
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_c.so
+[41.953s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_c.so" to ""
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/pose6_d.hpp
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_generator_cpp__visibility_control.hpp
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__traits.hpp
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__struct.hpp
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__builder.hpp
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.hpp
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_fastrtps_cpp.hpp
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/dds_fastrtps
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_cpp.so
+[41.953s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_fastrtps_cpp.so" to ""
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.c
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_introspection_c.h
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_c.so
+[41.953s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_c.so" to ""
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_c.so
+[41.953s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_c.so" to ""
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg
+[41.953s] -- Up-to-date: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__rosidl_typesupport_introspection_cpp.hpp
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/include/fast_lio/fast_lio/msg/detail/pose6_d__type_support.cpp
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_cpp.so
+[41.953s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_introspection_cpp.so" to ""
+[41.953s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_cpp.so
+[41.953s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_typesupport_cpp.so" to ""
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/pythonpath.sh
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/pythonpath.dsv
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/PKG-INFO
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/top_level.txt
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/dependency_links.txt
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio-0.0.0-py3.10.egg-info/SOURCES.txt
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/__init__.py
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/__init__.py
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d.py
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d_s.c
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_fastrtps_c.c
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_c.c
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/_fast_lio_s.ep.rosidl_typesupport_introspection_c.c
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/libfast_lio__rosidl_generator_py.so
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[41.954s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[41.978s] Listing '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio'...
+[41.978s] Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/__init__.py'...
+[41.978s] Listing '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg'...
+[41.978s] Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/__init__.py'...
+[41.978s] Compiling '/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/msg/_pose6_d.py'...
+[41.981s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[41.981s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[41.981s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[41.981s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[41.981s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[41.982s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/local/lib/python3.10/dist-packages/fast_lio/fast_lio_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[41.982s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_generator_py.so
+[41.982s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/libfast_lio__rosidl_generator_py.so" to ""
+[41.982s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/rust_packages/fast_lio
+[41.982s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust
+[41.982s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/build.rs
+[41.982s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/Cargo.toml
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src/msg
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src/msg/rmw.rs
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src/lib.rs
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rust/src/msg.rs
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/msg/Pose6D.idl
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/msg/Pose6D.msg
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/fast_lio/fastlio_mapping
+[41.983s] -- Set runtime path of "/home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/lib/fast_lio/fastlio_mapping" to ""
+[41.983s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/horizon.yaml
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/ouster64.yaml
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/bee1.yaml
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/avia.yaml
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/velodyne.yaml
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/config/mid360.yaml
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/launch
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/launch/gdb_debug_example.launch
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/launch/mapping.launch.py
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rviz
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/rviz/fastlio.rviz
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/package_run_dependencies/fast_lio
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/parent_prefix_path/fast_lio
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/ament_prefix_path.sh
+[41.984s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/ament_prefix_path.dsv
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/path.sh
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/environment/path.dsv
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/local_setup.bash
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/local_setup.sh
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/local_setup.zsh
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/local_setup.dsv
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/package.dsv
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/ament_index/resource_index/packages/fast_lio
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cExport.cmake
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cExport-release.cmake
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cExport.cmake
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cExport-release.cmake
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_cppExport.cmake
+[41.985s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cppExport.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_typesupport_fastrtps_cppExport-release.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cExport.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cExport-release.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cExport.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cExport-release.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cppExport.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_introspection_cppExport-release.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cppExport.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lio__rosidl_typesupport_cppExport-release.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_pyExport.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/export_fast_lio__rosidl_generator_pyExport-release.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/rosidl_cmake-extras.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_include_directories-extras.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_libraries-extras.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_targets-extras.cmake
+[41.986s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[41.987s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/ament_cmake_export_dependencies-extras.cmake
+[41.987s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[41.987s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lioConfig.cmake
+[41.987s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/cmake/fast_lioConfig-version.cmake
+[41.987s] -- Installing: /home/neuravix/Desktop/carla-ros2-ws/install/fast_lio/share/fast_lio/package.xml
+[41.987s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/fast_lio' returned '0': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/neuravix/Desktop/carla-ros2-ws/build/fast_lio

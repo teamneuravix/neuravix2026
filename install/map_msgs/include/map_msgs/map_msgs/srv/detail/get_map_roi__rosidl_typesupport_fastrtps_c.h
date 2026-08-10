@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/rosidl_typesupport_fastrtps_c/map_msgs/srv/detail/get_map_roi__rosidl_typesupport_fastrtps_c.h

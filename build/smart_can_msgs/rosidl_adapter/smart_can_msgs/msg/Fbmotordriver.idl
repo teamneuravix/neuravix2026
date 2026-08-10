@@ -1,0 +1,16 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from smart_can_msgs/msg/Fbmotordriver.msg
+// generated code does not contain a copyright notice
+
+
+module smart_can_msgs {
+  module msg {
+    struct Fbmotordriver {
+      uint8 gear_status_from_motor;
+
+      uint16 plustripdistance;
+
+      uint16 vehiclerpm;
+    };
+  };
+};

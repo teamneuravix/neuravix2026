@@ -1,0 +1,66 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/taha/Desktop/carla-ros2-ws/build/bee1_description
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/urdf/bee1_robotaxi.urdf.xacro
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/__pycache__/pist_localization_real.launch.cpython-310.pyc
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/__pycache__/pist_slam_real.launch.cpython-310.pyc
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/astar_planner.launch.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/bee1_bringup.launch.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/localization.launch.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/localization_local.launch.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_localization.launch.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_localization_real.launch.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_slam.launch.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/launch/pist_slam_real.launch.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/ekf_navsat.yaml
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/ekf_odom_real.yaml
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/pointcloud_to_laserscan_pist.yaml
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/pointcloud_to_laserscan_real.yaml
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist.yaml
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist_localization.yaml
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist_localization_real.yaml
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/config/slam_toolbox_pist_real.yaml
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/astar_planner.py
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/package_run_dependencies/bee1_description
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/parent_prefix_path/bee1_description
+-- Up-to-date symlink: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/ament_prefix_path.sh
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/path.sh
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/environment/path.dsv
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.bash
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.sh
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.zsh
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/local_setup.dsv
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/package.dsv
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/ament_index/resource_index/packages/bee1_description
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/cmake/bee1_descriptionConfig.cmake
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/cmake/bee1_descriptionConfig-version.cmake
+-- Symlinking: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/share/bee1_description/package.xml
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/pointcloud_filter
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/odom_relay
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/gps_relay
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/pist_odom_tf
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/astar_planner_node
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/lidar_echo
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/can_odom
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/speed_fb_relay
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/throttle_relay
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/steering_ctrl
+-- Up-to-date: /home/taha/Desktop/carla-ros2-ws/install/bee1_description/lib/bee1_description/throttle_ctrl

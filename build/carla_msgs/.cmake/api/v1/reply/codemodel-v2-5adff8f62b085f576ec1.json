@@ -1,0 +1,258 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-fc2a23261e84334a8246.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "carla_msgs__py",
+					"jsonFile" : "directory-carla_msgs__py-b19c5ca7f13207efbf1e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/carla_msgs__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "carla_msgs__rs",
+					"jsonFile" : "directory-carla_msgs__rs-96c262bdcf8c2679843c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/carla_msgs__rs",
+					"targetIndexes" : 
+					[
+						16
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "carla_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_carla_msgs_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_carla_msgs_egg-f80fb91765155df2b855.json",
+					"name" : "ament_cmake_python_build_carla_msgs_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_carla_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_carla_msgs-e0916291cecf170b3cb5.json",
+					"name" : "ament_cmake_python_symlink_carla_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs-f3dcd9c60dca8c4ec878.json",
+					"name" : "carla_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__cpp-eb00813d90e8de3395e9.json",
+					"name" : "carla_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "carla_msgs__py::@a64ccbca508918e45018",
+					"jsonFile" : "target-carla_msgs__py-dbeb3c4dbed8fd480511.json",
+					"name" : "carla_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_generator_c-c5da5f7109584d5b35a9.json",
+					"name" : "carla_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_generator_py-9e4ae83d27f7a44b1fa2.json",
+					"name" : "carla_msgs__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_c-5ce2b22f2af045b8a82b.json",
+					"name" : "carla_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_c__pyext-235a44744984b453036d.json",
+					"name" : "carla_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_cpp-d632873a387fa3747c9f.json",
+					"name" : "carla_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_fastrtps_c-f9898a11fcbc105c1f96.json",
+					"name" : "carla_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_fastrtps_c__pyext-c09627ce65c021bb17ee.json",
+					"name" : "carla_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_fastrtps_cpp-de100f5da940baa42349.json",
+					"name" : "carla_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_introspection_c-3fc641104bfed6245846.json",
+					"name" : "carla_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_introspection_c__pyext-cfdd6f94ae4a58c873d6.json",
+					"name" : "carla_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs__rosidl_typesupport_introspection_cpp-45e676fcf4299b94235f.json",
+					"name" : "carla_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "carla_msgs__rs::@d5eda72d2dd9e98caef4",
+					"jsonFile" : "target-carla_msgs__rs-0c350d9baf271ff4de9a.json",
+					"name" : "carla_msgs__rs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_msgs_uninstall-1715624e8be39cc4c7d8.json",
+					"name" : "carla_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-61504d67667732d56360.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs",
+		"source" : "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

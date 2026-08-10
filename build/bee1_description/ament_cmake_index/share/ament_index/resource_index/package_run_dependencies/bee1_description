@@ -1,0 +1,1 @@
+xacro;robot_state_publisher;joint_state_publisher;tf2_ros;rclpy;sensor_msgs;sensor_msgs_py;nav_msgs;geometry_msgs;smart_can_msgs;robot_localization;python3-numpy

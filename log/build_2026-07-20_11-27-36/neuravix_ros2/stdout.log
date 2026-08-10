@@ -1,0 +1,28 @@
+running egg_info
+writing ../../build/neuravix_ros2/neuravix_ros2.egg-info/PKG-INFO
+writing dependency_links to ../../build/neuravix_ros2/neuravix_ros2.egg-info/dependency_links.txt
+writing entry points to ../../build/neuravix_ros2/neuravix_ros2.egg-info/entry_points.txt
+writing requirements to ../../build/neuravix_ros2/neuravix_ros2.egg-info/requires.txt
+writing top-level names to ../../build/neuravix_ros2/neuravix_ros2.egg-info/top_level.txt
+reading manifest file '../../build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+writing manifest file '../../build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+running build
+running build_py
+copying neuravix_ros2/tabela_tespit_node.py -> /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2
+running install
+running install_lib
+copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/tabela_tespit_node.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/tabela_tespit_node.py to tabela_tespit_node.cpython-310.pyc
+running install_data
+running install_egg_info
+removing '/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/neuravix_ros2/neuravix_ros2.egg-info to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2-0.0.0-py3.10.egg-info
+running install_scripts
+Installing lane_follower script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing mjpeg_server script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing neuravix_control script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing neuravix_control_real script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing obstacle_lidar script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing tabela_overlay script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing tabela_tespit script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+writing list of installed files to '/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/install.log'

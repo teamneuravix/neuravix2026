@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types/rosidl_generator_rs/carla_waypoint_types/rust/src/srv.rs

@@ -1,0 +1,258 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-bc39cf69a93710b8db12.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "map_msgs__py",
+					"jsonFile" : "directory-map_msgs__py-f87e601971658a46112a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/map_msgs__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "map_msgs__rs",
+					"jsonFile" : "directory-map_msgs__rs-666ad61a62ebc3e5aad1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/map_msgs__rs",
+					"targetIndexes" : 
+					[
+						16
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "map_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_map_msgs_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_map_msgs_egg-4ba04ab498a06049a6b6.json",
+					"name" : "ament_cmake_python_build_map_msgs_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_map_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_map_msgs-e732f1fdf8a0a9eea732.json",
+					"name" : "ament_cmake_python_symlink_map_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs-97b66a85abb311d58df8.json",
+					"name" : "map_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__cpp-b0e0d88618eff6b90bab.json",
+					"name" : "map_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "map_msgs__py::@d0973546d0639854b6a7",
+					"jsonFile" : "target-map_msgs__py-5e7593ab7af278e29070.json",
+					"name" : "map_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_generator_c-e11db5ccb6417163ec3b.json",
+					"name" : "map_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_generator_py-a784a1b969a9768db622.json",
+					"name" : "map_msgs__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_c-e793b19846feba8fdcfa.json",
+					"name" : "map_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_c__pyext-1bc8f521058c2dd2499c.json",
+					"name" : "map_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_cpp-497dbdb514519e2906ad.json",
+					"name" : "map_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_fastrtps_c-cd4599ac71d5ed8f5c2b.json",
+					"name" : "map_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_fastrtps_c__pyext-94ecd3ceab7dd0cbf9c9.json",
+					"name" : "map_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_fastrtps_cpp-49ea7e6d43e2db25e6ea.json",
+					"name" : "map_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_introspection_c-a1167c924672a4a20a87.json",
+					"name" : "map_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_introspection_c__pyext-7409ce2be3a6d83510fe.json",
+					"name" : "map_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs__rosidl_typesupport_introspection_cpp-396c4973f3e09c519101.json",
+					"name" : "map_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "map_msgs__rs::@d6297419603d0b3a46ae",
+					"jsonFile" : "target-map_msgs__rs-1d1bc6e6a2e3d78cab6a.json",
+					"name" : "map_msgs__rs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "map_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-map_msgs_uninstall-8cb6f9096391280c5f76.json",
+					"name" : "map_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-64038e1fc0898e5fd8d5.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs",
+		"source" : "/home/neuravix/Desktop/carla-ros2-ws/navigation_msgs/map_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

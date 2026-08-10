@@ -1,0 +1,33 @@
+running egg_info
+creating build/neuravix_ros2/neuravix_ros2.egg-info
+writing build/neuravix_ros2/neuravix_ros2.egg-info/PKG-INFO
+writing dependency_links to build/neuravix_ros2/neuravix_ros2.egg-info/dependency_links.txt
+writing entry points to build/neuravix_ros2/neuravix_ros2.egg-info/entry_points.txt
+writing requirements to build/neuravix_ros2/neuravix_ros2.egg-info/requires.txt
+writing top-level names to build/neuravix_ros2/neuravix_ros2.egg-info/top_level.txt
+writing manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+reading manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+writing manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build
+creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib
+creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2
+copying neuravix_ros2/lane_follower_node.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2
+copying neuravix_ros2/__init__.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2
+running install
+running install_lib
+creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+copying /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2/lane_follower_node.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+copying /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2/__init__.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+byte-compiling /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/lane_follower_node.py to lane_follower_node.cpython-310.pyc
+byte-compiling /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index
+creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index
+creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index/packages
+copying resource/neuravix_ros2 -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index/packages
+copying package.xml -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2
+creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models
+copying models/best_yolo11.pt -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models
+copying models/best_250.pt -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models

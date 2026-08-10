@@ -1,0 +1,75 @@
+[0.284s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build
+[0.401s] running develop
+[0.468s] Removing /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix-ros2.egg-link (link to .)
+[0.481s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2' returned '0': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build
+[0.482s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/src/neuravix_ros2': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/neuravix_ros2 build --build-base /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build install --record /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/install.log --install-scripts $base/lib/neuravix_ros2 --single-version-externally-managed install_data --force
+[0.594s] running egg_info
+[0.594s] writing ../../build/neuravix_ros2/neuravix_ros2.egg-info/PKG-INFO
+[0.594s] writing dependency_links to ../../build/neuravix_ros2/neuravix_ros2.egg-info/dependency_links.txt
+[0.594s] writing entry points to ../../build/neuravix_ros2/neuravix_ros2.egg-info/entry_points.txt
+[0.594s] writing requirements to ../../build/neuravix_ros2/neuravix_ros2.egg-info/requires.txt
+[0.594s] writing top-level names to ../../build/neuravix_ros2/neuravix_ros2.egg-info/top_level.txt
+[0.595s] reading manifest file '../../build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+[0.596s] writing manifest file '../../build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+[0.596s] running build
+[0.596s] running build_py
+[0.596s] copying neuravix_ros2/decision_brain.py -> /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2
+[0.596s] copying neuravix_ros2/neuravix_control_node_real.py -> /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2
+[0.596s] copying neuravix_ros2/lane_follower_node.py -> /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2
+[0.596s] copying neuravix_ros2/tabela_tespit_node.py -> /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2
+[0.597s] running install
+[0.597s] running install_lib
+[0.597s] creating /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/astar_planner.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/__init__.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/decision_brain.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/neuravix_control_node_real.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/camera_overlay_node.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/mjpeg_server.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/lane_follower_node.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/tabela_tespit_node.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.597s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/obstacle_lidar_node.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.598s] copying /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build/lib/neuravix_ros2/neuravix_control_node.py -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[0.598s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/astar_planner.py to astar_planner.cpython-310.pyc
+[0.599s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/__init__.py to __init__.cpython-310.pyc
+[0.599s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/decision_brain.py to decision_brain.cpython-310.pyc
+[0.601s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/neuravix_control_node_real.py to neuravix_control_node_real.cpython-310.pyc
+[0.602s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/camera_overlay_node.py to camera_overlay_node.cpython-310.pyc
+[0.604s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/mjpeg_server.py to mjpeg_server.cpython-310.pyc
+[0.604s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/lane_follower_node.py to lane_follower_node.cpython-310.pyc
+[0.606s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/tabela_tespit_node.py to tabela_tespit_node.cpython-310.pyc
+[0.607s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/obstacle_lidar_node.py to obstacle_lidar_node.cpython-310.pyc
+[0.608s] byte-compiling /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/neuravix_control_node.py to neuravix_control_node.cpython-310.pyc
+[0.609s] running install_data
+[0.609s] copying resource/neuravix_ros2 -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/ament_index/resource_index/packages
+[0.609s] copying package.xml -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2
+[0.609s] copying models/best1.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.611s] copying models/best3.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.620s] copying models/best4.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.630s] copying models/best_250.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.633s] copying models/sonyaris.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.636s] copying models/yolo11n-seg.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.638s] copying models/best_35.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.648s] copying models/best_yolo11.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.656s] copying models/best.pt -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.665s] copying tabela/ileri.png -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] copying tabela/durak.png -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] copying tabela/park-edilemez.png -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] copying tabela/sola-dön1.png -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] copying tabela/sola-dön.png -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] copying tabela/tünel.png -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] copying tabela/saga-dön.png -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] copying tabela/park-yapılabilir.png -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] copying tabela/pist_layout.json -> /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.665s] running install_egg_info
+[0.666s] Copying ../../build/neuravix_ros2/neuravix_ros2.egg-info to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2-0.0.0-py3.10.egg-info
+[0.667s] running install_scripts
+[0.677s] Installing lane_follower script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.677s] Installing mjpeg_server script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.678s] Installing neuravix_control script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.678s] Installing neuravix_control_real script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.678s] Installing obstacle_lidar script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.678s] Installing tabela_overlay script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.678s] Installing tabela_tespit script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.678s] writing list of installed files to '/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/install.log'
+[0.689s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/src/neuravix_ros2' returned '0': AMENT_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs LD_LIBRARY_PATH=/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/neuravix/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:/home/neuravix/Desktop/carla-ros2-ws/install/carla_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/neuravix_ros2 build --build-base /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build install --record /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/install.log --install-scripts $base/lib/neuravix_ros2 --single-version-externally-managed install_data --force

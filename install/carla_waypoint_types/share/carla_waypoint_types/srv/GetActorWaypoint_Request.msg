@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types/rosidl_cmake/srv/GetActorWaypoint_Request.msg

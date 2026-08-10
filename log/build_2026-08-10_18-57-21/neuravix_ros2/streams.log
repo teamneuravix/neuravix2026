@@ -1,0 +1,48 @@
+[0.461s] Invoking command in '/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2': AMENT_PREFIX_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs LD_LIBRARY_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/build --no-deps symlink_data
+[0.583s] running develop
+[0.649s] running egg_info
+[0.649s] writing neuravix_ros2.egg-info/PKG-INFO
+[0.649s] writing dependency_links to neuravix_ros2.egg-info/dependency_links.txt
+[0.649s] writing entry points to neuravix_ros2.egg-info/entry_points.txt
+[0.649s] writing requirements to neuravix_ros2.egg-info/requires.txt
+[0.649s] writing top-level names to neuravix_ros2.egg-info/top_level.txt
+[0.651s] reading manifest file 'neuravix_ros2.egg-info/SOURCES.txt'
+[0.652s] writing manifest file 'neuravix_ros2.egg-info/SOURCES.txt'
+[0.652s] running build_ext
+[0.652s] Creating /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix-ros2.egg-link (link to .)
+[0.653s] Installing lane_follower script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.653s] Installing mjpeg_server script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.653s] Installing neuravix_control script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.653s] Installing neuravix_control_real script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.653s] Installing obstacle_lidar script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.653s] Installing tabela_overlay script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.653s] Installing tabela_tespit script to /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.653s] 
+[0.653s] Installed /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2
+[0.653s] running symlink_data
+[0.653s] creating /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/ament_index
+[0.653s] creating /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/ament_index/resource_index
+[0.653s] creating /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/ament_index/resource_index/packages
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/resource/neuravix_ros2 -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/ament_index/resource_index/packages
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/package.xml -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2
+[0.654s] creating /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/yolo11n-seg.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/best_yolo11.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/best_35.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/best1.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/best3.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/best_250.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/best.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/best4.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/models/sonyaris.pt -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/models
+[0.654s] creating /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/sola-dön1.png -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/durak.png -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/tünel.png -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/sola-dön.png -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/park-edilemez.png -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/saga-dön.png -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/ileri.png -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/park-yapılabilir.png -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.654s] symbolically linking /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/tabela/pist_layout.json -> /home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/share/neuravix_ros2/tabela
+[0.669s] Invoked command in '/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2' returned '0': AMENT_PREFIX_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs LD_LIBRARY_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/build --no-deps symlink_data

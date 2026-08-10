@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_ros_scenario_runner/launch/carla_ros_scenario_runner.launch.py

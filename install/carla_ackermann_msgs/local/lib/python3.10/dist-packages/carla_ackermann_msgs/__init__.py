@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs/rosidl_generator_py/carla_ackermann_msgs/__init__.py

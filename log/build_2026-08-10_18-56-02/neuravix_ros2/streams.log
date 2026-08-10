@@ -1,0 +1,41 @@
+[0.469s] Invoking command in '/home/taha/Desktop/carla-ros2-ws/src/neuravix_ros2': AMENT_PREFIX_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs LD_LIBRARY_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/neuravix_ros2 build --build-base /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/build install --record /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/install.log --install-scripts $base/lib/neuravix_ros2 --single-version-externally-managed install_data
+[0.552s] /home/taha/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py:318: UserWarning: Unknown distribution option: 'tests_require'
+[0.552s]   warnings.warn(msg)
+[0.592s] running egg_info
+[0.599s] writing ../../build/neuravix_ros2/neuravix_ros2.egg-info/PKG-INFO
+[0.599s] writing dependency_links to ../../build/neuravix_ros2/neuravix_ros2.egg-info/dependency_links.txt
+[0.599s] writing entry points to ../../build/neuravix_ros2/neuravix_ros2.egg-info/entry_points.txt
+[0.599s] writing requirements to ../../build/neuravix_ros2/neuravix_ros2.egg-info/requires.txt
+[0.599s] writing top-level names to ../../build/neuravix_ros2/neuravix_ros2.egg-info/top_level.txt
+[0.675s] reading manifest file '../../build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+[0.675s] Traceback (most recent call last):
+[0.675s]   File "/home/taha/Desktop/carla-ros2-ws/src/neuravix_ros2/setup.py", line 8, in <module>
+[0.675s]     setup(
+[0.675s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/__init__.py", line 117, in setup
+[0.675s]     return distutils.core.setup(**attrs)  # type: ignore[return-value]
+[0.675s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/_distutils/core.py", line 168, in setup
+[0.675s]     return run_commands(dist)
+[0.675s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/_distutils/core.py", line 184, in run_commands
+[0.675s]     dist.run_commands()
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py", line 1028, in run_commands
+[0.676s]     self.run_command(cmd)
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/dist.py", line 1106, in run_command
+[0.676s]     super().run_command(command)
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+[0.676s]     cmd_obj.run()
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/command/egg_info.py", line 342, in run
+[0.676s]     self.find_sources()
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/command/egg_info.py", line 350, in find_sources
+[0.676s]     mm.run()
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/command/egg_info.py", line 577, in run
+[0.676s]     self.prune_file_list()
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/command/sdist.py", line 166, in prune_file_list
+[0.676s]     super().prune_file_list()
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/_distutils/command/sdist.py", line 397, in prune_file_list
+[0.676s]     base_dir = self.distribution.get_fullname()
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/_core_metadata.py", line 275, in get_fullname
+[0.676s]     return _distribution_fullname(self.get_name(), self.get_version())
+[0.676s]   File "/home/taha/.local/lib/python3.10/site-packages/setuptools/_core_metadata.py", line 293, in _distribution_fullname
+[0.676s]     canonicalize_version(version, strip_trailing_zero=False),
+[0.676s] TypeError: canonicalize_version() got an unexpected keyword argument 'strip_trailing_zero'
+[0.695s] Invoked command in '/home/taha/Desktop/carla-ros2-ws/src/neuravix_ros2' returned '1': AMENT_PREFIX_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs LD_LIBRARY_PATH=/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/taha/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/neuravix_ros2 build --build-base /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/build install --record /home/taha/Desktop/carla-ros2-ws/build/neuravix_ros2/install.log --install-scripts $base/lib/neuravix_ros2 --single-version-externally-managed install_data

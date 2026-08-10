@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs/msg/CarlaCollisionEvent.msg

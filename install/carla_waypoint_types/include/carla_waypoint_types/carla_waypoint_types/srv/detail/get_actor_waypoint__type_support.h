@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types/rosidl_generator_c/carla_waypoint_types/srv/detail/get_actor_waypoint__type_support.h

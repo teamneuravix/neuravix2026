@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/rosidl_generator_py/map_msgs/srv/_get_point_map_s.c

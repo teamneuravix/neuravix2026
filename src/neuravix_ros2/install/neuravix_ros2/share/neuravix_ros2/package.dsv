@@ -1,0 +1,12 @@
+source;share/neuravix_ros2/hook/path.ps1
+source;share/neuravix_ros2/hook/path.dsv
+source;share/neuravix_ros2/hook/path.sh
+source;share/neuravix_ros2/hook/pythonpath.ps1
+source;share/neuravix_ros2/hook/pythonpath.dsv
+source;share/neuravix_ros2/hook/pythonpath.sh
+source;share/neuravix_ros2/hook/pythonscriptspath.ps1
+source;share/neuravix_ros2/hook/pythonscriptspath.dsv
+source;share/neuravix_ros2/hook/pythonscriptspath.sh
+source;share/neuravix_ros2/hook/ament_prefix_path.ps1
+source;share/neuravix_ros2/hook/ament_prefix_path.dsv
+source;share/neuravix_ros2/hook/ament_prefix_path.sh

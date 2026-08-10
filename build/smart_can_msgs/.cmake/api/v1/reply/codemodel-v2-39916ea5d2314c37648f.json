@@ -1,0 +1,258 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-8a19edae3e18475a47a3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "smart_can_msgs__py",
+					"jsonFile" : "directory-smart_can_msgs__py-53a93677688695147579.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/taha/Desktop/carla-ros2-ws/build/smart_can_msgs/smart_can_msgs__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "smart_can_msgs__rs",
+					"jsonFile" : "directory-smart_can_msgs__rs-d168c01c78d20c024f23.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/taha/Desktop/carla-ros2-ws/build/smart_can_msgs/smart_can_msgs__rs",
+					"targetIndexes" : 
+					[
+						16
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "smart_can_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_smart_can_msgs_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_smart_can_msgs_egg-95af7f6c4c6f1c202dc7.json",
+					"name" : "ament_cmake_python_build_smart_can_msgs_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_smart_can_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_smart_can_msgs-39de196b1becdd0efd87.json",
+					"name" : "ament_cmake_python_symlink_smart_can_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs-2ed78b1ab60a284c4e5f.json",
+					"name" : "smart_can_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__cpp-fe6fe3a38bd3ce349474.json",
+					"name" : "smart_can_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "smart_can_msgs__py::@e1ab7f9f1ebe23b46e47",
+					"jsonFile" : "target-smart_can_msgs__py-da82d40d8f4e5201f972.json",
+					"name" : "smart_can_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_generator_c-ee808bf81aa31eb7d77b.json",
+					"name" : "smart_can_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_generator_py-517791b4e20421c5001d.json",
+					"name" : "smart_can_msgs__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_c-e31ee3238c1f53ddb24f.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_c__pyext-f91d6a5efb5d8b060495.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_cpp-448d5ffbc228939549c2.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_fastrtps_c-bb5b0367816c0868b746.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_fastrtps_c__pyext-aae573f573a14c1af215.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_fastrtps_cpp-622cb27174ce6761dcc5.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_introspection_c-1c1c48ec3c3d7a95a509.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_introspection_c__pyext-d0a1e34cf3d41d586fa8.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs__rosidl_typesupport_introspection_cpp-b2a7b310ab166faa68aa.json",
+					"name" : "smart_can_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "smart_can_msgs__rs::@1da9a72d7bccc61001c4",
+					"jsonFile" : "target-smart_can_msgs__rs-6b3a8e35f66d34b25a61.json",
+					"name" : "smart_can_msgs__rs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "smart_can_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-smart_can_msgs_uninstall-bfe155655fd440f1872f.json",
+					"name" : "smart_can_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-5b4ce94868518fa09fbb.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/taha/Desktop/carla-ros2-ws/build/smart_can_msgs",
+		"source" : "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

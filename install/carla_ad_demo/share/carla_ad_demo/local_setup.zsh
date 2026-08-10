@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_ad_demo/ament_cmake_environment_hooks/local_setup.zsh

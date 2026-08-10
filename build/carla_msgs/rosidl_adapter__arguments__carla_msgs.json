@@ -1,0 +1,26 @@
+{
+  "package_name": "carla_msgs",
+  "non_idl_tuples": [
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaBoundingBox.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaEgoVehicleControl.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaEgoVehicleStatus.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaEgoVehicleInfoWheel.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaEgoVehicleInfo.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaCollisionEvent.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaLaneInvasionEvent.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaWorldInfo.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaActorInfo.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaActorList.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaControl.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaStatus.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaTrafficLightInfo.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaTrafficLightInfoList.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaTrafficLightStatus.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaTrafficLightStatusList.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaWalkerControl.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:msg/CarlaWeatherParameters.msg",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:srv/SpawnObject.srv",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:srv/DestroyObject.srv",
+    "/home/neuravix/Desktop/carla-ros2-ws/src/carla-msgs:srv/GetBlueprints.srv"
+  ]
+}

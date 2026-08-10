@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/rosidl_generator_py/carla_msgs/_carla_msgs_s.ep.rosidl_typesupport_c.c

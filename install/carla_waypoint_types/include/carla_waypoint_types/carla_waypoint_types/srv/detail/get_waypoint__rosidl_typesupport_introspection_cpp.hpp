@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types/rosidl_typesupport_introspection_cpp/carla_waypoint_types/srv/detail/get_waypoint__rosidl_typesupport_introspection_cpp.hpp

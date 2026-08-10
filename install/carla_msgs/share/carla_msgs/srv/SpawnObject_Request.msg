@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/rosidl_cmake/srv/SpawnObject_Request.msg

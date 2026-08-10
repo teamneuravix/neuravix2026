@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/rosidl_generator_c/map_msgs/msg/detail/projected_map_info__type_support.h

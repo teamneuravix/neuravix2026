@@ -1,0 +1,21 @@
+{
+  "package_name": "smart_can_msgs",
+  "non_idl_tuples": [
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Dis.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Kinematicmessages.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Rcunittoomux.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Rcthrtdata.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Autonomousbrakepedalcontrol.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Autonomoussteeringmotcontrol.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Autonomoushbmotorcontrol.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Fbmotordriver.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Fbvehiclespeed.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Fbomuxtoautonomous.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Sndrcunitsteeringdata.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Sndrcunitbrakedata.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Sndrcunithandbrakedata.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Autonomousheardbit.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Feedbacksteeringangle.msg",
+    "/home/taha/Desktop/carla-ros2-ws/src/smart_can_msgs:msg/Feedbacksensor.msg"
+  ]
+}

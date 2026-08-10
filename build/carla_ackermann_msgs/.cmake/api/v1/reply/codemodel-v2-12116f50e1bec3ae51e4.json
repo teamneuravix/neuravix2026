@@ -1,0 +1,258 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-ede75c2ba48810138943.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "carla_ackermann_msgs__py",
+					"jsonFile" : "directory-carla_ackermann_msgs__py-eaef3cc19c8925eb444c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs/carla_ackermann_msgs__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "carla_ackermann_msgs__rs",
+					"jsonFile" : "directory-carla_ackermann_msgs__rs-439a5a687ba6878704f4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs/carla_ackermann_msgs__rs",
+					"targetIndexes" : 
+					[
+						16
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "carla_ackermann_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_carla_ackermann_msgs_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_carla_ackermann_msgs_egg-f2ee7391b5c03f6bdd47.json",
+					"name" : "ament_cmake_python_build_carla_ackermann_msgs_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_carla_ackermann_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_carla_ackermann_msgs-bf4a91f3731954eb1a05.json",
+					"name" : "ament_cmake_python_symlink_carla_ackermann_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs-3d7d3693eafa048facdf.json",
+					"name" : "carla_ackermann_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__cpp-3d33dd7c2cc73ca4a938.json",
+					"name" : "carla_ackermann_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "carla_ackermann_msgs__py::@d8cb4df29f2816172d75",
+					"jsonFile" : "target-carla_ackermann_msgs__py-58e7b7a3658dae6a5a6b.json",
+					"name" : "carla_ackermann_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_generator_c-a885ba282cd09b5eaf3f.json",
+					"name" : "carla_ackermann_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_generator_py-5b7c6592cc329b13a809.json",
+					"name" : "carla_ackermann_msgs__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_c-31e67257ef2ae748f51d.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_c__pyext-4eebdf336e906fbe1f65.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_cpp-f19fbec2247aaeb896d4.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_fastrtps_c-9855304b44b42f40865d.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_fastrtps_c__pyext-01a35683cc1430df49dd.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_fastrtps_cpp-e7c5d90cb12903a3678b.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_introspection_c-67527fea081e49af3af6.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_introspection_c__pyext-93e297545adc2855e86c.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs__rosidl_typesupport_introspection_cpp-6b554e906de5836de006.json",
+					"name" : "carla_ackermann_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "carla_ackermann_msgs__rs::@4bf3fa4ed53018ad133f",
+					"jsonFile" : "target-carla_ackermann_msgs__rs-2fd62cdc009ca7332cff.json",
+					"name" : "carla_ackermann_msgs__rs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_ackermann_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_ackermann_msgs_uninstall-0719f2e2720babd6c164.json",
+					"name" : "carla_ackermann_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-544b7d20a54e42773908.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_ackermann_msgs",
+		"source" : "/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_ackermann_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

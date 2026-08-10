@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "map_msgs__py",
+		"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/map_msgs__py"
+	}
+}

@@ -1,0 +1,21 @@
+[0.282s] Invoking command in '/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2': PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build --no-deps symlink_data
+[0.399s] running develop
+[0.465s] running egg_info
+[0.465s] writing neuravix_ros2.egg-info/PKG-INFO
+[0.465s] writing dependency_links to neuravix_ros2.egg-info/dependency_links.txt
+[0.465s] writing entry points to neuravix_ros2.egg-info/entry_points.txt
+[0.465s] writing requirements to neuravix_ros2.egg-info/requires.txt
+[0.465s] writing top-level names to neuravix_ros2.egg-info/top_level.txt
+[0.466s] reading manifest file 'neuravix_ros2.egg-info/SOURCES.txt'
+[0.466s] writing manifest file 'neuravix_ros2.egg-info/SOURCES.txt'
+[0.467s] running build_ext
+[0.467s] Creating /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix-ros2.egg-link (link to .)
+[0.467s] Installing lane_follower script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.467s] Installing neuravix_control script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.467s] Installing obstacle_lidar script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.467s] Installing tabela_overlay script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.468s] Installing tabela_tespit script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+[0.468s] 
+[0.468s] Installed /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2
+[0.468s] running symlink_data
+[0.481s] Invoked command in '/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2' returned '0': PYTHONPATH=/home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2/build --no-deps symlink_data

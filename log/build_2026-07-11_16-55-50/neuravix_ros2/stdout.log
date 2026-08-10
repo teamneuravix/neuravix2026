@@ -1,0 +1,20 @@
+running develop
+running egg_info
+writing neuravix_ros2.egg-info/PKG-INFO
+writing dependency_links to neuravix_ros2.egg-info/dependency_links.txt
+writing entry points to neuravix_ros2.egg-info/entry_points.txt
+writing requirements to neuravix_ros2.egg-info/requires.txt
+writing top-level names to neuravix_ros2.egg-info/top_level.txt
+reading manifest file 'neuravix_ros2.egg-info/SOURCES.txt'
+writing manifest file 'neuravix_ros2.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix-ros2.egg-link (link to .)
+Installing lane_follower script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing neuravix_control script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing neuravix_control_real script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing obstacle_lidar script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing tabela_overlay script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+Installing tabela_tespit script to /home/neuravix/Desktop/carla-ros2-ws/install/neuravix_ros2/lib/neuravix_ros2
+
+Installed /home/neuravix/Desktop/carla-ros2-ws/build/neuravix_ros2
+running symlink_data

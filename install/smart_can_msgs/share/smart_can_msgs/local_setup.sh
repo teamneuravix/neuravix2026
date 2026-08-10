@@ -1,0 +1,1 @@
+/home/taha/Desktop/carla-ros2-ws/build/smart_can_msgs/ament_cmake_environment_hooks/local_setup.sh

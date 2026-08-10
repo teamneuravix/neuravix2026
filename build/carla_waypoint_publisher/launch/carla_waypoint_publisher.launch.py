@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_waypoint_publisher/launch/carla_waypoint_publisher.launch.py

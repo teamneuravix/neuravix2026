@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/map_msgs/rosidl_generator_c/map_msgs/srv/detail/set_map_projections__struct.h

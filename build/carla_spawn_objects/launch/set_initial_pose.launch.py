@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_spawn_objects/launch/set_initial_pose.launch.py

@@ -1,0 +1,2 @@
+[console_scripts]
+lane_follower = neuravix_ros2.lane_follower_node:main

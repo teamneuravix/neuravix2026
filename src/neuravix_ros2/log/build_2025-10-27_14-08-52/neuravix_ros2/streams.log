@@ -1,0 +1,51 @@
+[0.882s] Invoking command in '/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2': PYTHONPATH=/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/prefix_override:/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/neuravix_ros2 build --build-base /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build install --record /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/install.log --single-version-externally-managed
+[1.015s] /home/team1618/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py:268: UserWarning: Unknown distribution option: 'tests_require'
+[1.015s]   warnings.warn(msg)
+[1.101s] running egg_info
+[1.102s] creating build/neuravix_ros2/neuravix_ros2.egg-info
+[1.118s] writing build/neuravix_ros2/neuravix_ros2.egg-info/PKG-INFO
+[1.119s] writing dependency_links to build/neuravix_ros2/neuravix_ros2.egg-info/dependency_links.txt
+[1.119s] writing entry points to build/neuravix_ros2/neuravix_ros2.egg-info/entry_points.txt
+[1.119s] writing requirements to build/neuravix_ros2/neuravix_ros2.egg-info/requires.txt
+[1.119s] writing top-level names to build/neuravix_ros2/neuravix_ros2.egg-info/top_level.txt
+[1.119s] writing manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+[1.155s] reading manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+[1.156s] writing manifest file 'build/neuravix_ros2/neuravix_ros2.egg-info/SOURCES.txt'
+[1.156s] running build
+[1.156s] running build_py
+[1.156s] creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build
+[1.156s] creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib
+[1.156s] creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2
+[1.156s] copying neuravix_ros2/lane_follower_node.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2
+[1.156s] copying neuravix_ros2/__init__.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2
+[1.156s] running install
+[1.157s] /home/team1618/.local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+[1.157s] !!
+[1.157s] 
+[1.157s]         ********************************************************************************
+[1.157s]         Please avoid running ``setup.py`` directly.
+[1.157s]         Instead, use pypa/build, pypa/installer or other
+[1.157s]         standards-based tools.
+[1.157s] 
+[1.157s]         See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+[1.157s]         ********************************************************************************
+[1.157s] 
+[1.157s] !!
+[1.157s]   self.initialize_options()
+[1.161s] running install_lib
+[1.178s] creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[1.178s] copying /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2/lane_follower_node.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[1.178s] copying /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build/lib/neuravix_ros2/__init__.py -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2
+[1.178s] byte-compiling /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/lane_follower_node.py to lane_follower_node.cpython-310.pyc
+[1.180s] byte-compiling /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/__init__.py to __init__.cpython-310.pyc
+[1.180s] running install_data
+[1.197s] creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index
+[1.197s] creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index
+[1.197s] creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index/packages
+[1.197s] copying resource/neuravix_ros2 -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/ament_index/resource_index/packages
+[1.197s] copying package.xml -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2
+[1.197s] creating /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models
+[1.197s] copying models/best_yolo11.pt -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models
+[1.237s] copying models/best_250.pt -> /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/share/neuravix_ros2/models
+[1.252s] error: can't copy 'models/tabelatespit': doesn't exist or not a regular file
+[1.269s] Invoked command in '/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2' returned '1': PYTHONPATH=/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/prefix_override:/home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/install/neuravix_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/neuravix_ros2 build --build-base /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/build install --record /home/team1618/Desktop/carla-ros2-ws/src/neuravix_ros2/build/neuravix_ros2/install.log --single-version-externally-managed

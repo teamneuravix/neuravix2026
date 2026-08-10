@@ -1,0 +1,12 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from smart_can_msgs/msg/Dis.msg
+// generated code does not contain a copyright notice
+
+
+module smart_can_msgs {
+  module msg {
+    struct Dis {
+      float angle;
+    };
+  };
+};

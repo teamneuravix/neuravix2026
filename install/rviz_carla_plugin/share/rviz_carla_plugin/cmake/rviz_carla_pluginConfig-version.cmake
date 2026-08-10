@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/rviz_carla_plugin/ament_cmake_core/rviz_carla_pluginConfig-version.cmake

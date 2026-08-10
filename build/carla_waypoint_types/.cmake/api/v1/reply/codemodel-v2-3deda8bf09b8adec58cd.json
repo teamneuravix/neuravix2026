@@ -1,0 +1,258 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-f720840e64d650cd9999.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "carla_waypoint_types__py",
+					"jsonFile" : "directory-carla_waypoint_types__py-9307393a22c50e8c337a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types/carla_waypoint_types__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "carla_waypoint_types__rs",
+					"jsonFile" : "directory-carla_waypoint_types__rs-88784657197cac1d4b1e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types/carla_waypoint_types__rs",
+					"targetIndexes" : 
+					[
+						16
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "carla_waypoint_types",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_carla_waypoint_types_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_carla_waypoint_types_egg-562f4bbd2e37b7dcc856.json",
+					"name" : "ament_cmake_python_build_carla_waypoint_types_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_carla_waypoint_types::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_carla_waypoint_types-9688e2317ecc1e65fb0a.json",
+					"name" : "ament_cmake_python_symlink_carla_waypoint_types",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types-fd58500d90ac311d54fb.json",
+					"name" : "carla_waypoint_types",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__cpp-95d326e7d327ac2d2fbd.json",
+					"name" : "carla_waypoint_types__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "carla_waypoint_types__py::@772a690aa71f82ebd252",
+					"jsonFile" : "target-carla_waypoint_types__py-5ce386b99386890503fb.json",
+					"name" : "carla_waypoint_types__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_generator_c-a3c105bb5e020989175d.json",
+					"name" : "carla_waypoint_types__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_generator_py-e1d5372261fda923ff46.json",
+					"name" : "carla_waypoint_types__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_c-0d043977f1f307e54dcc.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_c__pyext-ea387c536fb40de4855d.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_cpp-6f805dd8e160082486ae.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_fastrtps_c-58b0bf81c879992f7616.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_fastrtps_c__pyext-05ff5b548c7ec12ad8e9.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_fastrtps_cpp-dadda2abd6d35272c4aa.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_introspection_c-c298a5efc8d4d15eff28.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_introspection_c__pyext-fea93ea335251d13772c.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types__rosidl_typesupport_introspection_cpp-a48c179b2c3ce963ea73.json",
+					"name" : "carla_waypoint_types__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "carla_waypoint_types__rs::@f8c9a899e4faba8fe659",
+					"jsonFile" : "target-carla_waypoint_types__rs-2ea5bd2350a52a903e68.json",
+					"name" : "carla_waypoint_types__rs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "carla_waypoint_types_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-carla_waypoint_types_uninstall-ffb6f35200c58a64eaf0.json",
+					"name" : "carla_waypoint_types_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-83be869e61ddb62cc3b0.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types",
+		"source" : "/home/neuravix/Desktop/carla-ros2-ws/src/ros-bridge/carla_waypoint_types"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

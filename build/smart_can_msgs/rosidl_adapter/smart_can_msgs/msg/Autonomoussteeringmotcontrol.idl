@@ -1,0 +1,14 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from smart_can_msgs/msg/Autonomoussteeringmotcontrol.msg
+// generated code does not contain a copyright notice
+
+
+module smart_can_msgs {
+  module msg {
+    struct Autonomoussteeringmotcontrol {
+      uint8 autonomous_steeringmot_en;
+
+      uint8 autonomous_steeringmot_pwm;
+    };
+  };
+};

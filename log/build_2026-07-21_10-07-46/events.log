@@ -1,0 +1,28 @@
+[0.000000] (-) TimerEvent: {}
+[0.000166] (-) JobUnselected: {'identifier': 'bee1_description'}
+[0.000248] (-) JobUnselected: {'identifier': 'carla_ackermann_control'}
+[0.000311] (-) JobUnselected: {'identifier': 'carla_ackermann_msgs'}
+[0.000332] (-) JobUnselected: {'identifier': 'carla_ad_agent'}
+[0.000372] (-) JobUnselected: {'identifier': 'carla_ad_demo'}
+[0.000390] (-) JobUnselected: {'identifier': 'carla_common'}
+[0.000401] (-) JobUnselected: {'identifier': 'carla_manual_control'}
+[0.000416] (-) JobUnselected: {'identifier': 'carla_msgs'}
+[0.000427] (-) JobUnselected: {'identifier': 'carla_ros_bridge'}
+[0.000895] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner'}
+[0.000924] (-) JobUnselected: {'identifier': 'carla_ros_scenario_runner_types'}
+[0.001016] (-) JobUnselected: {'identifier': 'carla_spawn_objects'}
+[0.001031] (-) JobUnselected: {'identifier': 'carla_twist_to_control'}
+[0.001046] (-) JobUnselected: {'identifier': 'carla_walker_agent'}
+[0.001058] (-) JobUnselected: {'identifier': 'carla_waypoint_publisher'}
+[0.001068] (-) JobUnselected: {'identifier': 'carla_waypoint_types'}
+[0.001260] (-) JobUnselected: {'identifier': 'fast_lio'}
+[0.001286] (-) JobUnselected: {'identifier': 'livox_ros_driver2'}
+[0.001372] (-) JobUnselected: {'identifier': 'pcl_recorder'}
+[0.001387] (-) JobUnselected: {'identifier': 'ros_compatibility'}
+[0.001398] (-) JobUnselected: {'identifier': 'rqt_carla_control'}
+[0.001837] (-) JobUnselected: {'identifier': 'rviz_carla_plugin'}
+[0.001863] (-) JobUnselected: {'identifier': 'smart_can_msgs'}
+[0.001962] (neuravix_ros2) JobQueued: {'identifier': 'neuravix_ros2', 'dependencies': OrderedDict([('carla_msgs', '/home/taha/Desktop/carla-ros2-ws/install/carla_msgs'), ('smart_can_msgs', '/home/taha/Desktop/carla-ros2-ws/install/smart_can_msgs')])}
+[0.002071] (neuravix_ros2) JobStarted: {'identifier': 'neuravix_ros2'}
+[0.009708] (neuravix_ros2) JobEnded: {'identifier': 'neuravix_ros2', 'rc': 1}
+[0.019932] (-) EventReactorShutdown: {}

@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/rosidl_typesupport_introspection_c/carla_msgs/srv/detail/destroy_object__rosidl_typesupport_introspection_c.h

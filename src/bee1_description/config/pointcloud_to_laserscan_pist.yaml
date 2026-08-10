@@ -1,0 +1,25 @@
+pointcloud_to_laserscan:
+    ros__parameters:
+        # Girdi bulutu ego_vehicle/lidar frame'inde geliyor.
+        target_frame: ego_vehicle/lidar
+        transform_tolerance: 0.05
+
+        # YUKSEKLIK PENCERESI (lidar frame'inde, metre) - TUNEL-GUVENLI:
+        # Sadece bu araliktaki noktalar 2D taramaya girer. Tunel tavanini
+        # disarida birakir -> arac tuneli "kapali" sanmaz, icinden gecer.
+        # LIDAR yerden ~1.6m'de; arac govdesi/bariyer seviyesini kapsa,
+        # tunel tavanini (yuksek) disla.
+        min_height: -1.0       # lidar'in 1.0m altina kadar (zemine yakin, bariyer tabani)
+        max_height: 0.5        # lidar'in 0.5m ustune kadar (tunel tavani BUNUN ustunde kalir)
+
+        # Tam tarama (360 derece)
+        angle_min: -3.14159
+        angle_max: 3.14159
+        angle_increment: 0.0087    # ~0.5 derece
+        scan_time: 0.1
+        range_min: 0.5
+        range_max: 100.0
+        use_inf: true
+        inf_epsilon: 1.0
+        queue_size: 10
+        use_sim_time: true

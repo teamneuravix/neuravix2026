@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_msgs/rosidl_generator_py/carla_msgs/msg/_carla_traffic_light_info_s.c

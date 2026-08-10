@@ -1,0 +1,1 @@
+/home/neuravix/Desktop/carla-ros2-ws/build/carla_waypoint_types/rosidl_typesupport_fastrtps_cpp/carla_waypoint_types/srv/detail/get_actor_waypoint__rosidl_typesupport_fastrtps_cpp.hpp

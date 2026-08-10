@@ -1,0 +1,41 @@
+slam_toolbox:
+    ros__parameters:
+        # --- Frame'ler (mapping ile ayni) ---
+        odom_frame: odom
+        map_frame: map
+        base_frame: ego_vehicle
+        scan_topic: /scan
+
+        # --- MOD: localization (haritalama DEGIL, hazir haritada konumlan) ---
+        mode: localization
+
+        # --- Hazir harita (serialize edilmis posegraph, UZANTISIZ) ---
+        # pist_haritasi.posegraph + pist_haritasi.data dosyalarini yukler.
+        map_file_name: /home/neuravix/Desktop/carla-pist/pist_haritasi
+        # Baslangic pozu [x, y, yaw] - arac haritada nerede basliyor.
+        # Yaris hep ayni yerden basliyorsa burayi sabitle; degilse RViz
+        # "2D Pose Estimate" ile elle verilebilir (AMCL gibi).
+        map_start_pose: [0.0, 0.0, 0.0]
+        # map_start_at_dock: true   # alternatif: ilk node'a scan-match
+
+        use_sim_time: true
+
+        # --- Scan eslestirme ---
+        resolution: 0.05
+        max_laser_range: 100.0
+        minimum_travel_distance: 0.1
+        minimum_travel_heading: 0.3
+        transform_publish_period: 0.02
+        map_update_interval: 1.0
+
+        use_scan_matching: true
+        use_scan_barycenter: true
+        # localization modunda scan_buffer_size = dairesel tampon boyutu
+        scan_buffer_size: 20
+        link_match_minimum_response_fine: 0.1
+        correlation_search_space_dimension: 0.5
+
+        throttle_scans: 5
+        transform_timeout: 1.0
+        tf_buffer_duration: 30.0
+        stack_size_to_use: 40000000

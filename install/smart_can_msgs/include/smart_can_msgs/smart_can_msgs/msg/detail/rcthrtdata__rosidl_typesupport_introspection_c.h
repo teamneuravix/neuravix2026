@@ -1,0 +1,1 @@
+/home/taha/Desktop/carla-ros2-ws/build/smart_can_msgs/rosidl_typesupport_introspection_c/smart_can_msgs/msg/detail/rcthrtdata__rosidl_typesupport_introspection_c.h
