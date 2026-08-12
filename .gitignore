@@ -1,0 +1,23 @@
+# --- ROS2 colcon çıktıları ---
+build/
+install/
+log/
+*.pyc
+__pycache__/
+.pytest_cache/
+
+# --- Büyük binary'ler (repoya girmez, ayrıca paylaşılır) ---
+# Ayrıntı için WORKSPACE_KURULUM.md
+*.pt
+*.pth
+*.onnx
+*.engine
+*.pcd
+*.bag
+*.db3
+
+# --- Editör / sistem ---
+.vscode/
+.idea/
+*.swp
+.DS_Store

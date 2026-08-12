@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<!--
+  Bee1 (Beemobs L7e-CU) robotaksi URDF
+  ====================================
+  Referans noktasi (base_link) = ON AKS MERKEZI, yer hizasinda (z=0).
+  Tum eksenler ROS REP-103 standardinda:  +x ILERI, +y SOL, +z YUKARI.
+
+  ONEMLI - isaret donusumu:
+  Arac dokumani sensor konumlarini "on akstan geriye dogru" olcmus.
+  REP-103'te +x ileri oldugu icin dokumandaki x degerinin isaretini ters cevirdik:
+     dokuman LIDAR x=-177mm  ->  URDF x=+0.177  (on aksin onunde)
+     dokuman kamera x=-205mm ->  URDF x=+0.205  (on aksin onunde)
+     dokuman XSENS x=+1440mm ->  URDF x=-1.440  (on aksin arkasinda)
+
+  Bu dosya hem CARLA simulasyonunda hem gercek aracta ayni kalir.
+  Sensor frame isimleri: lidar_link, camera_left_link, camera_right_link,
+  imu_link, gnss_link.  Algoritmalar daima bu isimleri kullanir.
+-->
+<robot name="bee1" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- ============================ PARAMETRELER ============================ -->
+  <!-- Arac govde olculeri (Genel Bilgilendirme dokumani, metre) -->
+  <xacro:property name="body_length"   value="2.740"/>
+  <xacro:property name="body_width"    value="1.060"/>
+  <xacro:property name="body_height"   value="1.785"/>
+  <xacro:property name="wheelbase"     value="1.860"/>   <!-- on aks <-> arka aks -->
+  <xacro:property name="front_overhang" value="0.410"/>  <!-- on aks -> on burun -->
+  <xacro:property name="rear_overhang"  value="0.470"/>  <!-- arka aks -> arka uc -->
+  <xacro:property name="track_front"   value="0.886"/>
+  <xacro:property name="track_rear"    value="0.850"/>
+
+  <!-- Lastik 145/70 R13:  capi = 13*0.0254 + 2*0.145*0.70 = 0.5333 m -> yaricap 0.267 -->
+  <xacro:property name="wheel_radius"  value="0.267"/>
+  <xacro:property name="wheel_width"   value="0.145"/>
+
+  <!-- Govde merkezinin base_link'e (on aks) gore konumu.
+       Govde uzunluk ekseninde: on burun on aksin +front_overhang onunde,
+       arka uc arka aksin -rear_overhang arkasinda.
+       Govde geometrik merkezi -> base_link'in arkasinda kaliyor. -->
+  <xacro:property name="body_center_x"
+       value="${-(rear_overhang + wheelbase)/2 + (-front_overhang + 0)/2 + front_overhang}"/>
+  <!-- daha okunakli hesap asagida visual icinde dogrudan verildi -->
+
+  <!-- Sensor offsetleri (base_link = on aks, REP-103 +x ileri) -->
+  <xacro:property name="lidar_x"  value="0.177"/>
+  <xacro:property name="lidar_y"  value="0.0"/>
+  <!-- DUZELTILDI 2026-07-21: eski deger 0.620 idi, uc gercek pist bag'inin
+       zemin donusleriyle celisiyor. 5-20 m halkasindaki noktalarin z modu:
+       pist_17tem_2 -> 1.29, pist_18tem -> 1.31, pist_19_3tem -> 1.41 m.
+       1.35 ucune de <=0.06 m mesafede. Govde yuksekligi 1.785 m oldugu icin
+       tavan montaji fiziksel olarak da tutarli (0.620 kaput hizasiydi).
+       MEZURAYLA TEYIT ET; degisirse pointcloud_to_laserscan_real.yaml'daki
+       min/max_height ve obstacle_lidar'in lidar_height'i de guncellenmeli. -->
+  <xacro:property name="lidar_z"  value="1.350"/>
+
+  <xacro:property name="cam_x"    value="0.205"/>
+  <xacro:property name="cam_y"    value="0.060"/>
+  <xacro:property name="cam_z"    value="0.685"/>
+
+  <xacro:property name="xsens_x"  value="-1.440"/>
+  <xacro:property name="xsens_y"  value="0.0"/>
+  <xacro:property name="xsens_z"  value="1.390"/>
+
+  <!-- Renk malzemeleri (sadece RViz gorsel) -->
+  <material name="body_white"><color rgba="0.9 0.9 0.9 1.0"/></material>
+  <material name="wheel_black"><color rgba="0.1 0.1 0.1 1.0"/></material>
+  <material name="lidar_red"><color rgba="0.85 0.1 0.1 1.0"/></material>
+  <material name="cam_blue"><color rgba="0.1 0.3 0.85 1.0"/></material>
+  <material name="imu_yellow"><color rgba="0.95 0.85 0.1 1.0"/></material>
+  <material name="gnss_green"><color rgba="0.1 0.7 0.3 1.0"/></material>
+
+  <!-- ============================ BASE LINK ============================ -->
+  <!-- Yer hizasinda, on aks merkezinde, boyutsuz referans frame. -->
+  <link name="base_link"/>
+
+  <!-- Govde: base_link'e gore arkaya ve yukari kaydirilmis kutu.
+       Govde merkezi x = front_overhang - body_length/2
+                       = 0.410 - 1.370 = -0.960 (on aksin 0.96m arkasinda) -->
+  <link name="chassis_link">
+    <visual>
+      <origin xyz="0 0 ${body_height/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${body_length} ${body_width} ${body_height}"/>
+      </geometry>
+      <material name="body_white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${body_height/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${body_length} ${body_width} ${body_height}"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_to_chassis" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis_link"/>
+    <origin xyz="${front_overhang - body_length/2} 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ============================ TEKERLEKLER ============================ -->
+  <!-- Tekerlek makrosu: silindir, dik (y ekseni etrafinda dondurulmus) -->
+  <xacro:macro name="wheel" params="name x y">
+    <link name="${name}">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <material name="wheel_black"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${name}_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="${x} ${y} ${wheel_radius}" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- On tekerlekler: on akste (x=0), iz/2 saga-sola -->
+  <xacro:wheel name="front_left_wheel"  x="0"            y="${ track_front/2}"/>
+  <xacro:wheel name="front_right_wheel" x="0"            y="${-track_front/2}"/>
+  <!-- Arka tekerlekler: arka akste (x=-wheelbase) -->
+  <xacro:wheel name="rear_left_wheel"   x="${-wheelbase}" y="${ track_rear/2}"/>
+  <xacro:wheel name="rear_right_wheel"  x="${-wheelbase}" y="${-track_rear/2}"/>
+
+  <!-- ============================ SENSORLER ============================ -->
+  <!-- LIDAR (Velodyne VLP-16) -->
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.052" length="0.072"/></geometry>
+      <material name="lidar_red"/>
+    </visual>
+  </link>
+  <joint name="base_to_lidar" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="${lidar_x} ${lidar_y} ${lidar_z}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Gercek Velodyne surucusu bulutu "velodyne" frame_id'siyle yayinlar
+       ve /scan da o frame'le cikar; slam_toolbox base_link->velodyne
+       donusumunu ister. Bu alias olmadan TF sessizce beklenir, hata
+       gorunmez (2026-07-12). Aracta gercek ismi dogrula (lidar_echo ya da
+       "ros2 topic echo /velodyne_points" ciktisindaki header.frame_id) -->
+  <link name="velodyne"/>
+  <joint name="lidar_to_velodyne" type="fixed">
+    <parent link="lidar_link"/>
+    <child link="velodyne"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Sol kamera (ZED2 sol) -->
+  <link name="camera_left_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="0.03 0.05 0.03"/></geometry>
+      <material name="cam_blue"/>
+    </visual>
+  </link>
+  <joint name="base_to_camera_left" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_left_link"/>
+    <origin xyz="${cam_x} ${cam_y} ${cam_z}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Sag kamera (ZED2 sag) -->
+  <link name="camera_right_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="0.03 0.05 0.03"/></geometry>
+      <material name="cam_blue"/>
+    </visual>
+  </link>
+  <joint name="base_to_camera_right" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_right_link"/>
+    <origin xyz="${cam_x} ${-cam_y} ${cam_z}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- IMU (XSENS MTI-680) -->
+  <link name="imu_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="0.06 0.06 0.02"/></geometry>
+      <material name="imu_yellow"/>
+    </visual>
+  </link>
+  <joint name="base_to_imu" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="${xsens_x} ${xsens_y} ${xsens_z}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- GNSS (XSENS ayni govde, GPS anten) -->
+  <link name="gnss_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+      <material name="gnss_green"/>
+    </visual>
+  </link>
+  <joint name="base_to_gnss" type="fixed">
+    <parent link="base_link"/>
+    <child link="gnss_link"/>
+    <origin xyz="${xsens_x} ${xsens_y} ${xsens_z}" rpy="0 0 0"/>
+  </joint>
+
+</robot>

@@ -1,0 +1,347 @@
+================================================================================
+ OBSTACLE / SLALOM DEĞİŞİKLİKLERİ — 2026-08-10
+ (yarın CARLA'da birlikte denemek için özet)
+================================================================================
+
+KISA ÖZET
+---------
+Arkadaşın masaüstü slalom testi "slalom_sim.py"yi gönderdi. Bunu workspace'e
+entegre ettim ve bir TEST ARACI olarak kullanıp slalom mantığındaki gerçek
+hataları buldum/düzelttim. Sonuçta 5 masaüstü senaryosundan 4'ü geçiyor.
+Hiçbir şey henüz CARLA'da denenmedi ve deploy image'ı YENİDEN BUILD EDİLMEDİ
+(önce CARLA'da görelim).
+
+ÖNEMLİ NETLEŞTİRME:
+  - Arkadaşının attığı dosya = slalom_sim.py. BUNU DEĞİŞTİRMEDİM, olduğu gibi
+    workspace'e kopyaladım (src/neuravix_ros2/slalom_sim.py).
+  - Değişiklik yaptığım dosyalar = BİZİM kodumuz (benim 21 Temmuz'daki halim):
+    obstacle_lidar_node.py, decision_brain.py, neuravix_control_node.py,
+    neuravix_control_node_real.py.
+  - slalom_sim.py 3.0 m şerit genişliğine göre (side_offset=3.0, side_corridor=1.5)
+    yazılmıştı; ben bizim node'u da o ölçüye hizaladım ki test gerçek davranışı
+    ölçsün, hayali bir dünyayı değil.
+
+
+================================================================================
+1) slalom_sim.py — ENTEGRASYON (değiştirilmedi)
+================================================================================
+  - Yeri: src/neuravix_ros2/slalom_sim.py
+  - Çalıştırma: python3 src/neuravix_ros2/slalom_sim.py
+  - Çıktı: konsol özeti + src/neuravix_ros2/slalom_sim.png (5 senaryo yörüngesi)
+  - Ne yapar: CARLA'sız, ROS'suz. decision_brain.Alkar_Function4'ü basit bir
+    bisiklet araç modeli + sentetik lidar sektörleriyle (obstacle_lidar ile AYNI
+    geometri) kapalı çevrimde sürer. Slalom mantığını saniyeler içinde test eder.
+  - KURAL: simin sentetik lidar geometrisi, gerçek node ile AYNI olmalı; yoksa
+    node'da olmayan bir şeyi test eder. Bu yüzden node'u aşağıdaki gibi hizaladım.
+
+
+================================================================================
+2) obstacle_lidar_node.py — GEOMETRİ (3.0 m pist şeridine hizalandı)
+================================================================================
+Neden: eski değerler "bitişik koridoru" ölçüyordu; arkadaşın pist ölçüsü
+(2026-08-03) şerit genişliğini 3.0 m veriyor. Slalom "komşu/karşı şeride
+kaçabilir miyim" diye sormalı, o şerit 3.0 m merkezde.
+
+  DEĞİŞENLER (önce -> sonra):
+  - side_offset ...................... 1.40  -> 3.0   (komşu şerit MERKEZİ)
+  - side_corridor (YENİ parametre) ... yok   -> 1.5   (yan sektörün yarı genişliği)
+        * Eskiden yan sektör için "corridor" (0.70) tekrar kullanılıyordu; artık
+          ayrı bir parametre. Sol koridor y∈[1.5, 4.5], sağ y∈[-4.5, -1.5].
+  - _FLOAT_TUNABLE listesine "side_corridor" eklendi (runtime -p ile ayarlanabilir).
+  - _side_clearance(): "corridor" yerine "side_corridor" kullanıyor.
+  - _front_clearance(): açıklama güncellendi (koridorlar artık bitişik değil).
+  - Başlangıç log satırı: "yan koridor merkezi=+-3.00 m (yari gen. 1.50)" yazıyor.
+
+  ID-4 SÖZLEŞMESİ AYNI: front/left/right hâlâ "o koridorda ön tampondan boylamsal
+  klerans (m)"; 99=temiz, 0=kapalı/veri yok.
+
+  ⚠️ KÖR NOKTA: front |y|<=0.70 ile yan |y-3.0|<1.5 arasında y∈(0.70, 1.50) hiçbir
+  sektörde değil. 1.4 m'lik kutu engel iki sektöre de girdiği için sorun değil,
+  ama şerit çizgisi üstündeki İNCE bir cisim kaçabilir. Akılda tutalım.
+
+  ⚠️ CARLA UYARISI: 3.0 m gerçek pist ölçüsü. CARLA town'unun şerit genişliği
+  farklıysa yarın -p side_offset:=X -p side_corridor:=Y ile CARLA'ya göre geç.
+
+
+================================================================================
+3) decision_brain.py — HATA A: engele yavaşlamama
+================================================================================
+Belirti: araç engele YAVAŞLAMADAN giriyordu (~11 km/h), slalom yayını kuramadan
+duruyordu.
+
+Kök neden: obstacle_event (10 Hz) front<slow_distance olunca yavaşlatıyordu, ama
+lane_detect_event (her ~20 Hz ID-2 mesajında) hemen ardından _move_vehicle(
+default_speed=12) çağırıp yavaşlamayı EZİYORDU. İki handler da self.target_speed'e
+yazıyor, son yazan kazanıyordu -> lane her zaman kazanıyordu. Bu SİMDE DEĞİL,
+gerçek sistemde de böyle.
+
+Düzeltme:
+  - YENİ alan: self._obstacle_speed_cap (None = sınır yok)
+  - obstacle_event başında: front<slow_distance ise cap=slow_speed, değilse None
+    (10 Hz'de her engel karesinde güncellenir).
+  - _move_vehicle(): istenen hız cap'i aşamaz (min'lenir). Böylece lane_event'in
+    default_speed çağrısı cap'i ezemez.
+  - Engel geçince (front>=slow_distance) cap otomatik None olur.
+
+Sonuç: araç artık engele yaklaşırken 11 -> 6 km/h yavaşlıyor.
+
+
+================================================================================
+4) decision_brain.py — HATA B: slalom şerit değişimini tamamlayamıyor
+================================================================================
+Belirti: slalom başlıyor ama araç engelin 1.7 m gerisinde, sadece ~0.7 m yana
+kaymışken duruyordu (min klerans 0.58 m). "Geçemedi."
+
+İki kök neden (slalom_sim trace'leriyle bulundu):
+
+  B1) Escape fazı ERKEN bitiyordu.
+      - Eski bitiş koşulu: d_phase>=slalom_out_distance VEYA front>slow_distance.
+      - Araç kaçışta açılınca engel GÖVDE-SABİT ön koridordan geçici çıkıyor,
+        front=99 oluyor (henüz yanından geçmedik!). "front>slow" koşulu ateşleniyor,
+        escape daha 1.3 m yanaldayken (hedef ~3 m) return'e geçiyor, return
+        direksiyonu engele geri kırıyor -> çarpma/abort.
+      - DÜZELTME: "front>slow_distance" erken-çıkışı KALDIRILDI.
+
+  B2) Fazlar yay-boyu (mesafe) tabanlıydı -> yarıçapa bağlıydı.
+      - slalom_out_distance=5.3 m yay, R=4 m'de 76° dönüş; ama sıkı açıda (R=3 m)
+        99° dönüş -> araç neredeyse dikleşiyor, return toparlayamıyor (y=1.2'de
+        kalıyor, "geçti ama şeride dönemedi").
+      - DÜZELTME: fazlar artık BAŞ AÇISI (yaw) tabanlı, yarıçaptan bağımsız:
+          * escape: hedef açıya (slalom_escape_heading=45°) ulaşınca biter.
+          * return: burun tekrar düzelene (slalom_return_tol=8° içine) kadar; sonra
+            şeride toparlamayı lane-follow yapar.
+      - update_motion()'a yaw= parametresi eklendi. YENİ yardımcı: _ang_diff().
+      - _begin_weave() weave başındaki yaw'ı _yaw_mark'a kaydeder.
+      - YENİ alanlar: self.yaw, _yaw_ok, _yaw_mark, slalom_escape_heading(45°),
+        slalom_return_tol(8°).
+      - Yaw beslenmezse MESAFE, o da yoksa ZAMAN yedeğine düşer (eski davranış).
+
+  Ek: escape/return direksiyon açıları parametreye çevrildi:
+      - slalom_escape_steer = 70 (sol; sağ = 90-70 = 20)
+      - slalom_return_steer = 65 (sağ; sol = 90-65 = 25)
+
+
+================================================================================
+5) decision_brain.py — SLALOM AYARLARI (masaüstü senaryolarını geçiren set)
+================================================================================
+  DEĞİŞENLER (önce -> sonra):
+  - avoid_distance ............ 3.0  -> 5.0
+        * Kapalı-döngü (yaw) manevrası tamamlanmak için ~5 m yola ihtiyaç duyuyor;
+          3 m'de tetiklenince araç engele varmadan yayı kuramıyordu.
+        * 21 Temmuz'daki 5.0/3.0 ayrımı ESKİ AÇIK-DÖNGÜ slalom içindi, artık
+          geçerli değil. Erken/yanlış tetiği hâlâ üç şey engelliyor:
+          avoid_confirm_time (0.5 s kalıcılık), viraj bastırma (_in_curve),
+          obstacle_lidar 2/5-kare gürültü filtresi.
+  - avoid_abort_distance ...... 1.0  -> 0.8
+        * Weave sırasında "artık çarpıyoruz" hattı. algi9'un 0.49/0.36 m yakın
+          geçişleri hâlâ durur; 1.6 m'lik geçiş sürer.
+  - avoid_lane_blend_escape ... 0.15 -> 0.0
+        * Kaçış fazında tam commit (şerit karışımı yok).
+
+  DEĞİŞMEYENLER (referans): stop_distance=2.2, slow_distance=5.0,
+  avoid_confirm_time=0.5, safe_side_distance=2.0, slalom_max_weaves=3,
+  stall_timeout=2.0, weave_gap_time=1.5, curve_lane_dev=6.0.
+
+
+================================================================================
+6) neuravix_control_node.py (SİM) + neuravix_control_node_real.py (GERÇEK)
+================================================================================
+Neden: yaw-tabanlı slalom (Hata B) çalışması için beyne yaw beslenmeli. İkisi de
+odom_yaw'ı quaternion'dan zaten hesaplıyordu; sadece update_motion'a geçirdim.
+
+  - SİM (control_loop):
+      ESKİ: brain.update_motion(speed_mps=self.current_speed)
+      YENİ: brain.update_motion(speed_mps=self.current_speed, yaw=self.odom_yaw)
+
+  - GERÇEK (control_loop):
+      ESKİ: update_motion(distance=self._trav_dist)
+            update_motion(speed_mps=self.can_speed_mps)
+      YENİ: update_motion(distance=self._trav_dist, yaw=self.odom_yaw)
+            update_motion(speed_mps=self.can_speed_mps, yaw=self.odom_yaw)
+
+  odom_yaw None ise update_motion güvenle yok sayar (yaw yoksa mesafe/zaman yedeği).
+  NOT: gerçek araçta yaw için odometri orientation'ı gerekli (slam_toolbox/EKF verir).
+
+
+================================================================================
+7) MASAÜSTÜ TEST SONUCU (slalom_sim.py, 4/5)
+================================================================================
+  S1  tek engel (1.4 m kutu), tam şerit değişimi ... GEÇTİ,  min klerans 1.18 m ✓
+  S5  alternatif koniler (asıl slalom) ............. GEÇTİ,  min klerans 1.18 m ✓
+  S3  karşı şeritte araç -> geçme, dur ............. doğru DURDU ✓
+  S4  yol tamamen kapalı -> güvenli dur ............ doğru DURDU ✓
+  S2  aynı şeritte 10 m arayla iki engel ........... GEÇEMEDİ (bkz. aşağıda)
+
+  S2 neden geçemiyor (MANTIK HATASI DEĞİL):
+    Araç #1'i temiz geçiyor ama komşu şeride kaymış halde; lane-follow onu şeride
+    geri çekerken #2'yi ancak ~2 m'de görüyor (o ana kadar #2 gövde-sabit ön
+    koridorun dışında). 2 m'de slalom tamamlanamaz -> güvenli durur.
+    Gerçek slalom pistleri alternatif koni kullanır (S5) ve O ÇALIŞIYOR.
+    İstenirse sonraki iş: yakın engeller arasında tam recentre etmeme / ileri
+    bakışı genişletme.
+
+  Regresyonlar (bozulmadı): viraj bastırma, stall koruması, zig-zag yön seçimi,
+  fail-safe (0,0,0 -> dur+fren), yaw yokken mesafe/zaman yedeği.
+
+
+================================================================================
+8) YARIN CARLA'DA YAPILACAKLAR
+================================================================================
+  a) Engel node'u CARLA bayraklarıyla:
+       ros2 run neuravix_ros2 obstacle_lidar --ros-args \
+         -p lidar_topic:=/carla/ego_vehicle/lidar -p lidar_height:=1.6
+     (CARLA şerit genişliği 3.0 m değilse: -p side_offset:=X -p side_corridor:=Y)
+
+  b) İzlenecekler:
+       ros2 topic echo /master                 # ID-4 front,left,right değerleri
+       ros2 topic echo /neuravix/current_state  # LANE_FOLLOW/OBSTACLE_AVOID/STOP
+     Sim'le karşılaştır: escape 45°'ye kadar kırıyor mu, return burnu düzeltiyor mu,
+     araç engele yaklaşırken yavaşlıyor mu (Hata A), yaw besleniyor mu.
+
+  c) Denenecek senaryolar (kolay -> zor):
+       1. Tek koni (S1 karşılığı)
+       2. Alternatif koni dizisi (S5 karşılığı — asıl slalom)
+       3. Viraj + koni (viraj bastırma gerçek footage'da hiç kalibre edilmedi;
+          curve_lane_dev=6.0 sahada ayar isteyebilir)
+
+  d) Odometri yaw'ının CARLA'da aktığını doğrula (yoksa slalom mesafe-yedeğine
+     düşer = eski 99° sorunu). /carla/ego_vehicle/odometry orientation vermeli.
+
+
+================================================================================
+9) DURUM / YAPILMAYANLAR
+================================================================================
+  - Tüm değişiklikler SADECE workspace'te. Build edildi, node'lar açılıyor.
+  - export_deploy.sh ÇALIŞTIRILMADI, docker image YENİDEN BUILD EDİLMEDİ.
+    (Bilerek: önce CARLA doğrulaması. Araçtaki image hâlâ eski.)
+  - Değişen dosyalar:
+      src/neuravix_ros2/neuravix_ros2/obstacle_lidar_node.py
+      src/neuravix_ros2/neuravix_ros2/decision_brain.py
+      src/neuravix_ros2/neuravix_ros2/neuravix_control_node.py
+      src/neuravix_ros2/neuravix_ros2/neuravix_control_node_real.py
+      src/neuravix_ros2/slalom_sim.py            (arkadaşın dosyası, entegre edildi)
+  - Ayrıntılı gerekçeler CLAUDE.md sonunda ("Desk slalom simulator + slalom
+    overhaul, 2026-08-10") bölümünde.
+================================================================================
+
+
+================================================================================
+10) EK (2026-08-10): SİM NODE'UNA use_planner PARAMETRESİ
+================================================================================
+Sorun: neuravix_control (sim) node'u, lane_follower kapalıyken bile sabit kodlu
+ROUTE'u pure-pursuit ile körlemesine takip ediyordu. "Engelden sonra güzelce
+şeride döndü" görüntüsü PERCEPTION DEĞİL, o ezberlenmiş rotaydı -> slalom/şeridin
+gerçek davranışı maskeleniyordu.
+
+Düzeltme (gerçek node'daki mantığın aynısı sim node'una taşındı):
+  - neuravix_control_node.py'ye YENİ param: use_planner (VARSAYILAN False).
+  - _pure_pursuit_steer(): use_planner False ise None döner -> waypoint direksiyonu
+    yok, araç REAKTİF sürer (şerit + tabela + engel/slalom).
+  - _odom_cb(): A* grid güncellemesi (update_position) yalnız use_planner açıkken.
+    odom_x/y/YAW her durumda saklanır (yaw slalom fazları için şart).
+  - Başlangıç log'u use_planner durumunu yazar.
+
+Kullanım:
+  - GERÇEK slalom/şerit sonucu (varsayılan, önerilen test):
+        ros2 run neuravix_ros2 neuravix_control
+        -> "use_planner=False -> REAKTIF: serit+tabela+engel, waypoint YOK"
+  - CARLA pistinde ROUTE/pure-pursuit takibini test etmek istersen:
+        ros2 run neuravix_ros2 neuravix_control --ros-args -p use_planner:=true
+
+DİKKAT: use_planner=False iken VE lane_follower kapalıyken, LANE_FOLLOW'da
+direksiyon FSM çıktısıdır (şerit yoksa 45=düz). Yani araç düz gider, sadece
+engelde slalom yapar; slalom sonrası KENDİLİĞİNDEN şeride toparlamaz (ne şerit
+ne waypoint var). Toparlanmayı görmek için lane_follower'ı da aç.
+Gerçek node (neuravix_control_real) zaten use_planner=False varsayılanıyla
+bu davranıştaydı; artık iki node tutarlı.
+
+
+================================================================================
+11) EK (2026-08-10): CARLA PİST ARAYÜZÜ GÜNCELLENDİ
+================================================================================
+Dosya: ~/Desktop/carla_pist_arayuz.py  (güncel/tam olan; ~/Desktop/carla-pist/
+içindeki eski kopya GÜNCELLENMEDİ, onu kullanma).
+
+  - 11.Lidar: artık CARLA bayraklarıyla açılıyor:
+      -p lidar_topic:=/carla/ego_vehicle/lidar -p lidar_height:=1.6
+    (Neden ŞART: obstacle_lidar varsayılanları gerçek araç -> /velodyne_points,
+     1.35 m. CARLA'da o topic yok -> fail-safe 0,0,0 -> araç durur. Eski GUI
+     komutu bayraksızdı, yani zaten bozuktu.)
+  - 12. Neuravix Kontrol: -p use_planner:=false eklendi (reaktif slalom; ROUTE/
+    pure-pursuit kapalı). CARLA rotasını test etmek istersen true yap.
+
+CONTROL + OBSTACLE İLE İZOLE TEST — TIKLAMA SIRASI:
+  1. CARLA Sunucusu
+  2. Pist XODR yükle
+  3. ROS Bridge
+  4. Ego Araç ve Sensörler        (lidar topic + odometri buradan gelir)
+  11. Lidar (CARLA bayraklı)
+  12. Neuravix Kontrol (reaktif)
+  Gerekmez: 6 (manuel), 8 (kamera), 9 (şerit), 10 (tabela).
+  Not: 5 (URDF/TF) bu izole test için şart değil (obstacle sensör frame'inde
+  çalışır, control odometriyi doğrudan okur) ama açmak zararsız.
+
+BEKLENEN DAVRANIŞ (control+obstacle, şerit YOK):
+  Araç düz gider (FSM 45), engelde slalom yapar (yaw-tabanlı escape/return),
+  slalom sonrası KENDİLİĞİNDEN şeride toparlamaz (geri çekecek şerit/waypoint
+  yok). Toparlanmayı da görmek istersen 9 (şerit takip) düğümünü de aç.
+
+İZLEME (ayrı düğümler zaten var):
+  - "Kontrol Komutlarını İzle (/master)"  -> ID-4 front,left,right
+  - Ayrıca:  ros2 topic echo /neuravix/current_state
+
+
+================================================================================
+12) GÜNCELLEME (2026-08-10 akşam): NURSENA BRANCH'İ İLE MERGE
+================================================================================
+Kaynak: github.com/teamneuravix/neuravix2026  branch "nursena"
+  (carla-ros2-ws/src/neuravix_ros2/...). Bu, arkadaşının slalom işinin TAM hali.
+
+DOSYA DOSYA KARŞILAŞTIRMA + KARAR:
+  - slalom_sim.py .............. nursena ile BİREBİR AYNI. Dün entegre ettiğim
+                                 zaten tam haliymiş. Değişiklik yok.
+  - obstacle_lidar_node.py ..... GEOMETRİ birebir aynı niyet (side_offset=3.0,
+                                 side_corridor=1.5). Tek fark: nursena'nın
+                                 _on_params'ı bilinmeyen parametreleri REDDEDER
+                                 (use_sim_time'ı kırar); bendeki düzeltilmiş
+                                 hali onları geçirir. -> BENİMKİ KALDI (daha iyi).
+  - neuravix_control_node.py ... nursena'nın SİM node'unda use_planner YOK
+                                 (hep pure-pursuit). Bende var. -> BENİMKİ KALDI.
+  - neuravix_control_node_real.py nursena'da da use_planner+yaw var; bende ek
+                                 olarak _check_motion watchdog. -> BENİMKİ KALDI.
+  - decision_brain.py .......... ASIL FARK BURADA (aşağıda).
+
+decision_brain.py — NURSENA TABAN + BENİM VİRAJ BASTIRMAM (graft):
+  Objektif test: nursena beyni slalom_sim'de 5/5 geçti (benim S2'de kaldığım
+  iki-engel senaryosu dahil), daha temiz kleranslarla. Çünkü DAHA GELİŞMİŞ:
+    * 4 FAZLI slalom: escape -> PASS (komşu şeritte engelin yanından geç) ->
+      return -> align. Benimki 2 fazdı (escape/return), "pass" fazı yoktu ->
+      S2 bu yüzden kalıyordu.
+    * Gerçek YANAL ofseti yaw'dan integre ediyor (_lateral += sin(yaw-ref)*step);
+      benim baş-açısı hedefimden daha doğru. slalom_lateral_target=3.0.
+    * Bug A'yı da çözmüş (2026-08-03, lane_detect_event'te doğrudan; benim
+      _obstacle_speed_cap'ime gerek kalmadı).
+    * Yakın-engel abort, iki-kademeli eşik, infinite-weave guard, stall: hepsi var.
+  nursena'nın TEK eksiği: VİRAJ BASTIRMA (senin "virajda rastgele slalom atmasın"
+  şartın). Onu benim koddan graft ettim:
+    * Yeni: _note_lane_angle() + _in_curve() + curve_lane_dev(6.0)/hold(1.0 s)/
+      ema_fast(0.30)/ema_slow(0.01). Hızlı EMA ile koşuya özel yavaş taban EMA'nın
+      farkı > eşik -> viraj (sabit 45'e göre değil, çünkü sıfır noktası kayıyor).
+    * lane_detect_event her karede _note_lane_angle çağırır (OBSTACLE_AVOID'da
+      donar, kendi slalomunu viraj sanmasın).
+    * obstacle_event: virajda slalom GİRİŞİ bastırılır (yavaşlar, gerekirse durur;
+      savurma yok).
+
+  KAYBOLAN (bilerek): benim 2-fazlı yaw-heading slalomum, weave_gap ritmi,
+  zig-zag tie-break -> nursena'nın 4-fazı bunların yerini daha iyi tutuyor.
+
+TUNING (artık nursena'nınki aktif): slow_distance=6.0, avoid_distance=4.5,
+  avoid_confirm_time=0.3, safe_side_distance=10.0, stall_timeout=4.0,
+  slalom_lateral_target=3.0.
+
+DOĞRULAMA: slalom_sim 5/5; viraj bastırma (kayma!=viraj, gerçek viraj -> slalom
+  bastırıldı, düz yolda slalom var); Bug A (nursena); stall (4 s); fail-safe
+  0,0,0; get_decision anahtarları tam; iki kontrol node'u da açılıyor.
+  Yedek: scratchpad/backup_merge/decision_brain.MINE.py (merge öncesi benimki).
+
+DURUM: workspace'te, build edildi, node'lar açılıyor. Deploy YİNE build edilmedi.

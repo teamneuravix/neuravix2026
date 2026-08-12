@@ -1,0 +1,43 @@
+/**:
+    ros__parameters:
+        feature_extract_enable: false
+        point_filter_num: 1
+        max_iteration: 3
+        filter_size_surf: 0.5
+        filter_size_map: 0.5
+        cube_side_length: 1000.0
+        runtime_pos_log_enable: false
+        map_file_path: "./bee1_map.pcd"
+        common:
+            lid_topic:  "/lidar/filtered"          # bizim on-islenmis temiz bulut
+            imu_topic:  "/carla/ego_vehicle/imu"   # CARLA IMU
+            time_sync_en: false         # ONLY turn on when external time synchronization is really not possible
+            time_offset_lidar_to_imu: 0.0 # Time offset between lidar and IMU calibrated by other algorithms, e.g. LI-Init
+        preprocess:
+            lidar_type: 2                # 1 Livox, 2 Velodyne, 3 Ouster
+            scan_line: 16                # VLP-16 -> 16 hat
+            scan_rate: 10                # Velodyne donus hizi, Hz
+            timestamp_unit: 2            # time/t alani birimi: 0-s, 1-ms, 2-us, 3-ns. CARLA icin test edilecek.
+            blind: 0.5                   # yakin korlukluk yaricapi (m). Govde filtremiz var ama FAST-LIO'nun kendi blind'i de kalsin.
+        mapping:
+            acc_cov: 0.1
+            gyr_cov: 0.1
+            b_acc_cov: 0.0001
+            b_gyr_cov: 0.0001
+            fov_degree:    360.0
+            det_range:     100.0         # VLP-16 menzili
+            extrinsic_est_en:  false     # extrinsic biliniyor, online tahmin kapali (README onerisi)
+            # extrinsic_T: LIDAR'in IMU frame'indeki konumu = LIDAR_base - IMU_base
+            #   = (0.177,0,0.620) - (-1.440,0,1.390) = (1.617, 0, -0.770)
+            extrinsic_T: [ -0.6, 0.0, -0.4 ]
+            extrinsic_R: [ 1., 0., 0.,
+                        0., 1., 0.,
+                        0., 0., 1.]
+        publish:
+            path_en:  true               # /path yayinla (RViz'de yorunge gormek icin actim)
+            scan_publish_en:  true       # false: tum nokta bulutu ciktisini kapatir
+            dense_publish_en: true       # false: global-frame bulutta nokta sayisini dusurur
+            scan_bodyframe_pub_en: true  # true: IMU-body-frame'de bulut ciktisi
+        pcd_save:
+            pcd_save_en: true            # haritayi .pcd kaydet (Asama 5 icin lazim olacak)
+            interval: -1                 # -1: tum frame'ler tek .pcd'de

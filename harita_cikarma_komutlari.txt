@@ -1,0 +1,87 @@
+==========================================================================
+GERÇEK ARAÇTA PİST HARİTASI ÇIKARMA — KOMUT LİSTESİ (2026-07-12)
+IMU yaw AÇIK (use_imu_yaw:=true), harita direkt /home/smart/Permanent/maps'e
+==========================================================================
+
+--- 0) ARAÇ HOST'U (Foxy, ssh smart@192.168.30.100, şifre: robotaxi wifi'si) ---
+
+# Overlayroot yüzünden imaj reboot'ta gitmiş olabilir — kontrol et, yoksa yükle:
+docker images | grep robotaksi_humble || docker load -i /home/smart/Permanent/robotaksi_humble.tar
+
+# Harita klasörü (kalıcı alan):
+mkdir -p /home/smart/Permanent/maps
+
+# CAN köprüsü (host'ta, TMUX İÇİNDE — wifi kopunca ölmesin):
+tmux new -s can
+ros2 launch smart_can_stuff can_launch.xml
+# (Velodyne + ZED + IMU sürücüleri host'ta zaten çalışıyor olmalı — kontrol aşağıda)
+
+--- 1) CONTAINER'I HARİTA VOLUME'ÜYLE BAŞLAT ---
+# NOT: /root/maps -> Permanent/maps mount'u. Eski robotaksi_container bu
+# mount OLMADAN yaratıldıysa önce: docker rm -f robotaksi_container
+
+docker run -it --name robotaksi_container \
+  --gpus all --network host --ipc=host --privileged \
+  -v /dev:/dev \
+  -v /home/smart/Permanent/maps:/root/maps \
+  -e ROS_DOMAIN_ID=0 \
+  robotaksi_humble:latest
+
+# Sonraki girişler:  docker exec -it robotaksi_container bash
+# Container içinde de tmux kullan:  tmux new -s slam
+
+--- 2) SAĞLIK KONTROLLERİ (container içinde) ---
+
+ros2 topic hz /velodyne_points        # ~10 Hz beklenir
+ros2 topic hz /imu/data               # ~200 Hz beklenir
+ros2 topic echo /beemobs/FB_VehicleSpeed --once   # CAN feedback akıyor mu
+ros2 topic echo /velodyne_points --field header.frame_id --once
+# frame_id 'velodyne' değilse söyle — URDF alias'ı ona göre ayarlı
+
+--- 3) TF BRINGUP (container, tmux penceresi 1) ---
+
+ros2 launch bee1_description bee1_bringup.launch.py use_sim_time:=false
+
+--- 4) SLAM'İ BAŞLAT — IMU YAW İLE (container, tmux penceresi 2) ---
+
+ros2 launch bee1_description pist_slam_real.launch.py \
+    use_imu_yaw:=true imu_topic:=/imu/data
+
+# Loglarda "Registering sensor" + map->odom TF aktığını gör.
+# SÜRÜŞ: TEK, KISA, YAVAŞ, SABİT HIZLI BİR TUR. Aynı yerden tekrar geçme
+# (sim'deki 452 MB şişmiş harita sorunu bundandı).
+
+--- 5) CANLI İZLEME (laptop, araç wifi'sinde) ---
+
+# Laptop: robotaxi_1 wifi (şifre robotaxi), Humble varsayılan Fast DDS (export etme!)
+export ROS_DOMAIN_ID=0
+rviz2
+# Fixed Frame: map | Add: Map(/map) + LaserScan(/scan) + TF
+# Tarama duvarlara oturuyorsa eşleşme sağlıklı.
+
+--- 6) HARİTAYI KAYDET (SÜRÜŞ BİTİNCE, SLAM'İ KAPATMADAN ÖNCE!) ---
+# slam_toolbox Ctrl+C'de OTOMATİK KAYDETMEZ.
+
+ros2 service call /slam_toolbox/serialize_map \
+    slam_toolbox/srv/SerializePoseGraph "{filename: '/root/maps/pist_haritasi'}"
+
+# Volume sayesinde dosyalar direkt Permanent'ta. Kontrol (host'tan):
+ls -lh /home/smart/Permanent/maps/
+# pist_haritasi.posegraph + pist_haritasi.data — birkaç~onlarca MB NORMAL,
+# yüzlerce MB ise tur fazla uzun/tekrarlı, yeniden çıkar.
+
+--- 7) DOĞRULAMA: AYNI HARİTAYLA LOCALIZATION (SLAM'i kapattıktan sonra) ---
+
+ros2 launch bee1_description pist_localization_real.launch.py \
+    map_file:=/root/maps/pist_haritasi \
+    use_imu_yaw:=true imu_topic:=/imu/data
+# RViz'de /scan haritaya oturuyor mu izle.
+
+==========================================================================
+HATIRLATMALAR
+- Uzun ömürlü HER süreç tmux içinde (wifi her an kopuyor).
+- Laptop dahil her yerde AYNI RMW (Fast DDS) + AYNI ROS_DOMAIN_ID=0.
+- IMU yaw kullanıldığı için direksiyon gain kalibrasyonu şart değil; ama
+  hız için FB_VehicleSpeed birimini kontrol et (speed_scale varsayılanı km/h).
+- obstacle_lidar'ı gerçek araçta ayrı çalıştıracaksan: -p z_min:=-0.4
+==========================================================================

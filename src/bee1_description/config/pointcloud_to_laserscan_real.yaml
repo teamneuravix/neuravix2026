@@ -1,0 +1,49 @@
+# pointcloud_to_laserscan - GERÇEK ARAÇ (Velodyne VLP-16)
+# Sim config'ten (pointcloud_to_laserscan_pist.yaml) farklar:
+#   - target_frame: ego_vehicle/lidar -> velodyne
+#     ⚠️ Araçta 'ros2 topic echo <lidar_topic> --field header.frame_id'
+#     ya da lidar_echo ile GERÇEK frame_id'yi doğrula; farklıysa burayı
+#     ve URDF'teki lidar joint'ini eşleştir.
+#   - use_sim_time: false (gerçek saat)
+#   - Yükseklik penceresi lidar frame'inde ve GERÇEK montaj yüksekliğine göre
+#     hesaplanır. Sim değerleri (min -1.0 / max 0.5) CARLA'nın 1.6 m'lik
+#     LiDAR'ına göreydi.
+#
+#     ⚠️ DÜZELTİLDİ 2026-07-21 — montaj yüksekliği yanlış varsayılmış:
+#     Eski değerler (min -0.4 / max 1.5) URDF'teki lidar_z = 0.62 m'den
+#     türetilmişti. Üç gerçek pist bag'inin zemin dönüşleri montajın
+#     ~1.35 m olduğunu gösteriyor (pist_17tem_2 1.29, pist_18tem 1.31,
+#     pist_19_3tem 1.41 — 5-20 m halkasındaki noktaların z modu).
+#     0.62 varsayımıyla min_height -0.4 yerden 0.22 m SANILIYORDU ama
+#     gerçekte yerden ~0.95 m'ydi: 1 m'nin altındaki bariyer tabanları,
+#     koniler ve bordürler /scan'e hiç girmiyordu.
+#
+#     Yeni değerler (montaj 1.35 m kabul, config'in kendi niyetiyle aynı):
+#       min_height -1.13 -> yerden 0.22 m  (zemin + araç yalpalama payı dışarıda,
+#                                           bariyer tabanı içeride)
+#       max_height  0.77 -> yerden 2.12 m  (tünel tavanı vb. dışarıda)
+#
+#     ⚠️ BU DEĞİŞİKLİK MEVCUT HARİTAYI GEÇERSİZ KILAR: pist_haritasi_4
+#     eski (yerden ~1 m) pencereyle üretildi; yeni taramalar daha çok
+#     geometri içerdiği için ona karşı lokalizasyon tutmaz. Yeni pencereyle
+#     YENİDEN HARİTALAMA gerekir. Önce mezurayla montaj yüksekliğini teyit et,
+#     farklıysa buradaki iki sayıyı (0.22 - h) ve (2.12 - h) ile güncelle.
+#     Araçta ince ayar gerekirse lidar_echo ile z aralığını kontrol et.
+pointcloud_to_laserscan:
+    ros__parameters:
+        target_frame: velodyne
+        transform_tolerance: 0.05
+
+        min_height: -1.13
+        max_height: 0.77
+
+        angle_min: -3.14159
+        angle_max: 3.14159
+        angle_increment: 0.0087    # ~0.5 derece
+        scan_time: 0.1
+        range_min: 0.5
+        range_max: 100.0
+        use_inf: true
+        inf_epsilon: 1.0
+        queue_size: 10
+        use_sim_time: false
