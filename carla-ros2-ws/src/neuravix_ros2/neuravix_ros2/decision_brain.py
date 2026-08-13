@@ -193,18 +193,36 @@ class Alkar_Function4:
         # uyguluyor (2 kare ~0.2 s onay); burada ikinci uzun onay araca
         # gereksiz yol kat ettiriyordu. Toplam onay ~0.5 s'de kalır.
         self.avoid_confirm_time   = 0.3   # s, tetik bu kadar sürmeli
-        # 2.0 -> 10.0 (2026-08-03): yan sektörler artık KOMŞU ŞERİDİN kendisine
-        # bakıyor (side_offset=3.0) ve değer o şeritteki BOYLAMSAL boşluk.
-        # Şerit değişimi ~7-8 m ileri yol tutar (S-kaçış 5.3 + geçiş 2) —
-        # hedef şeritte bundan az boşluk varsa (örn. karşıdan araç, öndeki
-        # başka engel) o tarafa hiç girilmemeli; eski 2.0 eşiği 10 m
-        # ilerideki karşı araca rağmen "sol boş" diyordu (masa sim S3).
-        self.safe_side_distance   = 10.0
+        # İKİ KADEMELİ YAN BOŞLUK EŞİĞİ (2026-08-13): yan sektörler KOMŞU
+        # ŞERİDİN kendisine bakıyor (side_offset=3.0), değer o şeritteki
+        # BOYLAMSAL boşluk. Karar:
+        #   boşluk >= safe_side_distance (13) -> TAM şerit değişimi (3.0 m):
+        #       tam değişim + geri dönüş ~12 m ileri yol tutar, hedef şeritteki
+        #       bir sonraki engele bundan az yer varsa tam değişim çarpışır.
+        #   side_min_clear (5) <= boşluk < 13 -> SIĞ kaçış (dar mod, 1.55 m):
+        #       hedef şeritte yakın engel var (sıkışık/çapraz slalom dizisi) ama
+        #       kendi engelimizi geçecek kadar öne boşluk var; iki şeridin
+        #       ayırıcı hattı üzerinden geçilir, komşu şeridin engel bandına
+        #       hiç girilmez. Eski tek eşik (10) bu durumda manevrayı tamamen
+        #       reddedip aracı beklemeye alıyordu — yarışta ardışık YAKIN
+        #       engellerde ilk engel yine SOLdan geçilmeli (gereksinim; S6).
+        #   boşluk < 5 -> o taraf kapalı (örn. bitişik karşı araç) -> girilmez.
+        self.safe_side_distance   = 13.0
+        self.side_min_clear       = 5.0
         # Zincirleme slalom: dönüş öncesi, DÖNÜLECEK şeride bakılır (kaçış
         # solaysa sağ sektör). Orada bundan az boşluk varsa şeride dönülmez,
         # komşu şeritte paralel geçişe devam edilir (arka arkaya engeller tek
         # geçişte aşılır); boşluk açılınca dönüş başlar.
-        self.slalom_return_free   = 8.0   # m
+        # 8 -> 12 (2026-08-13, masa sim S7): AYNI yöndeki ardışık engellerde
+        # "aradan dön + yeniden kaç" geometrik olarak pahalı — dönüş (~5 m) ilk
+        # engeli geçtikten çok sonra biter, ardından yeni kaçış (~5 m) için
+        # ~13 m'den az boşluk kalırsa araç ikinci engele kaçışı tamamlayamadan
+        # girip acil durur (S7, 15 m arayla iki engel: front=1.0'da DUR).
+        # 12 m eşik: bu boşluğun altında ARADAN DÖNÜLMEZ, komşu şeritte kalınıp
+        # ikisi de tek geçişte aşılır (güvenli yarış çizgisi), sonuncudan sonra
+        # dönülür. Çapraz (S5, engel komşu şeritte) etkilenmez: orada dönülecek
+        # şerit (kendi şeridimiz) boştur -> home=99 >= 12 -> yine döner.
+        self.slalom_return_free   = 12.0  # m
         self.obstacle_replan_wait = 3.0
         self.avoid_direction      = None
         self._avoid_trigger_since = None
@@ -237,6 +255,12 @@ class Alkar_Function4:
         # 0.7). obstacle_lidar'ın side_offset'i de 3.0'a çekildi — "sol boş"
         # kararı artık hedef şeridin kendisine bakıyor; ikisi tutarlı olmalı.
         self.slalom_lateral_target  = 3.0   # m, kaçışta hedef yanal ofset (yaw varsa)
+        # DAR MOD ofseti (2026-08-13): hedef şeritte yakın engel varken tam
+        # şerit değişimi yerine iki şeridin AYIRICI HATTI üzerinden sığ geçiş.
+        # 1.55 = kendi engelimizi geçmeye yeter (0.7 engel + 0.53 araç + pay)
+        # ama komşu şeridin engel bandına (şerit merkezi ±0.7 -> y>2.3) girmez
+        # ve geçilen engel front koridorunun (±0.7) kenarına takılmaz.
+        self.slalom_lateral_tight   = 1.55  # m, dar mod kaçış ofseti
         self.slalom_lateral_done    = 0.3   # m, dönüşte "şeride vardı" eşiği (yaw varsa)
         # Yaw'sız yedek mesafeler ~yarım-S yay uzunluğu (tam kilit R≈3.06,
         # 1.5 m yanal için yay ≈ 3.2 m) — 3.0 m hedefle tutarlı tutuldu.
@@ -279,6 +303,25 @@ class Alkar_Function4:
         self.slalom_max_weaves = 3
         self.avoid_blocked     = False  # True: slalom denendi, çözemedi -> dur
 
+        # --- VİRAJDA SAHTE SLALOM BASTIRMA (2026-07-21, nursena tabanına
+        # graft edildi 2026-08-10) --------------------------------------------
+        # Virajda pist kenarı/bariyer DÜZ ego koridoruna (|y|<corridor, 30 m'ye
+        # kadar) girip gerçek engel gibi görünür: ~15 m yarıçapta bariyer
+        # ~4.9 m'de tetik bandına düşer, araç viraj ortasında açık-döngü weave
+        # başlatıp pisti terk ederdi. Koridoru eğmek lidar'a direksiyon
+        # beslemeyi gerektirir; onun yerine viraj, şerit açısından tespit edilip
+        # slalom GİRİŞİ bastırılır (yavaşlar ve gerekirse durur; sadece savurma
+        # manevrası yapılmaz). Şerit çıktısının sıfır noktası koşudan koşuya
+        # kaydığı için (algi7 +4.1, algi8 -1.7) hızlı EMA ile koşuya özel yavaş
+        # bir taban EMA'nın FARKINA bakılır (sabit 45'e değil).
+        self.curve_lane_dev   = 6.0    # |hızlı-yavaş| bunu aşarsa viraj
+        self.curve_hold_time  = 1.0    # s, viraj bittikten sonra da bastır
+        self.curve_ema_fast   = 0.30   # ~3-4 karelik tepki
+        self.curve_ema_slow   = 0.01   # ~100 karelik taban (koşu kayması)
+        self._lane_fast       = None
+        self._lane_slow       = None
+        self._curve_until     = 0.0
+
         self.front_distance = 99.0
         self.left_distance  = 99.0
         self.right_distance = 99.0
@@ -299,6 +342,7 @@ class Alkar_Function4:
         self._phase_start_t = 0.0     # faz başlangıç zamanı (zaman yedeği için)
         self._weave_yaw_ref = 0.0     # weave başındaki yön (yanal ofset referansı)
         self._lateral       = 0.0     # weave başına göre yanal ofset (m, sol +)
+        self._weave_lat     = self.slalom_lateral_target  # bu weave'in ofset hedefi
 
         self.park_forbidden   = False
         self.emergency_active = False
@@ -393,6 +437,35 @@ class Alkar_Function4:
     def _smooth_angle(self, old_angle, new_angle, alpha=0.35):
         return int((1 - alpha) * old_angle + alpha * new_angle)
 
+    # ------------------------------------------------------------
+    # Viraj tespiti — sahte slalomu bastırmak için (graft 2026-08-10)
+    # ------------------------------------------------------------
+    def _note_lane_angle(self, lane_angle):
+        """Şerit açısını iki EMA ile izler: yavaş olan bu koşudaki "düz"ün
+        nerede olduğunu öğrenir, hızlı olan anlık durumu takip eder. İkisi
+        arasındaki fark viraj göstergesidir — sabit 45'e göre ölçmek, şerit
+        çıktısının koşudan koşuya kayan sıfır noktası yüzünden çalışmıyordu.
+
+        OBSTACLE_AVOID sırasında BİLEREK güncellenmez: slalomda direksiyon
+        zaten kasten kırılıyor, şerit de eğik görünüyor — bunu viraj sanırsak
+        kendi slalomumuz sonraki weave'leri bastırırdı."""
+        if self.state == DriveState.OBSTACLE_AVOID:
+            return
+        a = float(lane_angle)
+        if self._lane_fast is None:          # ilk kare: iki EMA da oradan başlar
+            self._lane_fast = self._lane_slow = a
+            return
+        self._lane_fast = (self.curve_ema_fast * a
+                           + (1.0 - self.curve_ema_fast) * self._lane_fast)
+        self._lane_slow = (self.curve_ema_slow * a
+                           + (1.0 - self.curve_ema_slow) * self._lane_slow)
+        if abs(self._lane_fast - self._lane_slow) > self.curve_lane_dev:
+            self._curve_until = self._now() + self.curve_hold_time
+
+    def _in_curve(self):
+        """Viraj içinde (veya çıkışından curve_hold_time geçmemiş) miyiz?"""
+        return self._now() < self._curve_until
+
     def _is_blocking_state(self):
         blocking = {
             DriveState.RED_LIGHT_STOP, DriveState.STOP_SIGN,
@@ -412,6 +485,10 @@ class Alkar_Function4:
             lane_angle = float(data[1])
         except (IndexError, ValueError, TypeError):
             return
+
+        # Viraj tespitini her şerit karesinde besle — bloke durumlarda bile,
+        # yoksa OBSTACLE_STOP'tan çıkarken viraj bilgisi bayat olurdu.
+        self._note_lane_angle(lane_angle)
 
         if self.emergency_active:
             self._set_state(DriveState.EMERGENCY)
@@ -654,7 +731,13 @@ class Alkar_Function4:
             self._avoid_trigger_since = None
             held = 0.0
 
-        if held >= self.avoid_confirm_time:
+        # VİRAJDA slalom GİRİŞİ bastırılır (graft 2026-08-10): pist kenarı düz
+        # koridora girip gerçek engel gibi göründüğünden, virajda açık-döngü
+        # weave pisti terk ettirir. Araç yine yavaşlar ve çok yakınsa (yukarıda
+        # stop_distance) durur; sadece savurma manevrası yapılmaz.
+        in_curve = self._in_curve()
+
+        if held >= self.avoid_confirm_time and not in_curve:
             direction = self._pick_avoid_direction()
             if direction is not None:
                 # Boş taraf var -> DURMADAN doğrudan slaloma gir (akıcı geçiş)
@@ -665,9 +748,13 @@ class Alkar_Function4:
                     f"-> SLALOM {direction} (durmadan)")
                 return
 
-        # slow_distance ile avoid_distance arası: YAVAŞLA, şeridi bırakma.
+        # slow_distance ile avoid_distance arası (veya virajda): YAVAŞLA, şeritte kal.
         self._move_vehicle(self.slow_speed)
-        self._explain(f"ENGEL front={self.front_distance:.1f} -> yavasla (seritte kal)")
+        if in_curve:
+            self._explain(f"ENGEL front={self.front_distance:.1f} -> yavasla "
+                          f"(VIRAJ: slalom bastirildi)")
+        else:
+            self._explain(f"ENGEL front={self.front_distance:.1f} -> yavasla (seritte kal)")
 
     def planner_event(self, data):
         try:
@@ -834,9 +921,14 @@ class Alkar_Function4:
     # ------------------------------------------------------------
     def _pick_avoid_direction(self):
         """Boş tarafı seç (genel, piste bağımsız). Geri dönüş:
-        'left' / 'right' / None (iki taraf da kapalı)."""
-        left_ok  = self.left_distance  > self.safe_side_distance
-        right_ok = self.right_distance > self.safe_side_distance
+        'left' / 'right' / None (iki taraf da kapalı).
+        Eşik side_min_clear'dır (2026-08-13): hedef şeritte en az SIĞ kaçışa
+        yetecek boşluk aranır; tam mı sığ mı gidileceğine _begin_weave karar
+        verir (boşluk >= safe_side_distance ise tam şerit değişimi). Eskiden
+        eşik doğrudan safe_side_distance idi ve hedef şeritte yakın engel
+        varken (S6 sıkışık çapraz) manevra tamamen reddediliyordu."""
+        left_ok  = self.left_distance  > self.side_min_clear
+        right_ok = self.right_distance > self.side_min_clear
         if not left_ok and not right_ok:
             return None
         if left_ok and not right_ok:
@@ -873,6 +965,15 @@ class Alkar_Function4:
     def _begin_weave(self, direction):
         """Yeni bir weave başlat: yön + mesafe/zaman/yanal işaretleri sıfırla.
         slalom_count'a DOKUNMAZ (çağıran yönetir)."""
+        # MOD SEÇİMİ (2026-08-13): hedef şeritteki boşluğa göre tam / sığ kaçış.
+        # Bol boşluk -> komşu şerit merkezine tam değişim; dar boşluk (hedef
+        # şeritte yakın engel, sıkışık/çapraz slalom dizisi) -> ayırıcı hat
+        # üzerinden sığ geçiş, komşu şeridin engel bandına girilmez.
+        clear = (self.left_distance if direction == "left"
+                 else self.right_distance)
+        self._weave_lat = (self.slalom_lateral_target
+                           if clear >= self.safe_side_distance
+                           else self.slalom_lateral_tight)
         self.avoid_direction  = direction
         self.avoid_phase      = "escape"
         self._avoid_mark      = self.odom_distance
@@ -950,7 +1051,7 @@ class Alkar_Function4:
             self.steering_angle = 75 if left else 15
             self.signal_status  = 2 if left else 1
             if lat_ok:
-                done = lat >= 0.5 * self.slalom_lateral_target
+                done = lat >= 0.5 * self._weave_lat
             elif self._motion_ok:
                 done = d_phase >= self.slalom_out_distance
             else:
@@ -995,7 +1096,7 @@ class Alkar_Function4:
             self.signal_status  = 1 if left else 2
             if lat_ok:
                 done = lat <= max(self.slalom_lateral_done,
-                                  0.5 * self.slalom_lateral_target)
+                                  0.5 * self._weave_lat)
             elif self._motion_ok:
                 done = d_phase >= self.slalom_return_distance
             else:

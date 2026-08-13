@@ -295,6 +295,17 @@ SCENARIOS = [
     # kaldı) ve engel 2'nin yanından kendi şeridimizden geç.
     ("S5 sagda engel -> sola gec; solda engel -> saga don",
      [(12.0, 0.0, 1.4, 1.4), (22.0, 3.0, 1.4, 1.4)], BARRIER_R, "pass"),
+    # SIKISIK capraz dizilim (dar mod testi): soldaki engel sagdakinin hemen
+    # arkasinda (kenar araligi ~3 m). Beklenen: ilk engelde YINE sola cikilir
+    # ama tam serit degisimi yerine SIG kacis (ayirici hat, ~1.55 m) yapilir;
+    # soldaki engelin bandina hic girilmez, sag seride doner.
+    ("S6 sikisik capraz: sagda engel + hemen arkasinda solda engel",
+     [(12.0, 0.0, 1.4, 1.4), (16.4, 3.0, 1.4, 1.4)], BARRIER_R, "pass"),
+    # Ayni seritte UZAK araliklı iki engel (in-out testi): aralik yeterliyse
+    # arac uzatilmis gecis yerine ARAYA GIRER (seride doner) ve ikinci engeli
+    # gorunce yeniden sola cikar (klasik slalom zikzagi).
+    ("S7 ayni seritte iki engel (15 m ara) -> araya gir, tekrar sol",
+     [(12.0, 0.0, 1.4, 1.4), (27.0, 0.0, 1.4, 1.4)], BARRIER_R, "pass"),
 ]
 
 
