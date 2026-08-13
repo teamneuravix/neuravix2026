@@ -144,6 +144,8 @@ class DecisionControlNodeReal(Node):
         # ölçülen %14 eksik sayma düzeltmesi dahil).
         self.declare_parameter('speed_feedback_topic', '/beemobs/FB_VehicleSpeed')
         self.declare_parameter('speed_fb_scale', 0.31627)
+        # Hareket gözcüsü: bu kadar saniye gaz istenip hiç hız görülmezse bağır.
+        self.declare_parameter('motion_watchdog_sec', 5.0)
         # Auto-offset için kaç örnek ortalanacak (ilk ~saniye).
         self.declare_parameter('steer_auto_offset_samples', 20)
         self.declare_parameter('brake_per_on', 100)
@@ -169,9 +171,10 @@ class DecisionControlNodeReal(Node):
         # + auto_ignition ile eşzamanlı DRIVE sarsıntısını azaltır). Yavaşlama/
         # fren ANINDA (güvenlik), sadece hızlanma rampalı. 0 = rampa kapalı.
         self.declare_parameter('speed_ramp_up', 0.6)
-        # HIZ TABANI (2026-08-03): speed_target_scale=0.15 slalom hızını
-        # (FSM 4 km/h) 0.6 birime indiriyordu — araç bu hedefle fiilen hiç
-        # hareket edemiyor (debug_control5 bag: 6 s'lik weave'de 0.00 m).
+        # HIZ TABANI (2026-08-13): speed_target_scale=0.15 slalom hızını
+        # (FSM 4 km/h) 0.6 birime indiriyor — araç bu hedefle fiilen hiç
+        # hareket edemiyor (debug_control5 bag: 6 s'lik weave'de 0.00 m;
+        # mesafe tabanlı slalom fazları da bu yüzden hiç ilerlemiyordu).
         # FSM hareket istiyorsa (fren yok, hedef > 0) gönderilen hedef bu
         # tabanın altına inmez. 1.2 birim ~ gerçekte ~2.9 km/h (2026-07-18
         # ölçümü: gönderilen x2.4). 0 = taban kapalı.
@@ -265,6 +268,9 @@ class DecisionControlNodeReal(Node):
         self._trav_prev = None
         self.can_speed_mps = None
         self.can_speed_time = 0.0
+        self._no_motion_since = None
+        self.motion_watchdog_sec = self.get_parameter(
+            'motion_watchdog_sec').get_parameter_value().double_value
         self.sub_can_speed = self.create_subscription(
             Fbvehiclespeed, speed_fb_topic, self._can_speed_cb, 10)
 
@@ -289,7 +295,7 @@ class DecisionControlNodeReal(Node):
             f"(x{self.speed_fb_scale:.5f} -> mesafe tabanli slalom), "
             f"use_planner={self.use_planner}, "
             f"auto_ignition={self.auto_ignition}, "
-            f"max_speed={self.max_speed_kmh:.1f} km/h, speed_scale={self.speed_target_scale:.2f}, "
+            f"max_speed={self.max_speed_kmh:.1f} km/h, min_speed={self.min_speed_kmh:.1f}, speed_scale={self.speed_target_scale:.2f}, "
             f"steer gain={self.steer_target_gain:.2f} delta=[{self.steer_delta_left:.0f},{self.steer_delta_right:.0f}] "
             f"offset={self.steer_target_offset:.1f} auto_offset={self.steer_auto_offset} "
             f"ham_limit=[{self.steer_raw_min:.0f},{self.steer_raw_max:.0f}], 20 Hz.")
@@ -331,6 +337,43 @@ class DecisionControlNodeReal(Node):
         """CAN hız geri beslemesi -> mesafe tabanlı slalom için hız kaynağı."""
         self.can_speed_mps = float(msg.fb_reelvehiclespeed_kmh) * self.speed_fb_scale
         self.can_speed_time = time.time()
+
+    def _check_motion(self, cmd_speed):
+        """HAREKET GÖZCÜSÜ (2026-07-21, algi8 bag analizi).
+
+        algi8'de node 170 s boyunca hız hedefi yayınladı (ort 2.63), FSM 15 s
+        slalom yaptı, direksiyon hedefi -16.8..+20.8 arası savruldu — ama araç
+        HİÇ kıpırdamadı: FB_VehicleSpeed 0, FB_MotorDriver.vehiclerpm 0,
+        plustripdistance 0 ve /beemobs/RC_THRT_DATA'ya TEK BİR mesaj bile
+        yayınlanmamıştı. Sebep kodda değil: gaz zinciri kopuktu
+        (speed_pid_node -> /beemobs/rcthrtdata -> **throttle_relay** ->
+        /beemobs/RC_THRT_DATA -> can_handler). Karşılaştırma: algi7'de
+        RC_THRT_DATA vardı (pedal 62-77) ve araç yürüdü (rpm 44, trip 4135).
+
+        Bu sessiz başarısızlık hiçbir yerde uyarı üretmiyordu. Artık üretiyor:
+        gaz istiyoruz ama geri besleme sıfırsa ne yapılacağını da söyleyerek
+        bağırıyor. Gözcü yalnızca CAN hız geri beslemesi GERÇEKTEN akıyorken
+        çalışır — yoksa 'hareket yok' ile 'veri yok' ayırt edilemezdi."""
+        now = time.time()
+        fresh = (self.can_speed_mps is not None
+                 and now - self.can_speed_time < 1.0)
+        if not fresh or cmd_speed <= 0.0:
+            self._no_motion_since = None
+            return
+        if self.can_speed_mps > 0.0:
+            self._no_motion_since = None
+            return
+        if self._no_motion_since is None:
+            self._no_motion_since = now
+            return
+        if now - self._no_motion_since >= self.motion_watchdog_sec:
+            self.get_logger().error(
+                f"HAREKET YOK: {now - self._no_motion_since:.0f} s'dir hiz hedefi "
+                f"{cmd_speed:.2f} yayinlaniyor ama FB_VehicleSpeed 0. Gaz zinciri "
+                f"muhtemelen kopuk -> 'ros2 topic hz /beemobs/RC_THRT_DATA' bos ise "
+                f"throttle_relay (ve speed_fb_relay) calismiyor demektir: "
+                f"'ros2 run bee1_description throttle_relay'. Fren/vites de kontrol et.",
+                throttle_duration_sec=10.0)
 
     def _odom_cb(self, msg):
         # Katedilen yol (mesafe tabanlı slalomun tercih edilen kaynağı):
@@ -436,17 +479,16 @@ class DecisionControlNodeReal(Node):
     # Ana döngü — sim ile aynı hibrit direksiyon karıştırması
     # ----------------------------------------------------------------
     def control_loop(self):
-        # Katedilen mesafeyi beyne ver (slalom fazlarının ölçüsü). Odometri
-        # varsa mutlak yol, yoksa CAN hızı integre edilir. Hiçbiri yoksa
-        # update_motion çağrılmaz ve beyin zaman tabanlı yedeğe düşer.
-        # yaw (2026-08-03): slalomun yanal ofset ölçümü için; odometri yoksa
-        # None gider ve beyin yol/saat yedeğini kullanır.
+        # Katedilen mesafe + YAW'ı beyne ver (slalom fazlarının ölçüsü).
+        # Slalom escape/return artık baş açısıyla biter (Hata B, 2026-08-10);
+        # yaw odometriden gelir (slam_toolbox/EKF çıktısı). Yaw yoksa mesafe,
+        # o da yoksa zaman yedeğine düşer. odom_yaw None ise update_motion
+        # güvenle yok sayar.
         if self._trav_prev is not None:
             self.brain.update_motion(distance=self._trav_dist, yaw=self.odom_yaw)
         elif (self.can_speed_mps is not None
                 and time.time() - self.can_speed_time < 1.0):
-            self.brain.update_motion(speed_mps=self.can_speed_mps,
-                                     yaw=self.odom_yaw)
+            self.brain.update_motion(speed_mps=self.can_speed_mps, yaw=self.odom_yaw)
 
         self.brain._update_state_machine()
         decision = self.brain.get_decision()
@@ -555,6 +597,7 @@ class DecisionControlNodeReal(Node):
             self._speed_cmd = min(speed_target, self._speed_cmd + step)
         speed_msg = self._target_cls(); speed_msg.data = float(self._speed_cmd)
         self.pub_speed_target.publish(speed_msg)
+        self._check_motion(self._speed_cmd)
 
         # Fren: ham CAN mesajı (PID katmanı yok)
         brk = Autonomousbrakepedalcontrol()

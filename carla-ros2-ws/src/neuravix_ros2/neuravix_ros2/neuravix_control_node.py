@@ -38,6 +38,18 @@ class DecisionControlNode(Node):
 
         self.brain = Alkar_Function4()
 
+        # use_planner (VARSAYILAN False, gerçek node ile aynı): pure-pursuit +
+        # konum-tabanlı A* KAPALI. Böylece araç sabit kodlu ROUTE'u (CARLA
+        # pistine özel koordinatlar) körlemesine izlemez; REAKTİF sürer
+        # (şerit + tabela + engel/slalom). Slalomun/şeridin GERÇEK davranışını
+        # görmek için bunu kapalı tut. CARLA pistinde waypoint takibini test
+        # etmek istersen: -p use_planner:=true
+        # NOT: ROUTE o pistin koordinatlarına özeldir; açıkken "güzel şerit
+        # tutma" perception değil, ezberlenmiş yol takibidir.
+        self.declare_parameter('use_planner', False)
+        self.use_planner = self.get_parameter(
+            'use_planner').get_parameter_value().bool_value
+
         # Bee 1
         self.pub_throttle = self.create_publisher(Float32, '/beemobs/RC_THRT_DATA', 10)
         self.pub_brake    = self.create_publisher(Int32, '/beemobs/AUTONOMOUS_BrakePedalControl', 10)
@@ -84,8 +96,9 @@ class DecisionControlNode(Node):
         self.timer = self.create_timer(0.05, self.control_loop)  # 20 Hz
 
         self.get_logger().info(
-            "NeuraVix Decision/Control node v2 started "
-            "(odometry + waypoint hybrid, Bee1 + CARLA, 20 Hz).")
+            f"NeuraVix Decision/Control node v2 started "
+            f"(Bee1 + CARLA, 20 Hz, use_planner={self.use_planner} -> "
+            f"{'pure-pursuit+A* ACIK (ROUTE takibi)' if self.use_planner else 'REAKTIF: serit+tabela+engel, waypoint YOK'}).")
 
     # ----------------------------------------------------------------
     # FIX: Odometri callback
@@ -101,16 +114,21 @@ class DecisionControlNode(Node):
         cosy = 1.0 - 2.0 * (q.y * q.y + q.z * q.z)
         self.odom_yaw = math.atan2(siny, cosy)
 
-        # A* grid güncelleme (pist 0-73 m → grid 0-59 hücre)
-        gx = int(self.odom_x * GRID_SCALE)
-        gy = int(self.odom_y * GRID_SCALE)
-        self.brain.update_position(gx, gy)
+        # A* grid güncelleme (pist 0-73 m → grid 0-59 hücre) — SADECE planlama
+        # açıkken. odom_x/y/yaw yukarıda her durumda saklanır (yaw slalom
+        # fazları için şart); kapalıyken yalnız konum-tabanlı A* devre dışı.
+        if self.use_planner:
+            gx = int(self.odom_x * GRID_SCALE)
+            gy = int(self.odom_y * GRID_SCALE)
+            self.brain.update_position(gx, gy)
 
     # ----------------------------------------------------------------
     # FIX: Pure-pursuit — mevcut waypointe doğru Alkar açısı hesaplar
     # Odometri gelmemişse None döner (FSM tek başına devam eder)
     # ----------------------------------------------------------------
     def _pure_pursuit_steer(self):
+        if not self.use_planner:
+            return None          # planlama kapalı -> waypoint direksiyonu yok
         if self.odom_x is None:
             return None
         if self.wp_idx >= len(ROUTE):
@@ -186,11 +204,10 @@ class DecisionControlNode(Node):
     # Ana döngü — FIX: hibrit direksiyon karıştırması (LANE_FOLLOW'da)
     # ----------------------------------------------------------------
     def control_loop(self):
-        # Mesafe tabanlı slalom (2026-07-21): CARLA'nın hız geri beslemesi
-        # doğrudan m/s. Gerçek araçla aynı yolu izlesin diye sim'de de
-        # beslenir — yoksa sim zaman tabanlı yedekte kalır ve araçta test
-        # ettiğimiz davranıştan ayrışır. yaw (2026-08-03): slalomun yanal
-        # ofset ölçümü için; odometri yoksa None gider (beyin yolu/saati kullanır).
+        # Mesafe + YAW tabanlı slalom: CARLA hız geri beslemesi m/s, yaw
+        # odometri quaternion'ından. Slalom fazları (escape/return) baş
+        # açısıyla biter (Hata B, 2026-08-10) — yaw beslenmezse mesafe/zaman
+        # yedeğine düşer, ki o da sıkı açıda 99° dönüp toparlayamıyordu.
         self.brain.update_motion(speed_mps=self.current_speed, yaw=self.odom_yaw)
         self.brain._update_state_machine()
         decision = self.brain.get_decision()

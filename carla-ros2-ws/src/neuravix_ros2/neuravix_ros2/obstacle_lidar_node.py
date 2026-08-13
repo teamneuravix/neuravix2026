@@ -88,8 +88,9 @@ BLOCKED = 0.0   # "hic klerans yok" / "veri yok" -> beyin durur
 class ObstacleLidarNode(Node):
 
     # Calisirken degistirilebilen ayarlar (tip gruplarina gore)
-    _FLOAT_TUNABLE = ("corridor", "side_offset", "side_corridor", "side_x_min",
-                      "x_min", "max_range", "z_min", "z_max", "bumper_offset",
+    _FLOAT_TUNABLE = ("corridor", "side_offset", "side_corridor",
+                      "side_x_min", "x_min",
+                      "max_range", "z_min", "z_max", "bumper_offset",
                       "lateral_offset", "lidar_timeout", "log_period",
                       "mount_check_tol")
     _INT_TUNABLE = ("min_points", "filter_window", "confirm_frames")
@@ -147,22 +148,25 @@ class ObstacleLidarNode(Node):
         # (Eski 1.2 -> 2.4 m'lik koridor, aracin iki katindan genisti ve
         #  bariyerli pistte virajlarda hayalet engel uretiyordu.)
         self.declare_parameter("corridor", 0.70)
-        # Kacis koridorunun merkezi = KOMSU SERIDIN MERKEZI (2026-08-03).
-        # Pist olcusu: serit genisligi 3.0 m (pist_layout.json; gercek pist
-        # ~2.96). Slalom manevrasi tam serit degisimi oldugu icin "sola/saga
-        # kacabilir miyim" sorusunun dogru muhatabi hedef seridin kendisidir.
-        # Eski 1.40 (bitisik koridor) hedef seridi HIC taramiyordu ve 1.4 m
-        # genisligindeki pist engelinin kenari koridora girip "yan kapali"
-        # yanilgisi uretebiliyordu. decision_brain.slalom_lateral_target ile
-        # tutarli olmali (o da 3.0).
+        # Kacis koridoru = KOMSU/KARSI SERIT (2026-08-03 pist olcusu: serit
+        # genisligi 3.0 m). side_offset komsu serit MERKEZI, side_corridor o
+        # seridin yari genisligi -> sol koridor y in [1.5, 4.5], sag y in
+        # [-4.5,-1.5]. Boylece left/right klerans "o seride kacabilir miyim"
+        # sorusunun boylamsal cevabidir (slalom_sim.py ile AYNI geometri;
+        # ikisi degisince birlikte degismeli).
+        # ESKI tasarim (side_offset=1.40 = 2*corridor, side_corridor=corridor)
+        # bitisik seridi olcuyordu; pistin 3.0 m serit genisligine gecildi.
+        # NOT: front |y|<=0.70 ile side |y-3.0|<1.5 arasinda y in (0.70,1.50)
+        # olu bolgesi olusur; 1.4 m'lik pist engeli iki sektore de girdigi
+        # icin sorun degil, ama serit cizgisi ustundeki INCE cisim kacabilir.
         self.declare_parameter("side_offset", 3.0)
-        # Yan koridorun YARI genisligi (front'unkinden ayri, 2026-08-03):
-        # ±1.5 -> hedef serit tamamen + gecis bolgesinin disi kapsanir
-        # (sol icin y=1.5..4.5). Kendi serit ortasindaki 1.4 m'lik engelin
-        # kenari (0.7) koridora giremez; yol kenarindaki bariyer (serit
-        # kenarindan ~0.5 m dista, y~-2) ters taraf koridoruna girer ve o
-        # tarafi dogru sekilde "kapali" gosterir.
-        self.declare_parameter("side_corridor", 1.5)
+        # 1.5 -> 1.0 (2026-08-10 CARLA): side_corridor=1.5 iken sol koridor
+        # y in [1.5,4.5] KOMSU SERIDIN SINIRINDA (y=1.5) basliyor; sag seridi
+        # dolduran genis bir engel/bariyer o siniri yaliyor ve sol koridoru
+        # "dolu" gosteriyordu (left ~ front). 1.0 -> koridor y in [2.0,4.0],
+        # yani TEMIZ sol serit; engel kenari olu bolgeye dusup left=99 (acik)
+        # okunur. Olu bolge y in (0.70,2.0)'ye genisler (kabul edilebilir).
+        self.declare_parameter("side_corridor", 1.0)
         # Yan koridorda geriye bakis siniri = arka tampon hizasi:
         #   -(wheelbase 1.86 + rear_overhang 0.47) - lidar_x 0.177 = -2.51
         # Aracin YANINDA duran bir cisim hala kacisi engeller; ondan daha
@@ -208,7 +212,8 @@ class ObstacleLidarNode(Node):
         self.get_logger().info(
             f"Engel lidar: {self.lidar_topic} -> {self.master_topic} (ID 4)\n"
             f"  koridor=+-{self.corridor:.2f} m, yan koridor merkezi="
-            f"+-{self.side_offset:.2f} m, ileri menzil={self.max_range:.1f} m\n"
+            f"+-{self.side_offset:.2f} m (yari gen. {self.side_corridor:.2f}), "
+            f"ileri menzil={self.max_range:.1f} m\n"
             f"  z penceresi=[{self.z_min:.2f}, {self.z_max:.2f}] "
             f"(lidar_height={h:.2f} -> yerden [{self.z_min + h:.2f}, "
             f"{self.z_max + h:.2f}] m)\n"
@@ -238,14 +243,14 @@ class ObstacleLidarNode(Node):
     def _on_params(self, params):
         """Calisma anindaki `ros2 param set` cagrilari. Eskiden parametreler
         sadece __init__'te okunuyordu ve `param set` sessizce hicbir sey
-        yapmiyordu (lane_follower'in err_offset tuzaginin aynisi)."""
+        yapmiyordu (lane_follower'in err_offset tuzaginin aynisi).
+        Tanimadigimiz parametreler (use_sim_time gibi altyapi parametreleri
+        dahil) dokunulmadan gecirilir — reddedilirse rclpy'nin kendi
+        cagrilari da basarisiz olur."""
+        known = self._FLOAT_TUNABLE + self._INT_TUNABLE + self._BOOL_TUNABLE
         for p in params:
-            if p.name not in (self._FLOAT_TUNABLE + self._INT_TUNABLE
-                              + self._BOOL_TUNABLE):
-                return SetParametersResult(
-                    successful=False,
-                    reason=f"'{p.name}' calisirken degistirilemez "
-                           "(node'u yeniden baslat)")
+            if p.name not in known:
+                continue
             if p.name in ("corridor", "max_range") and float(p.value) <= 0.0:
                 return SetParametersResult(
                     successful=False, reason=f"'{p.name}' pozitif olmali")
@@ -253,7 +258,8 @@ class ObstacleLidarNode(Node):
                 return SetParametersResult(
                     successful=False, reason=f"'{p.name}' >= 1 olmali")
         for p in params:
-            self._apply_param(p.name, p.value)
+            if p.name in known:
+                self._apply_param(p.name, p.value)
         return SetParametersResult(successful=True)
 
     # ------------------------------------------------------------------
@@ -351,11 +357,10 @@ class ObstacleLidarNode(Node):
         return max(0.0, float(np.partition(xs, k)[k]) - self.bumper_offset)
 
     def _front_clearance(self, x, y):
-        # Ego koridoru ±corridor (0.7). Yan koridorlar komsu serit merkezinde
-        # (side_offset=3.0, yari genislik side_corridor=1.5) -> sol icin
-        # y=1.5..4.5. Bilerek ORTUSTURMUYORUZ: kacis koridoru ego koridoruyla
-        # ortusseydi, kendi seridimizdeki engel kendi kacis yolunu da kapali
-        # gosterir ve slalom hic tetiklenmezdi.
+        # Ego koridoru: kendi seridimiz, |y| <= corridor (0.70). Yan koridorlar
+        # artik komsu seritte (side_offset=3.0 +- side_corridor=1.5) oldugu icin
+        # ego ile ortusmez; kendi seridimizdeki engel kacis yolunu kapali
+        # gostermez (slalom tetiklenebilir).
         band = np.abs(y) <= self.corridor
         if self.near_field_guard:
             # x_min kendi govdesini reddetmek icin var, ama eskiden x_min'in
@@ -376,8 +381,9 @@ class ObstacleLidarNode(Node):
 
     def _side_clearance(self, x, y, y_center):
         """Kacis koridorunda boylamsal klerans — front ile AYNI birim.
-        Eski "min(|y|)" tanimi corridor'dan kucuk deger uretemiyordu.
-        Genislik front'tan ayri: side_corridor (hedef serit + gecis payi)."""
+        Yan koridor yari genisligi = side_corridor (komsu seridin tamami),
+        front'un corridor'undan (0.70) BAGIMSIZ. Eski "min(|y|)" tanimi
+        corridor'dan kucuk deger uretemiyordu."""
         m = ((np.abs(y - y_center) < self.side_corridor)
              & (x > self.side_x_min) & (x < self.max_range))
         return self._robust_distance(x[m])
