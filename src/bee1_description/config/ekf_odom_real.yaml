@@ -1,0 +1,80 @@
+# ============================================================================
+# Bee1 GERCEK ARAC - tek LOKAL EKF (robot_localization) - odom -> base_link
+# ============================================================================
+# can_odom'un HAM dead-reckoning'i yerine slam_toolbox'a PURUZSUZ, ZIPLAMAYAN
+# bir odom prior'i vermek icin. EKF_DRIFT_COZUMU.txt (2026-07-19) ile geldi.
+#
+# Girdiler:
+#   /odometry/can_wheel (can_odom) -> SADECE vx (ilerleme/olcek; guvenilir CAN
+#                                     tekerlek hizi). x,y,yaw'i BURADAN ALINMAZ
+#                                     (dead-reckoning drift'ini EKF'e sokmamak icin).
+#   /imu/data (XSENS)              -> mutlak yaw (pose) + gyro yaw hizi (twist).
+#                                     yaw = uzun vade drift'siz referans,
+#                                     gyro hizi = kisa vade puruzsuz.
+#
+# Mahalanobis outlier reddi (imu0_*_rejection_threshold): celik bariyer dibinde
+# XSENS manyetometre yaw'i glitch atinca o olcumu REDDEDER -> odom ZIPLAMAZ
+# (rev6'nin "her dongude mutlak yaw'i sabit at" zaafinin glitch-korumali hali).
+#
+# EKF KONUM YARATMAZ: GPS yokken x,y yine yavasca kayar; onu slam scan-matching
+# (map->odom) duzeltir. EKF'in isi prior'i puruzsuz yapmak.
+#
+# ONEMLI (calistirmadan once): /imu/data orientation_covariance[0] == -1 ise
+# robot_localization yaw'i TAMAMEN yok sayar (XSENS surucusunde kovaryans
+# yayinini ac). 0 ise yaw'a tam guvenir, glitch reddi zayiflar; ideal
+# kucuk-pozitif.
+#
+# Node adi 'ekf_odom' (launch'ta name=ekf_odom ile eslesir).
+# ============================================================================
+ekf_odom:
+    ros__parameters:
+        frequency: 30.0
+        sensor_timeout: 0.1
+        two_d_mode: true              # 2D pist: z/roll/pitch sifirlanir
+        transform_time_offset: 0.0
+        transform_timeout: 0.0
+        print_diagnostics: true
+        debug: false
+        publish_tf: true              # odom->base_link'i ARTIK BU yayinlar
+
+        map_frame: map
+        odom_frame: odom
+        base_link_frame: base_link
+        world_frame: odom             # LOKAL: odom->base_link surer
+
+        # --- CAN tekerlek odometrisi: SADECE vx ---
+        # config vektoru: [x,y,z, roll,pitch,yaw, vx,vy,vz, vroll,vpitch,vyaw, ax,ay,az]
+        odom0: /odometry/can_wheel
+        odom0_config: [false, false, false,
+                       false, false, false,
+                       true,  false, false,
+                       false, false, false,
+                       false, false, false]
+        odom0_differential: false
+        odom0_relative: false
+        odom0_queue_size: 10
+
+        # --- IMU: SADECE gyro yaw hizi (twist). Mutlak yaw KAPALI ---
+        # 2026-07-20 olcumu: XSENS mutlak yaw manyetometre referansli ve pistin
+        # celik bariyerleri onu bozuyor -> tum surus boyunca gercek donusu ~124
+        # derece EKSIK sayiyor (mutlak +149.6 vs gyro +273.6). Bu SISTEMATIK bir
+        # hata, glitch degil -> asagidaki Mahalanobis reddi yakalayamaz, sadece
+        # tahmini surukler. Bu yuzden pose/yaw (index 5) FALSE yapildi; EKF artik
+        # vx + gyro yaw hizini fuze eder (bag teshisinde 10.3 m kapanma hatasiyla
+        # en iyi cikan mod). Kalan yavas gyro bias'ini slam scan-matching siler.
+        # Manyetik olarak temiz acik alanda index 5 tekrar true yapilabilir.
+        imu0: /imu/data
+        imu0_config: [false, false, false,
+                      false, false, false,
+                      false, false, false,
+                      false, false, true,
+                      false, false, false]
+        imu0_differential: false
+        imu0_relative: true           # ilk yaw referans -> odom 0'dan baslar
+        imu0_queue_size: 10
+        imu0_remove_gravitational_acceleration: true
+        # Mahalanobis outlier reddi (mag glitch korumasi)
+        imu0_pose_rejection_threshold: 2.5
+        imu0_twist_rejection_threshold: 5.0
+
+        use_control: false

@@ -1,0 +1,38 @@
+# colcon ciktilari
+build/
+install/
+log/
+
+# harita / nokta bulutu (135 MB+)
+*.pcd
+*.posegraph
+*.data
+
+# YOLO agirliklari — KLASORUN TAMAMI (317 MB, 20 dosya).
+# Uzanti bazli kural yetmiyor: models/ icinde `makarayizabi.pt.zip` ve
+# `tabela_tespit_node.py` adinda IKI adet 18 MB'lik model var; ikincisi
+# .py uzantili ama icerigi zip (torch checkpoint zaten bir zip arsividir).
+# Agirliklari depoya koymak istersen Git LFS sart.
+src/neuravix_ros2/models/
+*.pt
+
+# vendor depolari: kendi .git'leri var, upstream'den cekilir
+src/ros-bridge/
+src/FAST_LIO/
+src/carla-msgs/
+src/livox_ros_driver2/
+src/pcl_recorder/
+
+# ros-bridge upstream kokunden sizan artiklar
+src/docs/
+src/packaging/
+src/docker/
+src/Makefile
+src/mkdocs.yml
+src/README.md
+src/CHANGELOG.md
+src/requirements.txt
+
+# python
+__pycache__/
+*.pyc

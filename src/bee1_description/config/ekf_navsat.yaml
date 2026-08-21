@@ -1,0 +1,124 @@
+# ============================================================================
+# Bee1 - robot_localization (iki EKF + navsat) - resmi GPS fuzyon mimarisi
+# ============================================================================
+# REP-105 GPS kurulumu UC node ister:
+#   1) ekf_local  (world_frame=odom): FAST-LIO + IMU -> odom->base_link
+#                 Purüzsuz, lokal, yuksek frekans. Kisa vadeli dogruluk.
+#   2) ekf_global (world_frame=map) : FAST-LIO + IMU + GPS -> map->odom
+#                 GPS-capali, drift'i duzeltir. Uzun vadeli dogruluk.
+#   3) navsat_transform: GPS(NavSatFix) -> /odometry/gps (map frame'inde)
+#
+# Frame zinciri (REP-105):
+#   map --(ekf_global)--> odom --(ekf_local)--> base_link --> sensorler
+#
+# Veri akisi:
+#   /odometry/fastlio (relay) --+--> ekf_local  --> /odometry/filtered + odom->base_link
+#   /carla/.../imu -------------+
+#                               +--> ekf_global --> /odometry/global + map->odom
+#   /carla/.../gnss --> navsat -+--> /odometry/gps
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# 1) LOKAL EKF: odom -> base_link  (GPS YOK, sadece FAST-LIO + IMU)
+# ----------------------------------------------------------------------------
+ekf_local:
+    ros__parameters:
+        frequency: 30.0
+        sensor_timeout: 0.1
+        two_d_mode: true
+        transform_time_offset: 0.0
+        transform_timeout: 0.0
+        print_diagnostics: true
+        debug: false
+        publish_tf: true
+
+        map_frame: map
+        odom_frame: odom
+        base_link_frame: base_link
+        world_frame: odom            # LOKAL: odom->base_link surer
+
+        odom0: /odometry/fastlio
+        odom0_config: [true,  true,  true,
+                       false, false, true,
+                       false, false, false,
+                       false, false, false,
+                       false, false, false]
+        odom0_differential: false
+        odom0_relative: false
+        odom0_queue_size: 10
+
+        imu0: /carla/ego_vehicle/imu
+        imu0_config: [false, false, false,
+                      true,  true,  true,
+                      false, false, false,
+                      true,  true,  true,
+                      true,  true,  true]
+        imu0_differential: false
+        imu0_relative: false
+        imu0_queue_size: 10
+        imu0_remove_gravitational_acceleration: true
+
+        use_control: false
+
+# ----------------------------------------------------------------------------
+# 2) GLOBAL EKF: map -> odom  (FAST-LIO + IMU + GPS)
+# ----------------------------------------------------------------------------
+ekf_global:
+    ros__parameters:
+        frequency: 30.0
+        sensor_timeout: 0.1
+        two_d_mode: true
+        transform_time_offset: 0.0
+        transform_timeout: 0.0
+        print_diagnostics: true
+        debug: false
+        publish_tf: true
+
+        map_frame: map
+        odom_frame: odom
+        base_link_frame: base_link
+        world_frame: map             # GLOBAL: map->odom surer
+
+        # GPS odometrisi (navsat ciktisi) - TEK mutlak pozisyon kaynagi.
+        # FAST-LIO buraya KONULMADI: differential modda bile camera_init'in
+        # buyuk degerleri GPS ile celisip filtreyi diverge ettiriyordu.
+        # Lokal puruzsuzlugu ekf_local (FAST-LIO ile) sagliyor zaten.
+        odom0: /odometry/gps
+        odom0_config: [true,  true,  false,
+                       false, false, false,
+                       false, false, false,
+                       false, false, false,
+                       false, false, false]
+        odom0_differential: false
+        odom0_relative: false
+        odom0_queue_size: 10
+
+        imu0: /carla/ego_vehicle/imu
+        imu0_config: [false, false, false,
+                      false, false, true,
+                      false, false, false,
+                      true,  true,  true,
+                      true,  true,  true]
+        imu0_differential: false
+        imu0_relative: false
+        imu0_queue_size: 10
+        imu0_remove_gravitational_acceleration: true
+
+        use_control: false
+
+
+navsat_transform_node:
+    ros__parameters:
+        frequency: 30.0
+        delay: 3.0
+        magnetic_declination_radians: 0.0
+        yaw_offset: 0.0
+        zero_altitude: true
+        broadcast_utm_transform: false   # map->odom'u ekf_global suruyor, navsat degil
+        publish_filtered_gps: true
+        use_odometry_yaw: false
+        # Datum SABIT: navsat surekli yeniden datum kuruyordu, /odometry/gps
+        # uretemiyordu. wait_for_datum=true + sabit datum ile kilitliyoruz.
+        # Datum = CARLA Town02 cografi orijini (ilk GPS fix'ine yakin).
+        wait_for_datum: true
+        datum: [0.0, 0.0, 0.0]

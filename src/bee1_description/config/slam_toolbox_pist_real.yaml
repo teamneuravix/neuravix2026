@@ -1,0 +1,61 @@
+# slam_toolbox mapping - GERÇEK ARAÇ
+# Sim config'ten (slam_toolbox_pist.yaml) farklar:
+#   - base_frame: ego_vehicle -> base_link (can_odom'un child frame'i)
+#   - use_sim_time: false
+#   - max_laser_range: 100 -> 30 (VLP-16 gerçek etkin menzili ~100 m ama
+#     pist ölçeğinde 30 m yeterli; uzak gürültü noktalarını eşleştirmeye
+#     sokmamak scan-match'i sağlamlaştırır. Gerekirse arttırılır.)
+#   - minimum_travel_distance: 1.0 -> 0.5 (gerçek araç yavaş sürülecek;
+#     daha sık node = kalibrasyonu doğrulamak için daha iyi geri bildirim)
+# Kalanlar sim ile birebir aynı - orada çalıştığı kanıtlanmış değerler.
+#
+# 2026-07-14 (8. oturum): ilk gerçek harita çıktı ama tek geçişte ~5 dk sonra
+# slam gerçek-zamana yetişemedi, harita pistin 1/3'ünde dondu (graf 47 MB'ye
+# şişti, "queue is full"). Yükü azaltmak için üç ayar değişti:
+#   throttle_scans 1->2  : 10 Hz taramanın yarısını işle (yavaş sürüşte yeter)
+#   minimum_travel_distance 0.5->1.0 : yarı yoğunlukta node -> yarı boyut graf,
+#     yarı scan-match yükü (0.5 detay için iyiydi ama tüm pisti bitirmek şart)
+#   map_update_interval 1.0->2.0 : costmap'i yarı sıklıkta yeniden kur (CPU)
+# Bunlar hâlâ yetmezse: bag'e /velodyne_points kaydedip masada 'ros2 bag play
+# --rate 0.5' ile offline haritala -> slam asla geride kalmaz (garantili yol).
+slam_toolbox:
+    ros__parameters:
+        # --- Frame'ler ---
+        odom_frame: odom
+        map_frame: map
+        base_frame: base_link
+        # /scan değil: host velodyne_laserscan_node ile çakışıyordu (bkz.
+        # pist_slam_real.launch.py'deki not) - p2l çıktımızın özel adı:
+        scan_topic: /scan_bee1
+
+        # --- Mod ---
+        mode: mapping              # harita çıkarma. Yarışta localization'a alınır
+        use_sim_time: false
+
+        # --- Scan eşleştirme ---
+        resolution: 0.05
+        max_laser_range: 30.0
+        minimum_travel_distance: 1.0
+        minimum_travel_heading: 0.5
+        transform_publish_period: 0.02
+        map_update_interval: 2.0
+
+        # --- Loop closure ---
+        do_loop_closing: true
+        loop_search_maximum_distance: 8.0
+        loop_match_minimum_chain_size: 10
+
+        # --- Scan matcher ---
+        use_scan_matching: true
+        use_scan_barycenter: true
+        scan_buffer_size: 10
+        # 0.1 -> 0.12 (EKF_DRIFT_COZUMU.txt): en zayif scan eslesmelerini eler
+        # -> yerel bulanma/kink azalir. Geri almak icin 0.12 -> 0.1.
+        link_match_minimum_response_fine: 0.12
+        correlation_search_space_dimension: 0.5
+
+        # --- Performans ---
+        throttle_scans: 2
+        transform_timeout: 0.2
+        tf_buffer_duration: 30.0
+        stack_size_to_use: 40000000

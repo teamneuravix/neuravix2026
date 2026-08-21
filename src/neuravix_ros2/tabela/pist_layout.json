@@ -1,0 +1,299 @@
+{
+  "meta": {
+    "main_w": 73.0,
+    "main_h": 73.0,
+    "total_w": 90.0,
+    "total_h": 73.0,
+    "lane_width": 3.0,
+    "road_width": 10.0,
+    "junction_radius": 5.0,
+    "junction_radius_ra": 5.0
+  },
+  "vertical_roads_x": [
+    5.0,
+    26.0,
+    47.0,
+    68.0
+  ],
+  "horizontal_roads_y": [
+    5.0,
+    26.0,
+    47.0,
+    68.0
+  ],
+  "blocks": [
+    {
+      "x": 10.0,
+      "y": 10.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "A1"
+    },
+    {
+      "x": 31.0,
+      "y": 10.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "A2"
+    },
+    {
+      "x": 52.0,
+      "y": 10.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "A3"
+    },
+    {
+      "x": 10.0,
+      "y": 31.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "B1"
+    },
+    {
+      "x": 31.0,
+      "y": 31.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "B2"
+    },
+    {
+      "x": 52.0,
+      "y": 31.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "B3"
+    },
+    {
+      "x": 10.0,
+      "y": 52.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "C1"
+    },
+    {
+      "x": 31.0,
+      "y": 52.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "C2"
+    },
+    {
+      "x": 52.0,
+      "y": 52.0,
+      "w": 11.0,
+      "h": 11.0,
+      "label": "C3"
+    },
+    {
+      "x": 45.0,
+      "y": 24.0,
+      "w": 4.0,
+      "h": 4.0,
+      "label": "RA_isl"
+    }
+  ],
+  "tunnel": {
+    "cx": 26.0,
+    "cy": 36.5,
+    "length": 9.0,
+    "width": 9.0,
+    "type": "road-object",
+    "on_road_segment": "V1_1"
+  },
+  "roundabout": {
+    "cx": 47.0,
+    "cy": 26.0,
+    "island_r": 2.0,
+    "outer_r": 5.0,
+    "lane_r": 3.5,
+    "junction_id": 130
+  },
+  "duraklar": [
+    {
+      "kind": "dis",
+      "side": "W",
+      "along": 31.0,
+      "w_along": 7.0,
+      "depth": 3.5,
+      "label": "D-sol"
+    },
+    {
+      "kind": "dis",
+      "side": "S",
+      "along": 26.0,
+      "w_along": 7.0,
+      "depth": 3.5,
+      "label": "D-alt"
+    },
+    {
+      "kind": "ic",
+      "cx": 53.5,
+      "cy": 36.5,
+      "w": 2.5,
+      "h": 6.0,
+      "label": "D-ic"
+    }
+  ],
+  "parking": {
+    "x": 73.0,
+    "y": 43.0,
+    "w": 17.0,
+    "h": 20.0,
+    "entry_y": 47.0,
+    "junction_id": 111
+  },
+  "spawn": {
+    "x": 72.0,
+    "y": 69.5,
+    "z": 0.5,
+    "yaw": 180.0
+  },
+  "misyon_objeleri": [
+    {
+      "kind": "sign",
+      "type_name": "ileri_git",
+      "x": 53.0,
+      "y": 72.0,
+      "hdg": 3.141592653589793,
+      "label": "ILERI GIT",
+      "note": "J109 dogusu, H3 dis cevre (kuzey); CCW bati yonune giden surucuye"
+    },
+    {
+      "kind": "obstacle",
+      "x": 63.0,
+      "y": 69.5,
+      "w": 1.4,
+      "h": 1.4,
+      "label": "ENGEL",
+      "note": "H3 sag tarafa cekildi (ileri_git x=53'ten uzak) - slalom test"
+    },
+    {
+      "kind": "traffic_light",
+      "x": 36.5,
+      "y": 72.0,
+      "hdg": 3.141592653589793,
+      "label": "ISIK",
+      "note": "C2 merkez x, H3 dis cevre (kuzey); kirmizi-sari-yesil"
+    },
+    {
+      "kind": "sign",
+      "type_name": "sol_don",
+      "x": 31.0,
+      "y": 72.0,
+      "hdg": 3.141592653589793,
+      "label": "SOLA DON",
+      "note": "J108 dogusu, H3 dis cevre (kuzey); CCW surucuye sola don sinyali"
+    },
+    {
+      "kind": "sign",
+      "type_name": "tunel",
+      "x": 22.0,
+      "y": 44.0,
+      "hdg": 4.71238898038469,
+      "label": "TUNEL",
+      "note": "Tunelin J114 (kuzey) tarafi; guneye giden surucuye tunel uyarisi"
+    },
+    {
+      "kind": "sign",
+      "type_name": "park",
+      "x": 78.0,
+      "y": 59.0,
+      "hdg": 0.0,
+      "label": "PARK YAPILABILIR",
+      "note": "Park sol sutun ust slot (y~59); aisle'a (dogu) bakar"
+    },
+    {
+      "kind": "sign",
+      "type_name": "no_park",
+      "x": 78.0,
+      "y": 47.0,
+      "hdg": 0.0,
+      "label": "PARK YASAK",
+      "note": "Park sol sutun alt slot (y~47); aisle'a (dogu) bakar"
+    },
+    {
+      "kind": "sign",
+      "type_name": "sol_don",
+      "x": 62.0,
+      "y": 8.0,
+      "hdg": 3.141592653589793,
+      "label": "SOLA DON (park yolu)",
+      "note": "D-alt'tan park'a giderken SE kose kavsagi (J104 yakini); konumu x/y ile ayarla"
+    }
+  ],
+  "waypoints": [
+    {
+      "x": 72.0,
+      "y": 69.5
+    },
+    {
+      "x": 61.0,
+      "y": 69.5
+    },
+    {
+      "x": 59.0,
+      "y": 66.5
+    },
+    {
+      "x": 55.0,
+      "y": 66.5
+    },
+    {
+      "x": 52.0,
+      "y": 69.5
+    },
+    {
+      "x": 40.0,
+      "y": 69.5
+    },
+    {
+      "x": 28.0,
+      "y": 69.5
+    },
+    {
+      "x": 24.5,
+      "y": 60.0
+    },
+    {
+      "x": 24.5,
+      "y": 36.5
+    },
+    {
+      "x": 24.5,
+      "y": 15.0
+    },
+    {
+      "x": 26.0,
+      "y": 0.25
+    },
+    {
+      "x": 32.0,
+      "y": 3.5
+    },
+    {
+      "x": 60.0,
+      "y": 3.5
+    },
+    {
+      "x": 69.5,
+      "y": 15.0
+    },
+    {
+      "x": 69.5,
+      "y": 40.0
+    },
+    {
+      "x": 69.5,
+      "y": 47.0
+    },
+    {
+      "x": 81.5,
+      "y": 47.0
+    },
+    {
+      "x": 77.25,
+      "y": 59.25
+    }
+  ]
+}
