@@ -4,7 +4,11 @@ project(bee1_description)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY urdf launch config
+  # maps: pist_final.pgm/.yaml (AMCL haritasi) + datum_yt.npz + tunel.json
+  # + koordinat donusum scriptleri (21.08.2026). Harita paketle geldigi icin
+  # imajda hazir; volume'a bagimli degil. Daha yeni bir harita varsa
+  # `map_yaml:=/root/maps/...` ile disaridan gecilebilir.
+  DIRECTORY urdf launch config maps
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -57,6 +61,42 @@ install(
   PROGRAMS scripts/can_odom_node.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME can_odom
+)
+
+# ---------------------------------------------------------------------------
+# AMCL LOKALIZASYON YIGINI (21.08.2026, ~/loc_planner_map.zip'ten entegre).
+# Bu dort script `pist_localization_amcl.launch.py` tarafindan cagriliyor.
+# Onceki yigin (pist_localization_real.launch.py = slam_toolbox localization)
+# 12.08'de olculup terk edildi: kosunun yalnizca %15'inde kilitli kaliyor,
+# medyan tarama-harita mesafesi 3.01 m, kilidi kaybedince geri donemiyor.
+# AMCL + GNSS gozetmeni ile olculen: medyan 1.19 m, %90 2.57 m (pist_17tem_2).
+#
+# ⚠️ yer_tanima* YARISTA KULLANILMIYOR (capraz-oturum hatasi medyan 6.83 m,
+# en kotusu 46.7 m -- bkz. maps/OKU.md). Ama launch onlari opsiyonel olarak
+# cagirdigi ve CMakeLists kurmaya calistigi icin dosyalar bulunmazsa build
+# patlar; ikisi de kuruluyor, varsayilan `use_yer_tanima:=false`.
+install(PROGRAMS scripts/gnss_supervisor.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME gnss_supervisor
+)
+install(PROGRAMS scripts/tekerlek_odom_tf.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME tekerlek_odom_tf
+)
+# GNSS -> map pozu (AMCL'siz konum kaynagi, route_planner icin).
+# 2026-08-22 karari: teknik kontrolde yalnizca GNSS'e guveniliyor; AMCL yigini
+# yerinde duruyor ama bagimlilik degil. Ayrinti dosyanin kendi basliginda.
+install(PROGRAMS scripts/gnss_pose_node.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME gnss_pose
+)
+install(PROGRAMS scripts/yer_tanima.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME yer_tanima
+)
+install(PROGRAMS scripts/yer_tanima_db.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME yer_tanima_db
 )
 
 # GERCEK ARAC: /beemobs/FB_VehicleSpeed -> /beemobs/fbvehiclespeed isim koprusu.

@@ -1,0 +1,660 @@
+{
+ "nodes": [
+  {
+   "id": 0,
+   "map_x": 45.8,
+   "map_y": 9.7,
+   "type": "kavsak"
+  },
+  {
+   "id": 1,
+   "map_x": 22.8,
+   "map_y": 5.5,
+   "type": "kavsak"
+  },
+  {
+   "id": 2,
+   "map_x": 7.1,
+   "map_y": 3.8,
+   "type": "kavsak"
+  },
+  {
+   "id": 3,
+   "map_x": -4.3,
+   "map_y": 2.0,
+   "type": "kavsak"
+  },
+  {
+   "id": 4,
+   "map_x": 62.4,
+   "map_y": 12.7,
+   "type": "kavsak"
+  },
+  {
+   "id": 5,
+   "map_x": -3.5,
+   "map_y": 25.5,
+   "type": "park"
+  },
+  {
+   "id": 6,
+   "map_x": 74.1,
+   "map_y": 52.2,
+   "type": "durak"
+  },
+  {
+   "id": 7,
+   "map_x": 50.8,
+   "map_y": 74.7,
+   "type": "durak"
+  },
+  {
+   "id": 8,
+   "map_x": -2.5,
+   "map_y": 18.1,
+   "type": "park"
+  },
+  {
+   "id": 9,
+   "map_x": -2.0,
+   "map_y": 13.7,
+   "type": "park"
+  },
+  {
+   "id": 10,
+   "map_x": -1.2,
+   "map_y": 8.9,
+   "type": "park"
+  },
+  {
+   "id": 11,
+   "map_x": 20.5,
+   "map_y": 17.8,
+   "type": "kavsak"
+  },
+  {
+   "id": 12,
+   "map_x": 53.9,
+   "map_y": 53.3,
+   "type": "kavsak"
+  },
+  {
+   "id": 13,
+   "map_x": 33.6,
+   "map_y": 63.7,
+   "type": "kavsak"
+  },
+  {
+   "id": 14,
+   "map_x": 35.7,
+   "map_y": 54.6,
+   "type": "kavsak"
+  },
+  {
+   "id": 15,
+   "map_x": 42.3,
+   "map_y": 51.2,
+   "type": "kavsak"
+  },
+  {
+   "id": 16,
+   "map_x": 37.5,
+   "map_y": 44.4,
+   "type": "kavsak"
+  },
+  {
+   "id": 17,
+   "map_x": 31.1,
+   "map_y": 48.5,
+   "type": "kavsak"
+  },
+  {
+   "id": 18,
+   "map_x": 74.6,
+   "map_y": 15.4,
+   "type": "viraj"
+  },
+  {
+   "id": 19,
+   "map_x": 62.9,
+   "map_y": 71.4,
+   "type": "viraj"
+  },
+  {
+   "id": 20,
+   "map_x": 14.6,
+   "map_y": 59.4,
+   "type": "viraj"
+  },
+  {
+   "id": 21,
+   "map_x": 55.76,
+   "map_y": 46.0,
+   "type": "tunel_giris"
+  },
+  {
+   "id": 22,
+   "map_x": 58.4,
+   "map_y": 32.0,
+   "type": "tunel_giris"
+  },
+  {
+   "id": 23,
+   "map_x": 33.6,
+   "map_y": 34.6,
+   "type": "durak"
+  },
+  {
+   "id": 24,
+   "map_x": -3.1,
+   "map_y": 22.1,
+   "type": "park"
+  },
+  {
+   "id": 25,
+   "map_x": 36.5,
+   "map_y": 49.8,
+   "type": "roundabout"
+  },
+  {
+   "id": 26,
+   "map_x": 49.6,
+   "map_y": 67.5,
+   "type": "kavsak"
+  },
+  {
+   "id": 27,
+   "map_x": 57.0,
+   "map_y": 69.8,
+   "type": "kavsak"
+  },
+  {
+   "id": 28,
+   "map_x": 59.2,
+   "map_y": 26.0,
+   "type": "kavsak"
+  },
+  {
+   "id": 29,
+   "map_x": 72.2,
+   "map_y": 28.7,
+   "type": "kavsak"
+  },
+  {
+   "id": 30,
+   "map_x": 69.6,
+   "map_y": 44.4,
+   "type": "kavsak"
+  },
+  {
+   "id": 31,
+   "map_x": 67.2,
+   "map_y": 56.0,
+   "type": "kavsak"
+  },
+  {
+   "id": 32,
+   "map_x": 18.1,
+   "map_y": 30.1,
+   "type": "kavsak"
+  },
+  {
+   "id": 33,
+   "map_x": 16.2,
+   "map_y": 45.6,
+   "type": "kavsak"
+  },
+  {
+   "id": 34,
+   "map_x": 3.4,
+   "map_y": 27.3,
+   "type": "kavsak"
+  },
+  {
+   "id": 35,
+   "map_x": 3.7,
+   "map_y": 23.6,
+   "type": "kavsak"
+  },
+  {
+   "id": 36,
+   "map_x": 4.5,
+   "map_y": 19.3,
+   "type": "kavsak"
+  },
+  {
+   "id": 37,
+   "map_x": 5.2,
+   "map_y": 15.1,
+   "type": "kavsak"
+  },
+  {
+   "id": 38,
+   "map_x": 6.0,
+   "map_y": 9.8,
+   "type": "kavsak"
+  },
+  {
+   "id": 39,
+   "map_x": 42.4,
+   "map_y": 22.0,
+   "type": "kavsak"
+  },
+  {
+   "id": 40,
+   "map_x": 40.7,
+   "map_y": 30.9,
+   "type": "kavsak"
+  },
+  {
+   "id": 41,
+   "map_x": 38.4,
+   "map_y": 40.4,
+   "type": "kavsak"
+  },
+  {
+   "id": 42,
+   "map_x": 53.62,
+   "map_y": 75.35,
+   "type": "gorev_noktasi",
+   "nokta_id": 1,
+   "heading": 49.17,
+   "giris_yonu_deg": -170.0
+  },
+  {
+   "id": 43,
+   "map_x": 73.93,
+   "map_y": 55.17,
+   "type": "gorev_noktasi",
+   "nokta_id": 2,
+   "heading": 139.17,
+   "giris_yonu_deg": 100.0
+  },
+  {
+   "id": 44,
+   "map_x": 43.99,
+   "map_y": 70.27,
+   "type": "gorev_noktasi",
+   "nokta_id": 39,
+   "heading": 49.17,
+   "giris_yonu_deg": -170.0
+  },
+  {
+   "id": 45,
+   "map_x": 73.5,
+   "map_y": 45.03,
+   "type": "gorev_noktasi",
+   "nokta_id": 30,
+   "heading": 139.17,
+   "giris_yonu_deg": 100.0
+  },
+  {
+   "id": 46,
+   "map_x": 71.7,
+   "map_y": 44.7,
+   "type": "gorev_noktasi",
+   "nokta_id": 31,
+   "heading": 319.17,
+   "giris_yonu_deg": -80.0
+  },
+  {
+   "id": 47,
+   "map_x": 72.93,
+   "map_y": 37.76,
+   "type": "gorev_noktasi",
+   "nokta_id": 29,
+   "heading": 319.17,
+   "giris_yonu_deg": -80.0
+  },
+  {
+   "id": 48,
+   "map_x": 18.75,
+   "map_y": 64.28,
+   "type": "gorev_noktasi",
+   "nokta_id": 43,
+   "heading": 49.17,
+   "giris_yonu_deg": -170.0
+  },
+  {
+   "id": 49,
+   "map_x": 13.06,
+   "map_y": 54.18,
+   "type": "gorev_noktasi",
+   "nokta_id": 47,
+   "heading": 319.17,
+   "giris_yonu_deg": -80.0
+  },
+  {
+   "id": 50,
+   "map_x": 64.02,
+   "map_y": 22.09,
+   "type": "gorev_noktasi",
+   "nokta_id": 58,
+   "heading": 139.17,
+   "giris_yonu_deg": 100.0
+  },
+  {
+   "id": 51,
+   "map_x": 55.16,
+   "map_y": 27.28,
+   "type": "gorev_noktasi",
+   "nokta_id": 74,
+   "heading": 229.17,
+   "giris_yonu_deg": 10.0
+  },
+  {
+   "id": 52,
+   "map_x": 35.21,
+   "map_y": 35.99,
+   "type": "gorev_noktasi",
+   "nokta_id": 4,
+   "heading": 319.17,
+   "giris_yonu_deg": -80.0
+  },
+  {
+   "id": 53,
+   "map_x": 18.14,
+   "map_y": 42.66,
+   "type": "gorev_noktasi",
+   "nokta_id": 48,
+   "heading": 139.17,
+   "giris_yonu_deg": 100.0
+  },
+  {
+   "id": 54,
+   "map_x": 19.01,
+   "map_y": 36.63,
+   "type": "gorev_noktasi",
+   "nokta_id": 50,
+   "heading": 139.17,
+   "giris_yonu_deg": 100.0
+  },
+  {
+   "id": 55,
+   "map_x": 7.34,
+   "map_y": 29.74,
+   "type": "gorev_noktasi",
+   "nokta_id": 0,
+   "heading": 49.17,
+   "giris_yonu_deg": -170.0
+  }
+ ],
+ "edges": [
+  [
+   0,
+   1
+  ],
+  [
+   1,
+   2
+  ],
+  [
+   0,
+   4
+  ],
+  [
+   2,
+   3
+  ],
+  [
+   1,
+   11
+  ],
+  [
+   4,
+   18
+  ],
+  [
+   14,
+   17
+  ],
+  [
+   13,
+   14
+  ],
+  [
+   14,
+   15
+  ],
+  [
+   15,
+   16
+  ],
+  [
+   16,
+   17
+  ],
+  [
+   12,
+   15
+  ],
+  [
+   21,
+   22
+  ],
+  [
+   12,
+   21
+  ],
+  [
+   2,
+   38
+  ],
+  [
+   37,
+   38
+  ],
+  [
+   36,
+   37
+  ],
+  [
+   35,
+   36
+  ],
+  [
+   34,
+   35
+  ],
+  [
+   5,
+   34
+  ],
+  [
+   24,
+   35
+  ],
+  [
+   8,
+   36
+  ],
+  [
+   9,
+   37
+  ],
+  [
+   10,
+   38
+  ],
+  [
+   32,
+   34
+  ],
+  [
+   11,
+   32
+  ],
+  [
+   11,
+   39
+  ],
+  [
+   32,
+   33
+  ],
+  [
+   20,
+   33
+  ],
+  [
+   13,
+   20
+  ],
+  [
+   13,
+   26
+  ],
+  [
+   7,
+   26
+  ],
+  [
+   7,
+   27
+  ],
+  [
+   26,
+   27
+  ],
+  [
+   19,
+   27
+  ],
+  [
+   19,
+   31
+  ],
+  [
+   6,
+   31
+  ],
+  [
+   6,
+   30
+  ],
+  [
+   30,
+   31
+  ],
+  [
+   29,
+   30
+  ],
+  [
+   12,
+   26
+  ],
+  [
+   12,
+   31
+  ],
+  [
+   22,
+   28
+  ],
+  [
+   28,
+   29
+  ],
+  [
+   18,
+   29
+  ],
+  [
+   4,
+   28
+  ],
+  [
+   28,
+   39
+  ],
+  [
+   0,
+   39
+  ],
+  [
+   39,
+   40
+  ],
+  [
+   23,
+   40
+  ],
+  [
+   40,
+   41
+  ],
+  [
+   23,
+   41
+  ],
+  [
+   16,
+   41
+  ],
+  [
+   17,
+   33
+  ],
+  [
+   14,
+   25
+  ],
+  [
+   42,
+   19
+  ],
+  [
+   43,
+   30
+  ],
+  [
+   44,
+   27
+  ],
+  [
+   45,
+   29
+  ],
+  [
+   46,
+   31
+  ],
+  [
+   47,
+   30
+  ],
+  [
+   48,
+   13
+  ],
+  [
+   49,
+   20
+  ],
+  [
+   50,
+   4
+  ],
+  [
+   51,
+   39
+  ],
+  [
+   52,
+   17
+  ],
+  [
+   53,
+   32
+  ],
+  [
+   54,
+   32
+  ],
+  [
+   55,
+   32
+  ]
+ ]
+}

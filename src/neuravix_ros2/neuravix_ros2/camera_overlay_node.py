@@ -262,6 +262,13 @@ class OverlayNode(Node):
         self.declare_parameter("use_depth", True)     # serit depth occlusion (engel ustu fix)
         self.declare_parameter("depth_margin", 0.6)   # m tolerans
         self.declare_parameter("occlude_signs", True) # tabela cast_ray occlusion (bariyer arkasi gizle)
+        # SIM PARITESI (25.08.2026): tabela_tespit_node artik mesafeyi ZED'in
+        # derinlik goruntusunden okuyor. Bu dugumde CARLA'nin depth kamerasi
+        # ZATEN var (occlusion icin) ve metre cinsinden. ROS'a da yayinlanirsa
+        # simulasyon, gercek aracla AYNI kod yolunu calistirir -- yoksa depth
+        # yolu yalnizca araç gununde ilk kez denenmis olurdu.
+        self.declare_parameter("depth_out_topic", "/carla/ego_vehicle/rgb_overlay/depth")
+        self.declare_parameter("publish_depth", True)
 
         host = self.get_parameter("host").value
         port = int(self.get_parameter("port").value)
@@ -283,6 +290,9 @@ class OverlayNode(Node):
         self.use_depth = bool(self.get_parameter("use_depth").value)
         self.depth_margin = float(self.get_parameter("depth_margin").value)
         self.occlude_signs = bool(self.get_parameter("occlude_signs").value)
+        self.depth_out_topic = self.get_parameter("depth_out_topic").value
+        # Depth kamerasi kapaliysa yayinlanacak bir sey de yok.
+        self.publish_depth = bool(self.get_parameter("publish_depth").value) and self.use_depth
 
         self.get_logger().info(f"Veri dizini: {HERE}")
 
@@ -344,12 +354,16 @@ class OverlayNode(Node):
 
         self.bridge = CvBridge()
         self.pub = self.create_publisher(Image, self.out_topic, 10)
+        self.depth_pub = (self.create_publisher(Image, self.depth_out_topic, 10)
+                          if self.publish_depth else None)
         self.rgb_cam.listen(self._rgb_cb)
 
         self.get_logger().info(
             f"Overlay KENDI kamerasi -> {self.out_topic} "
             f"(tabela={len(self.signs)}, serit_seg={len(self.lane_segs)}, "
             f"depth_occlusion={self.use_depth})")
+        if self.publish_depth:
+            self.get_logger().info(f"Derinlik (32FC1, metre) -> {self.depth_out_topic}")
 
     def _depth_cb(self, image):
         """CARLA depth -> metre array (occlusion icin)."""
@@ -435,10 +449,22 @@ class OverlayNode(Node):
             overlay_png(frame, png, u, v, px_w)
 
         try:
+            stamp = self.get_clock().now().to_msg()
             out = self.bridge.cv2_to_imgmsg(frame, "bgr8")
-            out.header.stamp = self.get_clock().now().to_msg()
+            out.header.stamp = stamp
             out.header.frame_id = "ego_vehicle/rgb_front"
             self.pub.publish(out)
+
+            # Derinlik AYNI zaman damgasiyla gider: tuketici tarafta RGB ile
+            # eslesme zaman damgasindan yapiliyor. Iki CARLA sensoru ayri
+            # callback'lerde tetiklenir, senkron modda ayni tick'e duserler --
+            # bu yuzden son depth karesi bu kareye ait sayilir.
+            if self.depth_pub is not None and self.depth_img is not None:
+                d_out = self.bridge.cv2_to_imgmsg(
+                    self.depth_img.astype(np.float32), "32FC1")
+                d_out.header.stamp = stamp
+                d_out.header.frame_id = "ego_vehicle/rgb_front"
+                self.depth_pub.publish(d_out)
         except Exception as e:
             self.get_logger().warn(f"publish: {e}")
 

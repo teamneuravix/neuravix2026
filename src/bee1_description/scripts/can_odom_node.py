@@ -154,7 +154,7 @@ class CanOdomNode(Node):
         self.declare_parameter('speed_scale', 0.31627)  # fb_reelvehiclespeed_kmh -> m/s (GPS-kalibre)
         # Kalibre 2026-07-13 (bkz. rev5 notu): düz=2, tam sol=-21, tam sağ=26
         self.declare_parameter('steer_feedback_gain', -0.02322)  # ham değer -> radyan (negatif: ham(-)=sol)
-        self.declare_parameter('steer_feedback_offset', 2.0)     # düz gidişte okunan ham değer
+        self.declare_parameter('steer_feedback_offset', 3.4)     # düz gidişte okunan ham değer
         self.declare_parameter('speed_timeout', 0.5)         # sn; hız mesajı bundan eskiyse v=0
         # rev7: varsayılan gyro entegre. Mutlak AHRS yaw pist ölçümünde 10x kötü
         # çıktı (manyetometre çelik bariyerden bozuluyor) -- bkz. rev7 notu.
@@ -162,6 +162,14 @@ class CanOdomNode(Node):
         self.declare_parameter('use_imu_orientation', False)   # true: yaw XSENS AHRS mutlak orientation'dan (manyetik ortam temizse)
         self.declare_parameter('imu_topic', '/imu/data')      # XSENS sürücü çıktısı (araçta doğrula)
         self.declare_parameter('imu_timeout', 0.3)            # sn; IMU bundan eskiyse tan(steer)'e düş
+        # ⚠️ SAAT SIÇRAMASI KORUMASI (2026-08-22). Entegrasyon adımı dt'nin ÜST
+        # SINIRI YOKTU. use_sim_time:=true iken /clock gelmeden önce
+        # get_clock().now() SIFIR döner; bag başlayıp saat bag zamanına
+        # sıçrayınca ilk dt milyarlarca saniye olur. Hız tarafını 'speed_ok'
+        # kazara koruyordu (v=0 -> x += 0) ama YAW korumasızdı: gyro tazeyse
+        # yaw = yaw + yaw_rate*dt ile rastgele bir değere gidiyordu ve AMCL'e
+        # dev bir dönme deltası olarak ulaşıyordu. Bu sınırı aşan tik atlanır.
+        self.declare_parameter('max_dt', 0.5)                 # sn; bundan büyük adım = saat sıçraması
         self.declare_parameter('odom_frame', 'odom')
         self.declare_parameter('base_frame', 'base_link')
         self.declare_parameter('publish_tf', True)
@@ -177,6 +185,7 @@ class CanOdomNode(Node):
         self.steer_gain = gp('steer_feedback_gain').double_value
         self.steer_offset = gp('steer_feedback_offset').double_value
         self.speed_timeout = gp('speed_timeout').double_value
+        self.max_dt = gp('max_dt').double_value
         self.use_imu_yaw = gp('use_imu_yaw').bool_value
         self.use_imu_orientation = gp('use_imu_orientation').bool_value
         self.imu_topic = gp('imu_topic').string_value
@@ -218,6 +227,7 @@ class CanOdomNode(Node):
         self.tf_broadcaster = TransformBroadcaster(self)
 
         self._last_time = self.get_clock().now()
+        self._dt_warned = False
         self.timer = self.create_timer(1.0 / rate_hz, self._integrate)
 
         self.get_logger().info(
@@ -262,6 +272,16 @@ class CanOdomNode(Node):
         dt = (now - self._last_time).nanoseconds * 1e-9
         self._last_time = now
         if dt <= 0.0:
+            return
+        if dt > self.max_dt:
+            # Saat sıçraması (sim-time başlangıcı, bag replay, sistem saati
+            # düzeltmesi). Entegre ETME -- _last_time zaten güncellendi,
+            # bir sonraki tik normal dt ile devam eder.
+            if not self._dt_warned:
+                self.get_logger().warn(
+                    f'Saat sicramasi: dt={dt:.1f}s > max_dt={self.max_dt}s -> '
+                    f'bu tik atlandi (odom/yaw korundu).')
+                self._dt_warned = True
             return
 
         # Stale-data koruması: hız mesajı hiç gelmediyse ya da timeout'u

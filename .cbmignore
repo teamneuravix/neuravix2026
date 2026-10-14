@@ -1,0 +1,39 @@
+# codebase-memory indeksleme disi biraktiklari (17.08.2026)
+# Amac: grafikte SADECE kaynak kod olsun. Iki tur seyi disliyoruz —
+# (a) kaynagin KOPYASINI tasiyan derleme ciktilari, (b) ikili/dokuman yigini.
+
+# --- (a) derleme ciktilari: kaynagin birebir kopyasi ---
+# colcon --symlink-install oldugu icin install/ altindaki .py dosyalari
+# src/ ile AYNI sembolleri tasir; indekslenirse her fonksiyon iki kez cikar
+# ve "bu fonksiyon nerede tanimli" sorusu iki dosya birden gosterir.
+build/
+install/
+log/
+
+# Ayni tuzagin paket ici hali: src/neuravix_ros2 altinda ESKI bir workspace
+# kalintisi olan install/ + log/ duruyor (18M). Ayni dosya adlari, eski
+# icerik — grafikte guncel kodla yarisirdi.
+src/neuravix_ros2/install/
+src/neuravix_ros2/log/
+src/neuravix_ros2/build/
+
+# --- (b) ikili / dokuman yigini: kod degil, 300M+ ---
+src/neuravix_ros2/models/
+src/FAST_LIO/doc/
+*.pt
+*.pcd
+*.posegraph
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bag
+*.db3
+*.tar
+*.zip
+
+# --- python/derleme artiklari ---
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/

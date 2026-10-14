@@ -227,6 +227,7 @@ class LaneFollowerNode(Node):
     def fit_lane_poly(self, mask):
         ys, xs = np.where(mask > 0)
         if len(xs) < self.fit_min_points:
+            self._son_fit_red = 'MASKE_KUCUK'
             return None
 
         # ustteki bozuk BEV bolgesi silinir (fit_far_frac parametreli, eski
@@ -237,6 +238,7 @@ class LaneFollowerNode(Node):
         xs = xs[keep]
 
         if len(xs) < max(15, self.fit_min_points // 2):
+            self._son_fit_red = 'MASKE_KUCUK'
             return None
 
         # Gecerli serit izi mi? BEV'de bir serit cizgisi DIKEY olarak uzundur;
@@ -249,6 +251,7 @@ class LaneFollowerNode(Node):
         # duz yolda yanal ofset HIC duzeltilmiyordu. Satir acikligi olcutu ayni
         # zamanda yatay cizgileri (dur cizgisi, yaya gecidi) de eler.
         if np.ptp(ys) < self.img_h * self.fit_min_span_frac:
+            self._son_fit_red = 'YAYILIM_KISA'
             return None
 
         try:
@@ -313,6 +316,7 @@ class LaneFollowerNode(Node):
                     return None, None
                 if abs(float(np.polyval(np.polyder(p), self.y_eval))) \
                         > self.fit_max_slope:
+                    self._son_fit_red = 'EGIM_REDDI'
                     return None, None      # egim kilavuzu
                 art = float(np.sqrt(np.average((np.polyval(p, ys) - xs) ** 2,
                                                weights=w)))
@@ -373,6 +377,7 @@ class LaneFollowerNode(Node):
                 # cunku olcumu KAYBETMEZ, sadece ileri bakisi kisaltir.
                 if not self.adaptif_lookahead:
                     if _uzak > self.fit_extrap_max_row:
+                        self._son_fit_red = 'EKSTRAPOLASYON'
                         return None
                 if (not self.adaptif_lookahead) and \
                         _uzak > self.fit_extrap_deg1_row and len(poly) > 2:
@@ -385,10 +390,12 @@ class LaneFollowerNode(Node):
                 _yv = max(_lo, min(_hi, self.y_eval))
                 _x = float(np.polyval(poly, _yv))
                 if not (-0.25 * self.img_w <= _x <= 1.25 * self.img_w):
+                    self._son_fit_red = 'GORUNTU_DISI'
                     return None
             return poly
 
         except Exception:
+            self._son_fit_red = 'FIT_HATASI'
             return None
 
     def _egim(self, lp, rp, y):
@@ -528,10 +535,19 @@ class LaneFollowerNode(Node):
         # --- FITLER ---
         ys = np.linspace(int(self.img_h * self.fit_far_frac),
                          self.img_h - 1, 40).astype(int)
-        for poly, col in ((left_poly, (255, 0, 0)), (right_poly, (0, 0, 255))):
+        for poly, span, col in ((left_poly, self._span_sol, (255, 0, 0)),
+                                (right_poly, self._span_sag, (0, 0, 255))):
             if poly is None:
                 continue
-            pts = [(self.poly_x(poly, y), y) for y in ys]
+            if span:
+                y0 = max(int(self.img_h * self.fit_far_frac), int(span[0]))
+                y1 = min(self.img_h - 1, int(span[1]))
+            else:
+                y0, y1 = int(self.img_h * self.fit_far_frac), self.img_h - 1
+            if y1 - y0 < 4:
+                continue
+            pts = [(self.poly_x(poly, y), y)
+                   for y in np.linspace(y0, y1, 40).astype(int)]
             for i in range(len(pts) - 1):
                 cv2.line(bev_img, pts[i], pts[i + 1], col, 2)
 
@@ -765,7 +781,19 @@ class LaneFollowerNode(Node):
         # Egim kilavuzu: bkz. fit_lane_poly icindeki ayrintili olcum notu.
         # Eski sabit 1.0 virajda gecerli fitleri eliyordu (tek-fit karelerinin
         # %81.5'i bu kurala takiliyordu).
-        self.declare_parameter("fit_max_slope", 3.0)      # eski sabit: 1.0
+        # 3.0 -> 5.0 (2026-08-21). Red-sebep etiketlemesi EGIM_REDDI'nin
+        # karelerin %8.7'sini yediğini gosterdi. Tarama (joystick_46):
+        #   esik  kor kare  EGIM_REDDI  kilit<80  der/sn
+        #   3.0     18.3%      8.7%       0.3%     6.0
+        #   5.0     12.3%      2.8%       0.2%     6.6   <- secilen
+        #   7.0     11.5%      1.7%       0.2%     6.9
+        # Kor kare orani UCTE BIR azaliyor, kilitlenme bozulmuyor.
+        # ESKI GEREKCENIN KUSURU: 3.0, "5.6 m viraj yaricapi" diye
+        # secilmisti (arac 3.4 m'yi alabiliyor). Ama y_eval'deki egim yalniz
+        # YOL EGRILIGI degil, ARACIN SERIDE GORE ACISI da. Arac yalpaladiginda
+        # (bu kayitta bilerek yapiliyor) egim buyur ve mesru gozlem atilir.
+        # 7.0 az daha kazandiriyor ama gurultuye kapi aciyor; 5.0 orta yol.
+        self.declare_parameter("fit_max_slope", 5.0)      # eski sabit: 1.0
         self.fit_max_slope = float(self.get_parameter("fit_max_slope").value)
         self.fit_deg2_kazanc = float(
             self.get_parameter("fit_deg2_kazanc").value)
@@ -870,6 +898,86 @@ class LaneFollowerNode(Node):
         # Etkin satir asla y_eval'den YAKIN olamaz diye bir sinir yok; ama
         # asagidaki alt sinir (adaptif_min_m) cok yakina inip gurultuye
         # kilitlenmeyi onler.
+        # ---- CIFT ICIN IKI TARAF DA TAZE OLMALI (2026-08-21) ----
+        # Olculdu (joystick_46, 2718 kare): tek taze aday bulunan karelerin
+        # %66.7'sinde yine de "gecerli cift" olusuyordu -- cunku taze cizgi
+        # ONCEKI kareden kalan bayat fitle eslestiriliyor ve genislik kapisi
+        # bunu kabul ediyor (bayat cizgi bir kare once gecerliydi). Sonucu:
+        # aday=1 karelerde |Yanal| medyani 172 px (aday>=2'de 81-88 px),
+        # %90'i 340 px = 1.5 yarim serit. Kare 1204'teki "mavi+sari+kirmizi
+        # bariyere yigilmis" goruntusu budur.
+        # Bayat + taze karisimi bir OLCUM degildir: arac o kareden beri
+        # hareket etti, bayat cizgi artik baska bir yerde.
+        self.declare_parameter("cift_ikisi_de_taze", True)
+        self.cift_ikisi_de_taze = bool(
+            self.get_parameter("cift_ikisi_de_taze").value)
+        # ---- TEK ADAYDA TARAF KARARININ CIPASI (2026-08-21) ----
+        # ESKI KURAL (sureklilik): "bu benim sol cizgim mi sag cizgim mi"
+        # sorusu _son_lane_x'e, yani BIR ONCEKI KARENIN AYNI HESABININ
+        # CIKTISINA sorulyordu. Fiziksel cipa yok -> SINIRSIZ POZITIF GERI
+        # BESLEME: merkez biraz kayinca kayan merkez bir sonraki karede tarafi
+        # teyit ediyor, merkez daha da kayiyor.
+        # OLCULDU (joystick_46, 4077 kare, tek-aday karesi %32.3):
+        #   |yanal hata| > yarim serit  : 696 kare (%17.1)
+        #   > 1.5 yarim serit           : 376 kare (%9.2)
+        #   maks                        : 501 px = 3.3 m (bir serit genisliginden fazla)
+        #   >=5 kare suren kacis epizodu: 12 adet, en uzunu 172 kare (~11.5 s)
+        # Kullanicinin sikayet ettigi iki kare (1208 "yanlis", 1363 "dogru")
+        # AYNI mekanizmanin iki isaretidir: 1194-1242 (SOL, maks 379 px) ve
+        # 1361-1442 (SAG, maks 380 px). Yani ucuncu kare "saglam kaldi" degil,
+        # kacis sadece bariyerden UZAGA dogruydu.
+        # YENI KURAL (eksen): cipa ARAC EKSENI -- sabit ve fiziksel. Serit
+        # merkezi tanimi geregi eksenin ~yarim serit yakininda olmalidir
+        # (olculdu: gecerli cift olan karelerde |merkez-eksen| medyani 86 px,
+        # yarim seridi asma orani %0.9). Merkezi eksene EN YAKIN yapan hipotez
+        # secilir; bu, cebirsel olarak "ref >= x ise sol" demektir ve onceki
+        # tahmine HIC bakmadigi icin geri besleme dongusu kurulamaz.
+        # Sureklilik yalnizca BELIRSIZ BANTTA (|x-ref| < taraf_bant_px) devreye
+        # girer -- orada iki hipotez de merkezi esit uzakliga koyar, yani
+        # geometrinin bilgisi yoktur.
+        # ⚠️ VARSAYILAN 'sureklilik'e GERI ALINDI (2026-08-21 aksami). 'eksen'
+        # kacisi bitiriyor ama SOL VIRAJDA gerileme uretiyor: bagimsiz referansla
+        # (surucunun gercek direksiyonu, /beemobs/FeedbackSteeringAngle -- serit
+        # boru hattina hic dokunmayan sinyal) olculdu, tek-aday karelerinde
+        # surucuyle isaret uyumu sol virajda %73.1 -> %40.5'e DUSUYOR.
+        # Operator de bunu gozle gordu ("viraji donerken disari cikiyor").
+        # Lehine olan tum sayilar |merkez - arac ekseni| turevi bir olcutten
+        # geliyordu; o olcut virajda DOGRU davranisi cezalandirdigi icin kendi
+        # degisikligini kayiran bir olcuttu. Ayrintili dokum CLAUDE.md'de.
+        self.declare_parameter("taraf_kural", "sureklilik")  # 'eksen'|'sureklilik'
+        self.taraf_kural = str(self.get_parameter("taraf_kural").value)
+        self.declare_parameter("taraf_bant_px", 40.0)
+        self.taraf_bant_px = float(self.get_parameter("taraf_bant_px").value)
+        # ---- TARAF HISTEREZISI: DENENDI ve OLCUMLE REDDEDILDI (varsayilan 0) ----
+        # Hipotez: 'eksen' kurali zayif kanitla taraf degistirmeye acik --
+        # donme 8 -> 20 cikti ve her donme merkezi 2*yarim serit (~470 px)
+        # ziplattigi icin direksiyonda medyan 27 birimlik sicrama uretiyor.
+        # Cozum olarak tarafi DEGISTIRMEK icin daha fazla kanit istendi
+        # (bant + taraf_hist_px = 40+60 px).
+        # OLCULDU (joystick_46, 4077 kare) -- hicbir sey kazandirmadi:
+        #   ayar                | |lat|ort  %90  maks  >yari  std   >10br  donme
+        #   eksen (hist=0)      |    90.1  173   290   %1.7  8.50     72     20
+        #   eksen + hist 60px   |    95.0  193   344   %5.2  8.56     75     13
+        # Donme SAYISI dustu (20->13) ama SICRAMA BUYUKLUGU degismedi
+        # (medyan 27 ikisinde de) ve toplam direksiyon aktivitesi ayni kaldi
+        # (std 8.50 vs 8.56, >10 birim 72 vs 75). Buna karsilik yanal hata
+        # her dilimde bozuldu ve en uzun kacis 11 -> 48 kareye cikti.
+        # Yani histerezis gecikmeyi geri getiriyor, titremeyi ise cozmuyor.
+        # AYRICA denenip reddedildi: "belirsiz kare"yi tamamen reddetmek
+        # (iki hipotez de merkezi eksenden > esik uzaga koyuyorsa olcum alma).
+        # Donmelerin hepsi |x-ref| ~ 43 px'te, yani yarim serit 235 iken iki
+        # hipotez de kotu (192 ve 278 px). Ama bunlari elemek icin tek-aday
+        # karelerinin %27-37'sini atmak gerekiyor ve TOPLAM kor kare orani
+        # %9.0 -> %17.7-21.0'a cikiyor; beynin ZAYIF/KAYIP fallback'i aracı
+        # surekli yavaslatirdi. Ustelik donmeler TITREME DEGIL DUZELTME:
+        # her donmede |lat| ~270'ten ~190'a DUSUYOR (salinim orani 4/19).
+        # Ikisi de kod olarak durmuyor; tekrar denenmesin diye burada yaziyor.
+        self.declare_parameter("taraf_hist_px", 0.0)
+        self.taraf_hist_px = float(self.get_parameter("taraf_hist_px").value)
+        self.declare_parameter("taraf_hist_s", 0.5)
+        self.taraf_hist_s = float(self.get_parameter("taraf_hist_s").value)
+        self._son_taraf = None       # en son karar (True=sol)
+        self._son_taraf_t = 0.0      # o kararin zamani
         self.declare_parameter("adaptif_lookahead", True)
 # 3.5 m secildi (joystick_46, tum kayit, gercek goruntu):
         #   ayar     kisalan  x disari  steer std  |sapma|>15  kilit<80  der/sn
@@ -884,10 +992,45 @@ class LaneFollowerNode(Node):
         # ⚠️ MASA SIMULATORU BUNU TEST EDEMEZ: sentetik maskeler her zaman tum
         # satir araligini kapliyor, adaptif hic tetiklenmiyor (5 ayarda da
         # birebir ayni sonuc). Bu parametre yalniz gercek kayitla ayarlanir.
-        self.declare_parameter("adaptif_min_m", 3.5)
+# 2.8 m (2026-08-21, HAYALET HATA duzeltmesinden SONRA yeniden secildi).
+        # Ilk secim 3.5'ti; duzeltme, o esikte karelerin %26.1'inin hic
+        # guvenilir olcum almadigini gorunur yapti (arac dortte bir sure
+        # sureklilikle gidiyordu). Yeniden tarama (joystick_46, tum kayit):
+        #   esik   olcum yok  kilit<80  der/sn  Yanal std
+        #   kapali    0.0%      6.0%     3.6      111
+        #   2.5       4.4%      1.2%     7.3      148
+        #   2.8       8.3%      1.2%     6.3      133   <- secilen
+        #   3.0      10.1%      1.3%     5.9      133
+        #   3.5      26.1%      1.4%     5.1      129
+        # Kilitlenme faydasi HER esikte ayni (%1.2-1.4); fark yalnizca kac
+        # karede kor kalindigi. 2.8 kor kareyi 3 kat azaltiyor, direksiyon
+        # 6.3 der/sn ile aktuator limitinin (25) hala cok altinda. 2.5 kor
+        # kareyi biraz daha azaltiyor ama Yanal dagilimi 148'e bozuluyor.
+        self.declare_parameter("adaptif_min_m", 2.8)
         self.adaptif_lookahead = bool(self.get_parameter("adaptif_lookahead").value)
         self.adaptif_min_m = float(self.get_parameter("adaptif_min_m").value)
-        self.declare_parameter("path_max_age", 10)    # kare; 0 = kapali
+        # ---- SERIT GUVENI -> KARAR BEYNI (2026-08-21, PDF onerisi) ----
+        # ID-2 sozlesmesi genisledi: "2,<steer>" -> "2,<steer>,<guven>,<yas_s>,<durum>"
+        # Eski ayristiricilar data[1]'i okumaya devam eder, bozulmaz.
+        # durum: TAZE (taze olcum) | TAHMIN (kisa kayip, son path suruluyor)
+        #      | ZAYIF (uzayan kayip, hiz dusurulmeli) | KAYIP (guvenilmez)
+        # Gerekce (olculdu, joystick_46, hareket halinde): karelerin %22'sinde
+        # guvenilir olcum yok; 14 kesinti 0.7 s'den uzun, en uzunu 13.1 s ~ 20 m.
+        # Eski davranis: guven sifirlaninca direksiyon notre soner ve arac
+        # SURMEYE DEVAM eder. Duz yolda zararsiz, VIRAJDA pist disi.
+        # Artik beyin bunu goruyor ve hizi kisabiliyor.
+        self.declare_parameter("guven_zayif_s", 0.30)   # bundan sonra ZAYIF
+        self.declare_parameter("guven_kayip_s", 1.00)   # bundan sonra KAYIP
+        self.guven_zayif_s = float(self.get_parameter("guven_zayif_s").value)
+        self.guven_kayip_s = float(self.get_parameter("guven_kayip_s").value)
+        self.declare_parameter("path_max_age", 10)    # 0 = sonum tamamen kapali
+        # Bayat yolun ALT yetki siniri. 0.0 eski davranistir (tam sifirlama) --
+        # olculdu ve virajda araci pist disina birakiyor, bkz. _path_guven.
+        # 0.4 baslangic degeridir: beyin ayni anda hizi 4 -> 2 km/h'ye kisip
+        # 3 s sonra durduruyor, yani azaltilmis yetki azaltilmis hizla eslesiyor.
+        # ⚠️ ARACTA DOGRULANMADI; kapali cevrim gerektirir.
+        self.declare_parameter("guven_taban", 0.4)
+        self.guven_taban = float(self.get_parameter("guven_taban").value)
         self.path_max_age = int(self.get_parameter("path_max_age").value)
         self.declare_parameter("fit_extrap_max_row", 55)    # bundan otesi RED
         self.declare_parameter("fit_extrap_deg1_row", 20)   # bundan otesi derece-1
@@ -899,15 +1042,73 @@ class LaneFollowerNode(Node):
         self.bariyer_genislet_px = int(self.get_parameter("bariyer_genislet_px").value)
         self.declare_parameter("serit_grup_tol", 0.0)
         self.serit_grup_tol = float(self.get_parameter("serit_grup_tol").value)
+        # ---- SAG SERIT KURALI (24.08.2026) ----
+        # SORUN: planner donusu yalnizca YAW uzerinde kapali cevrim; cikistaki
+        # YANAL konum kontrol edilmiyor (tk_0822'de cikis yon hatasi -7.5 ve
+        # -14.7 derece olculdu; tek basina -14.7, 8.2 m'de 1.05 m yanal kayma
+        # demek, serit ~3 m). Arac donusten sol seritte cikabiliyor ve serit
+        # takipcisi onu orada TUTUYOR -- cunku cift_sec "merkezi _son_lane_x'e
+        # en yakin cifti", yani icinde bulundugun seridi seciyor.
+        # COZUM: ayri bir manevra durumu YAZILMADI. Kural degisti: solunda
+        # KESIK, saginda DUZ cizgi olan ciftler yeglenir, aralarindan EN
+        # SAGDAKI secilir. Sol seritteyken bu, hedefi sag seride kaydirir ve
+        # MEVCUT PID araci kendiliginde sag serite tasir.
+        # KANIT: 200 gercek ZED karesinde olculdu (asama_full) --
+        #   kesik cizgi 5 206 piksel / 2.87 parca, duz cizgi 19 606 px / 1.62
+        #   parca, yani 3.8 KAT fark. Ayrim guvenilir.
+        # ⚠️ Kanit yoksa (hicbir cift kesik-sol degilse) ESKI kural aynen
+        # calisir; iki cizgi goruluyorsa (tek serit) zaten tek gecerli cift
+        # vardir ve davranis birebir degismez.
+        self.declare_parameter("sag_serit", False)
+        self.sag_serit = bool(self.get_parameter("sag_serit").value)
+        # sag/sol piksel orani: sag cizgi solun bu kati kadar dolgunsa sol
+        # cizgi KESIK sayilir. Olculen oran 3.8; 2.0 muhafazakar esik.
+        self.declare_parameter("sag_serit_kesik_oran", 2.0)
+        self.sag_serit_kesik_oran = float(
+            self.get_parameter("sag_serit_kesik_oran").value)
+        # Bu kadar pikselden buyuk hedef sicramasi = SERIT DEGISTIRME sayilir
+        # ve hiz sinirina tabi olur. Altindaki normal takip hic etkilenmez.
+        self.declare_parameter("sag_serit_esik_px", 150.0)
+        self.sag_serit_esik_px = float(
+            self.get_parameter("sag_serit_esik_px").value)
+        # Gecise baslamadan once kac ardisik kare ayni yonu gostermeli
+        # (~10 kare = 0.5 s). Tek karelik yanlis algi araci kaydirmasin.
+        self.declare_parameter("sag_serit_teyit", 10)
+        self.sag_serit_teyit = int(self.get_parameter("sag_serit_teyit").value)
+        # Hedefin kayma hizi (BEV px/s). 466 px ~ 3.0 m serit, yani 60 px/s
+        # ~ 0.39 m/s yanal: 3 m'lik gecis ~8 s / ~8 m yol. Sinirsiz birakilirsa
+        # hedef bir karede 466 px atlar -> Kp 0.03 ile 14 birim direksiyon,
+        # ham 20, teker ~20 derece (R~5 m): arac savrulur, ustelik direksiyon
+        # 10 birim/s ile zaten yetisemez.
+        self.declare_parameter("sag_serit_px_s", 60.0)
+        self.sag_serit_px_s = float(self.get_parameter("sag_serit_px_s").value)
+        if self.sag_serit and self.serit_grup_tol <= 0.0:
+            self.get_logger().warn(
+                "sag_serit ACIK ama serit_grup_tol=0 (gruplama KAPALI): kesik "
+                "cizginin her parcasi ayri aday oluyor, 'bu cizgi kesik mi' "
+                "sorusu guvenilir sorulamaz. -p serit_grup_tol:=100.0 ile "
+                "birlikte kullanin.")
         self.declare_parameter("serit_secim", "ornek")
         self.serit_secim = str(self.get_parameter("serit_secim").value).lower()
         self.declare_parameter("lane_w_min_px", 300.0)
         self.declare_parameter("lane_w_max_px", 600.0)
         # olculmus genislik oturduktan sonra izin verilen sapma (orani)
+        # PARALELLIK TOLERANSI (2026-08-21). Genislik kapisi TEK satirda
+        # (y_eval) bakiyor ve bariyere oturan capraz fiti goremiyor: 1526'da
+        # LaneW 329-399 px, yani makul bandin tam ortasi. Dogru bir IPM'de
+        # serit cizgileri PARALELDIR -- genislik satirdan satira degismez.
+        # Sentetik dogrulama: dikey cift %0.0, ayni egimli viraj %0.0,
+        # %3.8 egim farki KABUL; bariyer egim 0.87 -> %27.7 RED, 2.0 -> %64.3.
+        # NOT: 794 gercek karede (4 veri seti) hic atesledi -- 1526'nin cifti
+        # *paralel ama egik*ti; bu kapi IRAKSAYAN cifti yakalar. Zararsiz
+        # emniyet agi, "1526'yi cozer" diye sayilmamali. 0 = kapali.
+        self.declare_parameter("cift_paralel_tol", 0.25)
         self.declare_parameter("lane_w_tol", 0.25)
         self.lane_w_min_px = float(self.get_parameter("lane_w_min_px").value)
         self.lane_w_max_px = float(self.get_parameter("lane_w_max_px").value)
         self.lane_w_tol = float(self.get_parameter("lane_w_tol").value)
+        self.cift_paralel_tol = float(
+            self.get_parameter("cift_paralel_tol").value)
         # ---- DIREKSIYON YASASI (2026-08-20) ----
         # "pid"     : eski davranis -- y_eval satirindaki TEK yanal hata x Kp.
         #             Viraj yalnizca heading_gain terimiyle sizabiliyor.
@@ -929,27 +1130,6 @@ class LaneFollowerNode(Node):
         # goruntude direksiyon hizi 25 der/sn = aktuator limitinde (PID 19).
         # ARACTA HIC KOSMADI: ilk deneme dusuk hizda, bos alanda, surucu
         # frende yapilmali. Geri donus: -p steer_mode:=pid (derleme gerekmez).
-        # VARSAYILAN "pursuit" -> "pid" (2026-08-20 aksam, IKI GERCEK ZED
-        # KAYDINDA olculdu; yukaridaki gerekce masa kapali cevriminden
-        # geliyordu, o test KUSURSUZ SENTETIK maskelerle calisiyor ve bu
-        # dugumun asil kazanci olan cift-secimi/bariyer-elemeyi hic
-        # sinamiyor -- yani yanlis hakem).
-        #
-        # Ayni kareler, ayni algi, tek degisen steer_mode:
-        #   joystick_46 (geniş cok-cizgili alan, 204 kare)
-        #     pursuit: steer std 7.59  kare-kare oynaklik 2.96  aralik 25..65
-        #     pid    : steer std 2.79  kare-kare oynaklik 1.31  aralik 34..55
-        #   pist_18_3tem (326 s, VIRAJ iceriyor, 204 kare)
-        #     pursuit: std 4.62  oynaklik 3.11  aralik 30..62
-        #     pid    : std 1.39  oynaklik 1.16  aralik 39..49
-        # LaneW dagilimi iki modda AYNI (sacma genislik %0.0 / %1.8), yani
-        # algi kazanci pid'de tamamen korunuyor; degisen sadece cikisin
-        # yumusakligi. "Pure-pursuit ileri bakisla calistigi icin virajda
-        # avantajlidir" beklentisi VIRAJLI bagde de dogrulanmadi -- orada da
-        # en oynak mod pursuit.
-        # heading_gain 75 -> 30 ayrica ~%10 daha yumusak olcuyor (her iki
-        # bagde tutarli) ama etki kucuk; arkadasin 75 tercihi korundu.
-        # Pursuit'i denemek icin: -p steer_mode:=pursuit (derleme gerekmez).
         self.declare_parameter("steer_mode", "pid")
         # Ld SECIMI (2026-08-20, SON olcum -- onceki tablo birim hatasiyla
         # yazilmisti, bkz. asagi). Masa kapali cevrimi (uc hiz) + gercek
@@ -1001,8 +1181,21 @@ class LaneFollowerNode(Node):
         # Yarim serit ~218 px oldugundan tek bir kotu fit hala tam serit
         # genisligi komut edemez.
         self.declare_parameter("heading_max_px", 150.0)
+        # YON TERIMI HATANIN ISARETINI CEVIREMESIN (2026-08-22, dort gercek
+        # kayitta olculdu: joystick_46/47/48 ham ZED + slalom_0821_1526).
+        # heading_gain=75 ile yon terimi olculen yanal hatadan buyuk olabiliyor
+        # ve toplam hatanin ISARETINI ceviriyor -- arac olculen sapmanin
+        # TERSINE kiriliyor. Oran %4 / %9 / %2 / %35. Bu kapi yon terimini
+        # "hatayi sifira kadar kucultebilir ama oteye gecemez" ile sinirlar:
+        # yanal 0 iken tam ongoru serbest, yanal buyudukce sadece yumusatir.
+        # Olculdu: isaret cevirme 8/17/3/69 -> 0, ongoru %90-98 korunuyor,
+        # TAZE degismiyor, oynaklik +%3-6. (heading_gain:=0 da cevirmeyi
+        # bitiriyor ama ongoruyu TAMAMEN atiyor.)
+        self.declare_parameter("heading_no_flip", True)
         self.heading_gain = float(self.get_parameter("heading_gain").value)
         self.heading_max_px = float(self.get_parameter("heading_max_px").value)
+        self.heading_no_flip = bool(
+            self.get_parameter("heading_no_flip").value)
         self.lookahead_frac = float(self.get_parameter("lookahead_frac").value)
         self.fit_far_frac = float(self.get_parameter("fit_far_frac").value)
         self.fit_weight_pow = float(self.get_parameter("fit_weight_pow").value)
@@ -1046,6 +1239,13 @@ class LaneFollowerNode(Node):
         self.fit_confidence_px = float(self.get_parameter("fit_confidence_px").value)
         self._fit_px = 0
         self._son_lane_x = None   # son GECERLI serit merkezi (sureklilik)
+        # sag serit gecisi (bkz. sag_serit parametresi)
+        self._lane_x_cmd  = None      # hiz sinirlanmis serit merkezi
+        self._gecis_aktif = False     # serit degistirme suruyor mu
+        self._gecis_say   = 0         # teyit sayaci
+        self._gecis_t     = None      # son karenin zaman damgasi (dt icin)
+        self._gecis_adet  = 0         # kac kez serit degistirildi (log)
+        self._sag_gecis   = False     # cift_sec kurdu: kural baska serit sectI
         self._cift_red = 0        # ust uste reddedilen cift sayisi
         self._cift_ok = False     # bu karedeki cift gecerli mi
         self._aday_sayisi = 0     # o karede bulunan aday cizgi sayisi
@@ -1054,9 +1254,18 @@ class LaneFollowerNode(Node):
         self._bariyer_elenen = 0   # bariyerde diye elenen aday sayisi
         self._path_yasi = 0        # son TAZE merkezden bu yana kare
         self._path_guven = 1.0
+        self._son_fit_red = None   # fit_lane_poly'nin son red sebebi
+        self._kare_red = 'OK'      # bu karede olcum neden alinamadi
+        self._red_sayac = {}       # sebep -> kare sayisi (teshis)
+        self._son_taze_t = None    # son TAZE olcumun zamani
+        self._path_yas_s = 0.0
+        self._path_durum = 'TAZE'
         self._son_span = None      # fit_lane_poly'nin son satir araligi
         self._span_sol = self._span_sag = None
+        self._sol_taze = self._sag_taze = False
         self._y_etkin = None       # bu karede kullanilan olcum satiri
+        self._paralel_red = 0    # paralellik kapisi kac kez atesledi
+        self._paralel_sapma = 0.0
         self._lat_err = 0.0   # hatanin yanal bileseni (overlay teshisi)
         self._head_err = 0.0  # hatanin yon-onizleme bileseni
         self.declare_parameter("steer_kd", self.pid.Kd)
@@ -1322,7 +1531,12 @@ class LaneFollowerNode(Node):
             f"yon_onizleme={self.heading_gain:.0f}"
             f"(doyum {self.heading_max_px:.0f}px) | "
             f"Kp={self.pid.Kp} err_offset={self.err_offset:.0f}px "
-            f"lane_width={self.lane_width_m} m\n"
+            f"lane_width={self.lane_width_m} m | sag_serit="
+            + ("ACIK (kesik oran>=%.1f, esik %.0f px, teyit %d kare, %.0f px/s)"
+               % (self.sag_serit_kesik_oran, self.sag_serit_esik_px,
+                  self.sag_serit_teyit, self.sag_serit_px_s)
+               if self.sag_serit else "kapali")
+            + "\n"
             + "  BEV src_pts = "
             + ", ".join(f"({p[0]:.0f},{p[1]:.0f})" for p in self.src_pts)
             + f" | ipm_mode={self.ipm_mode}")
@@ -1479,8 +1693,25 @@ class LaneFollowerNode(Node):
                 continue
             adaylar.append((poly, float(self.poly_x(poly, self.y_eval)),
                             int((b[ymin:, :] > 0).sum()), _sp))
+        if not adaylar:
+            # Hicbir aday cikmadi: son red sebebini kare seviyesine tasi
+            self._kare_red = self._son_fit_red or 'FIT_YOK'
         adaylar.sort(key=lambda a: a[1])
         return adaylar
+
+    def _kesik_sol(self, sol, sag):
+        """Bu cift 'solunda KESIK, saginda DUZ cizgi olan' bir serit mi?
+
+        Kesik cizgi ayni uzunlukta daha AZ piksel tutar; olculen oran gercek
+        ZED karelerinde 3.8 kat (5 206 / 19 606 px). Esik sag_serit_kesik_oran.
+        Sag serit boyle bir seritdir: kesik orta cizgi SOLDA, duz kenar SAGDA.
+        Arac SOL seritteyken tam tersi olur (duz kenar solda) -- tespit sinyali
+        budur.
+        """
+        p_sol, p_sag = sol[2], sag[2]
+        if p_sol <= 0 or p_sag <= 0:
+            return False
+        return p_sol * self.sag_serit_kesik_oran <= p_sag
 
     def cift_sec(self, adaylar):
         """Aday cizgilerden en iyi SERIT CIFTINI sec -> (sol_poly, sag_poly).
@@ -1488,6 +1719,11 @@ class LaneFollowerNode(Node):
         Olcut: genislik gecerli olacak; aralarindan merkezi son gecerli
         serit merkezine EN YAKIN olan; esitlikte daha cok pikselli.
         Gecerli cift yoksa (None, None).
+
+        SAG SERIT KURALI (sag_serit=true): once "solu kesik, sagi duz" olan
+        ciftlere bakilir ve aralarindan EN SAGDAKI secilir; boyle bir cift
+        yoksa yukaridaki eski olcut aynen isler. Gerekce ve olcum
+        __init__'teki sag_serit blogunda.
         """
         en, en_skor = None, None
         for i in range(len(adaylar)):
@@ -1495,29 +1731,78 @@ class LaneFollowerNode(Node):
                 gen = adaylar[j][1] - adaylar[i][1]
                 if not self.cift_gecerli(gen):
                     continue
+                if not self.cift_paralel(adaylar[i][0], adaylar[j][0]):
+                    continue
                 merkez = 0.5 * (adaylar[i][1] + adaylar[j][1])
                 uzak = (abs(merkez - self._son_lane_x)
                         if self._son_lane_x is not None else 0.0)
-                skor = uzak - 0.02 * min(adaylar[i][2], adaylar[j][2])
+                eski_skor = uzak - 0.02 * min(adaylar[i][2], adaylar[j][2])
+                # (oncelik, deger) -- oncelik 0 = kanit var, en sagdaki kazanir
+                if self.sag_serit and self._kesik_sol(adaylar[i], adaylar[j]):
+                    skor = (0, -merkez)
+                else:
+                    skor = (1, eski_skor)
                 if en_skor is None or skor < en_skor:
                     en_skor, en = skor, (adaylar[i], adaylar[j])
         if not en:
             self._span_sol = self._span_sag = None
             return None, None
+        # ⚠️ GECIS TETIGI KURALIN KENDISINE BAGLI (24.08.2026 olcumu).
+        # Ilk surumde tetik "hedef 150 px'den fazla sicradiysa" idi ve bu
+        # SERIT DEGISIMI OLMAYAN sicramalari da yakaliyordu: 400 gercek
+        # karede 2 kez yanlis atesledi (kare 1560 ve 5550), ikisinde de
+        # gecerli cift TEKTI -- yani secim hic degismemisti, sicrama
+        # iki-fit <-> tek-fit gecisinden geliyordu. O sicramalari
+        # rampalamak _tek_fit_merkez'in surekliligini bozar. Artik yalnizca
+        # "kural KANITLA baska bir seridi sectI" durumu gecis sayilir.
+        self._sag_gecis = False
+        if (self.sag_serit and en_skor is not None and en_skor[0] == 0
+                and self._son_lane_x is not None):
+            _mrk = 0.5 * (en[0][1] + en[1][1])
+            self._sag_gecis = abs(_mrk - self._son_lane_x) > self.sag_serit_esik_px
         self._span_sol, self._span_sag = en[0][3], en[1][3]
         return en[0][0], en[1][0]
 
     def tek_aday_taraf(self, aday):
-        """Tek cizgi kaldi: SOL mu SAG mi? Sureklilikle karar ver.
+        """Tek cizgi kaldi: SOL mu SAG mi?
 
-        True = bu benim SOL cizgim. Sureklilik yoksa cizginin arac eksenine
-        gore konumuna bakilir (soldaysa sol).
+        True = bu benim SOL cizgim (yani serit merkezi cizginin SAGINDA).
+
+        Cipa ARAC EKSENIDIR, onceki tahmin DEGIL -- gerekcesi ve olcumu
+        `taraf_kural` parametresinin yaninda. Ozetle: merkezi eksene en yakin
+        yapan hipotez secilir; belirsiz bantta (iki hipotez de esit uzakta)
+        sureklilige dusulur. 'sureklilik' modu eski (kacis ureten) davranistir,
+        yalnizca karsilastirma icin durur.
         """
         yari = self._half_lane()
         x = aday[1]
+        ref = self.img_w / 2.0 + self.err_offset
         if self._son_lane_x is None:
-            return x < (self.img_w / 2.0 + self.err_offset)
-        return abs((x + yari) - self._son_lane_x) <= abs((x - yari) - self._son_lane_x)
+            return x < ref
+        if self.taraf_kural != "eksen":
+            return (abs((x + yari) - self._son_lane_x)
+                    <= abs((x - yari) - self._son_lane_x))
+
+        geo = ref >= x              # |x+yari-ref| <= |x-yari-ref| (yari > 0)
+        kanit = abs(x - ref)
+        esik = self.taraf_bant_px
+        if self.taraf_hist_px > 0.0:
+            # (varsayilan DEGIL -- olcumle reddedildi, bkz. taraf_hist_px)
+            simdi = time.time()
+            if (self._son_taraf is not None
+                    and (simdi - self._son_taraf_t) <= self.taraf_hist_s):
+                if geo != self._son_taraf:
+                    esik += self.taraf_hist_px
+                if kanit < esik:
+                    self._son_taraf_t = simdi
+                    return self._son_taraf
+            self._son_taraf, self._son_taraf_t = (geo if kanit >= esik
+                                                  else geo), simdi
+        if kanit >= esik:
+            return geo
+        # Kararsiz bant: geometrinin bilgisi yok, surekliligi kullan.
+        return (abs((x + yari) - self._son_lane_x)
+                <= abs((x - yari) - self._son_lane_x))
 
     def etkin_satir(self):
         """Bu karede olcumun yapilacagi BEV satiri.
@@ -1540,6 +1825,27 @@ class LaneFollowerNode(Node):
             return None               # yalnizca cok yakinda veri var
         return int(lo)
 
+    def cift_paralel(self, sol, sag):
+        """Iki fit PARALEL mi? Dogru bir IPM'de serit cizgileri paraleldir.
+
+        REDDETMEK = TEK FITE DUSMEK, kareyi ATMAK DEGIL (2026-08-19 dersi:
+        fit atmak kapali cevrimi kotulestirdi, 0.98 -> 4.31 m).
+        """
+        if self.cift_paralel_tol <= 0 or sol is None or sag is None:
+            return True
+        d = max(8, int(0.15 * self.img_h))
+        y1 = max(0, self.y_eval - d)
+        y2 = min(self.img_h - 1, self.y_eval + d)
+        if y2 - y1 < 8:
+            return True
+        w1 = float(self.poly_x(sag, y1) - self.poly_x(sol, y1))
+        w2 = float(self.poly_x(sag, y2) - self.poly_x(sol, y2))
+        ort = 0.5 * abs(w1 + w2)
+        if ort < 1.0:
+            return False
+        self._paralel_sapma = abs(w2 - w1) / ort
+        return self._paralel_sapma <= self.cift_paralel_tol
+
     def cift_gecerli(self, w_px):
         """Fit cifti genislik olarak gercek bir serit mi?
 
@@ -1553,6 +1859,62 @@ class LaneFollowerNode(Node):
         if self.lane_w_px and abs(w_px - self.lane_w_px) > self.lane_w_tol * self.lane_w_px:
             return False
         return True
+
+    def _serit_gecis(self, lane_x, serit_kayip):
+        """Hedefteki BIR SERIT BOYU sicramayi hiz sinirli hale getirir.
+
+        Yalnizca sag_serit acikken devrededir. sag_serit_esik_px altindaki
+        degisimler HIC dokunulmadan gecer -- yani normal serit takibine
+        gecikme eklemez; sadece "serit degistiriyorum" buyuklugundeki
+        sicramalar rampalanir. Gecis basladiktan sonra hedef geri donerse
+        rampa da yon degistirir (sicrama olmaz), hedefe varinca kapanir.
+        """
+        if not self.sag_serit:
+            return lane_x
+        if serit_kayip:
+            # Serit yok: durumu sifirla ki geri bulununca yapay bir rampa
+            # baslamasin (eski davranis korunur).
+            self._lane_x_cmd = None
+            self._gecis_aktif = False
+            self._gecis_say = 0
+            return lane_x
+        istek = self._sag_gecis        # tek kullanimlik: her kare cift_sec kurar
+        self._sag_gecis = False
+        simdi = time.time()
+        dt = (0.05 if self._gecis_t is None
+              else min(0.5, max(1e-3, simdi - self._gecis_t)))
+        self._gecis_t = simdi
+        hedef = float(lane_x)
+        if self._lane_x_cmd is None:
+            self._lane_x_cmd = hedef
+            return lane_x
+        fark = hedef - self._lane_x_cmd
+        if self._gecis_aktif:
+            # Basladiktan sonra HEDEFE VARANA kadar surer; hedef geri donerse
+            # rampa da yon degistirir, sicrama olmaz.
+            adim = self.sag_serit_px_s * dt
+            if abs(fark) <= adim:
+                self._lane_x_cmd = hedef
+                self._gecis_aktif = False
+                self.get_logger().info(
+                    f"SERIT DEGISTIRME bitti (hedef {hedef:.0f} px)")
+            else:
+                self._lane_x_cmd += adim if fark > 0 else -adim
+            return int(round(self._lane_x_cmd))
+        if not istek:
+            self._gecis_say = 0
+            self._lane_x_cmd = hedef          # normal takip: SINIRLAMA YOK
+            return lane_x
+        self._gecis_say += 1
+        if self._gecis_say < self.sag_serit_teyit:
+            return int(round(self._lane_x_cmd))   # kanit yetmiyor: kipirdama
+        self._gecis_aktif = True
+        self._gecis_adet += 1
+        self.get_logger().warn(
+            f"SERIT DEGISTIRME: hedef {self._lane_x_cmd:.0f} -> {hedef:.0f} px "
+            f"({fark:+.0f} px, {self.sag_serit_px_s:.0f} px/s ile) -- kesik "
+            f"cizgi solda kalacak sekilde saga geciliyor ({self._gecis_adet}. kez)")
+        return int(round(self._lane_x_cmd))
 
     def _sureklilikle_merkez(self, lx, rx, y_eval):
         """Gecersiz cift -> tek cizgi gibi yorumla, tarafi SUREKLILIK secsin.
@@ -1639,6 +2001,9 @@ class LaneFollowerNode(Node):
                 h = -self.heading_gain * lane_slope
                 if self.heading_max_px > 0:
                     h = max(-self.heading_max_px, min(self.heading_max_px, h))
+                if self.heading_no_flip and err != 0.0:
+                    # h, err'i sifira kadar goturebilir ama isaretini ceviremez
+                    h = max(h, -err) if err > 0 else min(h, -err)
                 self._head_err = h
                 err += h
         # Conditional integration (Bug 3): integral yalnizca iki serit de
@@ -1686,6 +2051,8 @@ class LaneFollowerNode(Node):
         self.prev_time = t
 
         # YOLO inference
+        self._kare_red = 'OK'
+        self._son_fit_red = None
         results = self.model(img, verbose=False, conf=self.yolo_conf)
         masks = []
         bariyerler = []
@@ -1711,7 +2078,12 @@ class LaneFollowerNode(Node):
                 masks.append(m.cpu().numpy())
 
         center_x_bev = self.img_w // 2
-        lane_x = center_x_bev
+        # VARSAYILAN = REFERANS, geometrik merkez DEGIL.
+        # err = lane_x - center_x_bev - err_offset oldugundan, hicbir olcum
+        # yokken lane_x geometrik merkezde birakilirsa err = -err_offset olur
+        # (err_offset=-67 ile HAYALET +67 px hata ve steer 43). "Bilmiyorum"
+        # durumu NOTR olmali: lane_x = merkez + err_offset -> err = 0.
+        lane_x = center_x_bev + self.err_offset
         # Seridin y_eval'deki YONU (dx/dy). Yon onizlemesi icin; fit yoksa None
         lane_slope = None
 
@@ -1721,6 +2093,7 @@ class LaneFollowerNode(Node):
         bev = None            # BEV teshis goruntusu icin (maske yoksa None)
 
         if len(masks) == 0:
+            self._kare_red = 'YOLO_MASKE_YOK'
             self._both_detected = False   # maske yok -> integral birikmesin
             self.miss_count += 1
             if self.miss_count >= self.lane_lost_frames:
@@ -1741,7 +2114,8 @@ class LaneFollowerNode(Node):
                 if left_poly is not None and right_poly is not None:
                     lx = self.poly_x(left_poly, y_eval)
                     rx = self.poly_x(right_poly, y_eval)
-                    if self.cift_gecerli(rx - lx):
+                    if (self.cift_gecerli(rx - lx)
+                            and self.cift_paralel(left_poly, right_poly)):
                         lane_x = (lx + rx) // 2
                         lane_slope = self._egim(left_poly, right_poly, y_eval)
                     else:
@@ -1806,6 +2180,7 @@ class LaneFollowerNode(Node):
                 self._aday_sayisi = len(adaylar)
                 lp, rp = self.cift_sec(adaylar)
                 if lp is None and adaylar:
+                    self._kare_red = 'GECERLI_CIFT_YOK'
                     # Gecerli cift yok -> en cok pikselli adayi al, tarafini
                     # sureklilik belirlesin (yanlis tarafa kilitlenmeyi onler).
                     en = max(adaylar, key=lambda a: a[2])
@@ -1867,10 +2242,24 @@ class LaneFollowerNode(Node):
                 if self.lane_lost:
                     self.lane_lost = False
                     self.get_logger().info("Serit tekrar bulundu.")
+            self._sol_taze = lp is not None
+            self._sag_taze = rp is not None
             if lp is not None:
                 left_poly = lp
             if rp is not None:
                 right_poly = rp
+            if self.cift_ikisi_de_taze and (self._sol_taze != self._sag_taze):
+                if self._kare_red == 'OK':
+                    self._kare_red = 'TEK_TARAF_TAZE'
+                # Yalniz BIR taraf taze: bayat olani CIFTE SOKMA. Tek-fit
+                # yoluna dus (taze cizgi + olculen yarim serit) -- bu, bayat
+                # bir cizgiyle sahte bir serit uydurmaktan cok daha iyi.
+                if self._sol_taze:
+                    right_poly = None
+                    self._span_sag = None
+                else:
+                    left_poly = None
+                    self._span_sol = None
 
             # BU karede iki serit de fit edildiyse integral guvenli (Bug 3)
             self._both_detected = (lp is not None and rp is not None)
@@ -1882,15 +2271,38 @@ class LaneFollowerNode(Node):
             _ye = self.etkin_satir()
             self._y_etkin = _ye
             if _ye is None:
+                self._kare_red = 'ADAPTIF_COK_YAKIN'
+                # Veri yalnizca cok yakinda: bu karede GUVENILIR olcum yok.
+                # Fitleri silip merkeze snap ETME -- son bilinen serit
+                # merkezinden devam et, path yaslansin ve guven sonsun.
+                # (Snap etmek hayalet hata uretiyordu; bkz. lane_x varsayilani.)
                 left_poly = right_poly = None
                 y_eval = self.y_eval
+                if self._son_lane_x is not None:
+                    lane_x = self._son_lane_x
+                _olcum_yok = True
             else:
-                y_eval = _ye
+                _olcum_yok = False
+            if True:
+                if _ye is not None:
+                    y_eval = _ye
 
             if left_poly is not None and right_poly is not None:
                 _lxx = self.poly_x(left_poly, y_eval)
                 _rxx = self.poly_x(right_poly, y_eval)
-                self._cift_ok = self.cift_gecerli(_rxx - _lxx)
+                _gen_ok = self.cift_gecerli(_rxx - _lxx)
+                _par_ok = self.cift_paralel(left_poly, right_poly)
+                if _gen_ok and not _par_ok:
+                    self._paralel_red += 1
+                    if (self._paralel_red in (1, 50)
+                            or self._paralel_red % 500 == 0):
+                        self.get_logger().warn(
+                            f"Fit cifti PARALEL DEGIL (genislik satirdan "
+                            f"satira %{100 * self._paralel_sapma:.0f} "
+                            f"degisiyor > %{100 * self.cift_paralel_tol:.0f}) "
+                            f"-> muhtemelen bariyer/yol kenari fitlendi, "
+                            f"tek fite dusuldu ({self._paralel_red}. kez)")
+                self._cift_ok = _gen_ok and _par_ok
                 if self._cift_ok:
                     lane_x = (_lxx + _rxx) // 2
                 else:
@@ -1920,21 +2332,38 @@ class LaneFollowerNode(Node):
         # DRAW BEV → image projection
         overlay = original.copy()
 
-        # Left
-        if left_poly is not None:
-            ys = np.linspace(self.img_h * 0.55, self.img_h - 1, 40).astype(int)
-            pts = [(self.poly_x(left_poly, y), y) for y in ys]
-            imgpts = self.bev_to_image(pts)
-            for i in range(len(imgpts) - 1):
-                cv2.line(overlay, tuple(imgpts[i]), tuple(imgpts[i+1]), (255, 0, 0), 3)
+        # FITLER -- her biri YALNIZ KENDI VERI ARALIGINDA cizilir.
+        # Eskiden hepsi 0.55*H..H arasinda ciziliyordu, verisi olmayan yerde de.
+        # Sonuc yaniltici: kisa/seyrek bir maskeye oturan DUZ fit, verisi genis
+        # olan egri fitle "celisiyor" gibi gorunuyordu (operator gozlemi:
+        # "mavi duz bukuluyor, kirmizi parabolik"). Ikisi de dogruydu; yalniz
+        # gecerlilik araliklari farkliydi. Artik cizgi bittigi yerde biter.
+        for _poly, _span, _col in ((left_poly, self._span_sol, (255, 0, 0)),
+                                   (right_poly, self._span_sag, (0, 0, 255))):
+            if _poly is None:
+                continue
+            if _span:
+                _y0 = max(int(self.img_h * 0.55), int(_span[0]))
+                _y1 = min(self.img_h - 1, int(_span[1]))
+            else:                      # bayat fit: araligi bilinmiyor
+                _y0, _y1 = int(self.img_h * 0.55), self.img_h - 1
+            if _y1 - _y0 < 4:
+                continue
+            _pts = self.bev_to_image(
+                [(self.poly_x(_poly, _y), _y)
+                 for _y in np.linspace(_y0, _y1, 40).astype(int)])
+            for _i in range(len(_pts) - 1):
+                cv2.line(overlay, tuple(_pts[_i]), tuple(_pts[_i + 1]), _col, 3)
 
-        # Right
-        if right_poly is not None:
-            ys = np.linspace(self.img_h * 0.55, self.img_h - 1, 40).astype(int)
-            pts = [(self.poly_x(right_poly, y), y) for y in ys]
-            imgpts = self.bev_to_image(pts)
-            for i in range(len(imgpts) - 1):
-                cv2.line(overlay, tuple(imgpts[i]), tuple(imgpts[i+1]), (0, 0, 255), 3)
+        # TAZELIK BURADA hesaplanir, cizimden ONCE (2026-08-21). Asagidaki
+        # "PATH YASI" blogu bunu kullanir; iki yerde AYRI hesaplanmamalidir.
+        # (Ilk denemede cizim `self._path_durum`'a bakiyordu, ama o degisken
+        # cizimden SONRA atandigi icin BIR ONCEKI karenin durumunu okuyordu --
+        # kesikli cizim hic gorunmedi. Bir mekanizmanin hic tetiklenmemesi,
+        # baglanmadiginin kanitidir.)
+        _taze = (((locals().get('lp') is not None)
+                  or (locals().get('rp') is not None))
+                 and not locals().get('_olcum_yok', False))
 
         # Center line (yellow)
         bottom = int(self.img_h * 0.90)
@@ -1955,18 +2384,32 @@ class LaneFollowerNode(Node):
         # "merkez donmuyor" izlenimi veriyordu. Artik gercek orta polinomu
         # ornekleniyor, virajda kivriliyor. Bu yalniz cizim degil TESHIS: egri
         # duz kaliyorsa fitler virajı gormuyor demektir.
+        # BAYAT YOL KESIKLI CIZILIR (2026-08-21). Operator virajda "sari cizgi
+        # anlik yanlis yone donuyor" diye bildirdi; incelendiginde o karelerin
+        # ADAPTIF_COK_YAKIN oldugu, cizilen yolun 0.2 s ONCEKI yol oldugu ve
+        # komutun zaten notre sonumlendigi goruldu (virajdaki kor karelerde
+        # ortalama |steer-45| = 1.3, %78'i notrun 3 birim icinde). Yani arac o
+        # bozuk cizgiyi TAKIP ETMIYOR -- ama overlay bayat yolu TAZE yolla
+        # birebir ayni ciziyordu, dolayisiyla bakan kisi kontrol hatasi
+        # sanıyordu. Kesikli + soluk cizim bu iki durumu ayirir.
+        _bayat = not _taze
+        _renk = (0, 170, 170) if _bayat else (0, 255, 255)
+        _kal = 2 if _bayat else 3
+
+        def _ciz(pts):
+            for _i in range(len(pts) - 1):
+                if _bayat and _i % 2:          # kesikli
+                    continue
+                cv2.line(overlay, tuple(pts[_i]), tuple(pts[_i + 1]), _renk, _kal)
+
         _cp = self.merkez_poly(left_poly, right_poly)
         if _cp is not None:
             _ys = np.linspace(bottom, top, 24).astype(int)
-            _pts = self.bev_to_image([(self.poly_x(_cp, _y), _y) for _y in _ys])
-            for _i in range(len(_pts) - 1):
-                cv2.line(overlay, tuple(_pts[_i]), tuple(_pts[_i + 1]),
-                         (0, 255, 255), 3)
+            _ciz(self.bev_to_image([(self.poly_x(_cp, _y), _y) for _y in _ys]))
         else:
-            cen_img = self.bev_to_image([(lane_x, bottom), (lane_x, top)])
-            if len(cen_img) == 2:
-                cv2.line(overlay, tuple(cen_img[0]), tuple(cen_img[1]),
-                         (0, 255, 255), 3)
+            cen_img = self.bev_to_image(
+                [(lane_x, _y) for _y in np.linspace(bottom, top, 24).astype(int)])
+            _ciz(cen_img)
 
         # Referans merkez cizgisi (YESIL): arac tam ortadayken sari cizginin
         # oturmasi gereken yer. Sari-yesil acikligi = anlik error (kalibrasyon).
@@ -1999,18 +2442,55 @@ class LaneFollowerNode(Node):
 
         # PATH YASI: bu karede TAZE fit var mi? (lp/rp taze fitlerdir; maske
         # yoksa veya hepsi elendiyse eski left_prev/right_prev kullanilmistir)
-        _taze = bool(len(masks)) and (
-            (lp is not None) or (rp is not None)) if 'lp' in dir() else False
-        try:
-            _taze = (lp is not None) or (rp is not None)
-        except NameError:
-            _taze = False
+        # _taze YUKARIDA, cizimden once hesaplandi (tek kaynak).
+        self._red_sayac[self._kare_red] = self._red_sayac.get(self._kare_red, 0) + 1
         if _taze:
             self._path_yasi = 0
+            self._son_taze_t = t
         else:
             self._path_yasi += 1
-        self._path_guven = (1.0 if self.path_max_age <= 0 else
-                            max(0.0, 1.0 - self._path_yasi / float(self.path_max_age)))
+        # YAS'i saniye cinsinden tut: kare sayisi FPS'e bagli, saniye degil.
+        # (Aractaki FPS 13-29 arasi degisiyor; esikler saniyeden verilmeli.)
+        self._path_yas_s = (0.0 if self._son_taze_t is None
+                            else max(0.0, t - self._son_taze_t))
+        self._path_durum = ('TAZE' if self._path_yasi == 0 else
+                            'TAHMIN' if self._path_yas_s < self.guven_zayif_s else
+                            'ZAYIF' if self._path_yas_s < self.guven_kayip_s else
+                            'KAYIP')
+        # ---- GUVEN SONUMU: ZAMAN TABANLI + TABAN DEGERLI (2026-08-22) ----
+        # ESKI: guven = 1 - _path_yasi / path_max_age  -- yani KARE sayisiyla.
+        # Iki kusuru vardi, ikisi de otonom kayitta olculdu:
+        #  (1) FPS'E BAGLI. Aractaki FPS 13-29 arasi oynuyor; 10 kare 28 FPS'te
+        #      0.36 s, 13 FPS'te 0.77 s. Ayni bayatlik farkli yetki veriyordu.
+        #      CLAUDE.md'nin ID-2 yas alani icin yazdigi kuralin ta kendisi:
+        #      "yas SANIYE cinsinden tasinir, kare degil".
+        #  (2) DURUM MAKINESIYLE UYUMSUZ. Beyin ZAYIF'ta "yavasla ama SUR"
+        #      (4 km/h), KAYIP'ta "surun" (2 km/h) diyor; ama guven ZAYIF'ta
+        #      zaten 0'a inmis oluyordu -> arac SURUYOR ama direksiyon yetkisi
+        #      SIFIR. Olculdu (joystick_46): ZAYIF karelerde medyan guven 0.00,
+        #      %94'u 0.5 altinda; KAYIP'ta %100. `slalom_0821_1526` t=46 s'de
+        #      gercek hata -365 px (-2.95 m), R=20 m viraj, komut 45 (notr).
+        #      Virajda sifir yetkiyle surmek = pist disi.
+        # YENI: sonum ZAMANLA ve durum makinesinin ESIKLERIYLE hizali;
+        # ayrica TABAN var -- bayat bir yol, hicbir yoldan iyidir.
+        # Emniyet gerekcesi: taban yalniz beyin AYNI ANDA hizi kiserken
+        # gecerli (ZAYIF 4 km/h, KAYIP 2 km/h, 3 s sonra kontrollu durus).
+        # Yani "azaltilmis yetki + azaltilmis hiz", "sifir yetki" degil.
+        if self.path_max_age <= 0:
+            self._path_guven = 1.0
+        elif self._path_yas_s <= self.guven_zayif_s:
+            self._path_guven = 1.0
+        elif self._path_yas_s >= self.guven_kayip_s:
+            self._path_guven = self.guven_taban
+        else:
+            _f = ((self._path_yas_s - self.guven_zayif_s)
+                  / max(1e-3, self.guven_kayip_s - self.guven_zayif_s))
+            self._path_guven = 1.0 - _f * (1.0 - self.guven_taban)
+
+        # SAG SERIT GECISI: hedef bir serit boyu sicradiysa (= serit
+        # degistiriyoruz) hiz sinirli tasi. Kucuk degisimler dokunulmadan
+        # gecer. sag_serit kapaliyken bu cagri lane_x'i aynen dondurur.
+        lane_x = self._serit_gecis(lane_x, self.lane_lost)
 
         # Sureklilik kaynagi: serit kayipken GUNCELLEME (bayat merkez, yanlis
         # tarafa kilitlenmeyi kalicilastirirdi).
@@ -2045,8 +2525,15 @@ class LaneFollowerNode(Node):
         # yesil serit ortasi DEGIL, aracin kendi ekseni (merkez+err_offset) ve
         # tanimi geregi dikeydir. Egriye oturmasi gereken SARI'dir.
         _pd = ("path: TAZE" if self._path_yasi == 0 else
-               f"path: {self._path_yasi} kare  guven {self._path_guven:.2f}")
-        cv2.putText(overlay, _pd, (self.img_w - 210, 85),
+               f"path: {self._path_durum} {self._path_yas_s:.2f}s "
+               f"guven {self._path_guven:.2f}")
+        # SAGA YASLA: sabit x=img_w-210 ile "path: ZAYIF 0.33s guven 0.77"
+        # ~250 px surdugu icin sag kenardan tasiyordu ve GUVEN SAYISI
+        # gorunmuyordu (operator ekran goruntusunde tespit edildi, 2026-08-22).
+        # Guven, bayat karede direksiyon yetkisinin ne kadar kaldigini soyleyen
+        # sayidir; kesilmesi teshisi korlestiriyordu.
+        (_pw, _ph), _ = cv2.getTextSize(_pd, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
+        cv2.putText(overlay, _pd, (max(2, self.img_w - _pw - 6), 85),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                     (0, 255, 0) if self._path_yasi == 0 else (0, 165, 255), 1)
         if self.serit_secim == "ornek":
@@ -2074,7 +2561,10 @@ class LaneFollowerNode(Node):
 
         self._son_steer = steer   # harici teshis araclari icin
         msg = String()
-        msg.data = f"2,{steer}"
+        # ID-2 SOZLESMESI: 2,<steer>,<guven>,<yas_s>,<durum>
+        # data[1] (steer) yerinde kaldi -> eski ayristiricilar calisir.
+        msg.data = (f"2,{steer},{self._path_guven:.2f},"
+                    f"{self._path_yas_s:.2f},{self._path_durum}")
         self.pub.publish(msg)
 
         # Kayit aktifse, ekranda gosterilen overlay'i videoya yaz
@@ -2122,6 +2612,8 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except (KeyboardInterrupt, ExternalShutdownException):
+        # SIGTERM/Ctrl+C'de 'rcl_shutdown already called' traceback'i birakmasin
+        # -- arac log'unun sonunda gercek bir hatayi gizleyebiliyor.
         pass
     finally:
         if node.video_writer is not None:   # acik kayit varsa kapat

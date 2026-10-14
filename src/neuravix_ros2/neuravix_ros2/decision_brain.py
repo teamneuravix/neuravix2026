@@ -64,6 +64,13 @@ GRID_SCALE = 60.0 / 73.0
 # /master mesaj id'leri
 # ================================================================
 ID_LANE     = 2
+# ID-3 (tabela) 25.08.2026'da DEGISTI:
+#   - <distance> artik GERCEK METRE ve ON TAMPON referansli (ID-4 ile ayni).
+#     Oncesinde bbox yuksekliginden turetilen, olcegi nesne turune gore
+#     kayan bir tahmindi -- bu yuzden asagidaki mesafe esikleri de gercek
+#     metreye cevrildi (bkz. sign_detect_event).
+#   - Sona 8. alan eklendi: <src>, 1 = ZED derinliginden OLCULDU, 0 = bbox
+#     tahmini. Alan opsiyoneldir; gondermeyeni tahmin sayariz.
 ID_SIGN     = 3
 ID_OBSTACLE = 4
 ID_PLANNER  = 5
@@ -214,7 +221,10 @@ del _sid, _names, _nm, _k
 # kaciriyordu ve eslenmeyen sinif YAYINLANMADIGI icin arac DUR tabelasinda
 # hic durmuyordu (20.08.2026, Yasin_Her_Sey.pt). Ad bulunamazsa sondaki
 # kod eki atilip bir kez daha denenir.
-_KOD_EKI = re.compile(r"[_\s-]+[A-Za-z]{1,3}[-_]?\d+\s*$")
+# Kod eki varyantlari: "TT-2", "B-22", "TT-37", "TT-35B" (sonda harfli alt
+# varyant da olabiliyor -> 23.08.2026, makarayizabi2.pt'de SOLA_MECBURI_YON_TT-35B
+# eslenmedi ve o sinif hic yayinlanmiyordu).
+_KOD_EKI = re.compile(r"[_\s-]+[A-Za-z]{1,3}[-_]?\d+[A-Za-z]?\s*$")
 
 
 def canonical_sign_id(class_name):
@@ -246,6 +256,19 @@ class DriveState(Enum):
     PARK_SEARCH       = 11
     PARKING           = 12
     EMERGENCY         = 13
+    # ROUTE PLANNER dönüşü (20.08.2026). Tabela dönüşleri (TURN_LEFT/RIGHT)
+    # DEĞİŞMEDİ; bunun tek farkı manevra süresinin komut açısıyla
+    # ölçeklenmesi — planner 40..131 derece arası komut üretiyor, sabit
+    # süreli tabela dönüşü hepsini ~90 derece döndürürdü.
+    PLANNER_TURN      = 20
+    # TEKNIK KONTROL hedefi (22.08.2026). Sartname: "Teknik kontrol hedef
+    # noktasindan sonra yolu kapatan engel bulunacaktir. Hedef noktasina
+    # ulasamayan VEYA hedef noktasini gecip bu engele carparak duran araclar
+    # basarisiz kabul edilecektir." geojson'daki hedef tanimi da "aracin
+    # DURMASI GEREKEN nokta". Onceden planner hedefte hicbir komut gondermiyordu
+    # ("barier durdurur, komut yok"), yani durma tamamen lidara birakilmisti --
+    # tek nokta ariza. Bu state komutla durur ve BIR DAHA CIKMAZ.
+    MISSION_END       = 21
 
 
 # ================================================================
@@ -276,6 +299,63 @@ class Alkar_Function4:
         self.sign_confirm_count = 3
         self.sign_window_sec    = 2.0
         self.sign_cooldown      = {}
+        # route_planner dönüşü: yön ve süre ölçeği (bkz. PLANNER_TURN)
+        self._pturn_left  = True
+        self._pturn_olcek = 1.0     # 90 dereceye göre süre ölçeği
+        # KAPALI CEVRIM DONUS (22.08.2026, arac olcumu). Acik dongu sure
+        # tabanli donus, direksiyonun 10 birim/s hizi yuzunden komut edilen
+        # aciyi TESLIM ETMIYOR: `slalom_0822_1157` bag'inde 70 derece komut
+        # edildi, 7.3 s'lik faz suresi doldu ve arac yalnizca +46 derece
+        # dondu (kalan 24 dereceyi serit takibi 12 saniyede toparladi).
+        # Sebep olculdu: faz 1'in ilk ~2 saniyesinde tekerlek hala tam kilide
+        # gidiyor (yaw hizi 2.3 -> 7.1 -> 9.6 derece/s diye tirmaniyor), yani
+        # sabit sure gercek donusun yarisini kaciriyor.
+        # Artik fazlar YAW ile bitiyor; sure yalnizca TAVAN.
+        self._pturn_yaw0  = None    # donus baslangicindaki yaw (rad)
+        self._pturn_hedef = 0.0     # isaretli hedef donus (derece)
+        # Tekerlek tam kilitten merkeze ~3.4 s'de doner ve o sure boyunca arac
+        # donmeye DEVAM eder. Bu yuzden faz cikisi anlik yaw'a degil,
+        # "yaw + yaw_hizi * lead" tahminine bakar; yoksa her donus asar.
+        # 0.8/2.0 -> 0.4/0.0 (22.08 aksami, tk_0822 bag olcumu). Onceki degerler
+        # OTURAN aciya gore secilmisti; oysa aracin capraz kalmasini belirleyen
+        # CIKIS anindaki hatadir -- serit takibi devraldiginda arac o aciyla
+        # yola devam ediyor ve yanal kayma dogrudan onun geometrisi:
+        #   1418: cikis -7.5 der, 5.0 m yol -> yanal 0.28 m (tahmin 0.31) TOPARLADI
+        #   1424: cikis -14.7 der, 8.2 m yol -> yanal 1.05 m (tahmin 1.14) TOPARLAYAMADI
+        # Masa taramasi (cikis hatasi / oturan hata):
+        #   0.8/2.0 -> -5.5 / -3.1     0.4/0.0 -> -1.7 / +0.8     0.0/0.0 -> +0.1 / +2.5
+        # 0.4/0.0 ikisini de kucuk tutar ve cikistaki artik hala "eksik" tarafta.
+        # ⚠️ Model mutlak degeri EKSIK tahmin ediyor (aracta -7.5 ve -14.7 olculdu,
+        # model ayni ayarda -5.5 diyor). Yon guvenilir, sayi sahada dogrulanmali:
+        # bakilacak olcu, PLANNER_TURN bittigi andaki yon hatasi (<5 der hedef).
+        # 1424'un -14.7'si dogusa dogrudan SLALOMDAN girmesinden: _yaw_rate EMA'si
+        # durumlar arasi tasindigi icin weave'den cikarken yuksek okunuyor ve
+        # ongoru fazi erken bitiriyor. Lead'i kucultmek bu duyarliligi azaltir.
+        self.pturn_lead_s     = 0.4
+        self.pturn_recover_deg = 20.0   # bu kadar kala toparlama fazina gec
+        self.pturn_tol_deg     = 0.0    # hedefe bu kadar kalinca bitti say
+        self.pturn_max_scale   = 2.5    # sure tavani = nominal * bu
+        # TEKNIK KONTROL hedef yaklasmasi (22.08.2026). planner "5,4,1" ile
+        # acar: hedefin son metrelerinde SLALOM GIRISI YASAK ve hiz kisitli.
+        # Sebep: yolu kapatan bariyer hedefin hemen ardinda; avoid_distance
+        # (4.5 m) icine girdiginde beyin onu siradan bir engel sanip etrafindan
+        # dolasmaya kalkar -- sartnameye gore bu dogrudan basarisizlik
+        # ("hedefi gecip engele carpan" ya da serit ihlali).
+        self._hedef_yaklasma = False
+        self.hedef_speed     = 3.0   # km/h; hedefe yaklasirken hiz tavani
+        # HEDEFTE DURMA: konum hatasi 1-3 m oldugu icin "2 m kala kesin dur"
+        # araci hedefe VARMADAN durdurabilirdi ("hedefe ulasamayan" da
+        # basarisizlik). Onun yerine surunerek yaklasilir ve asil durus
+        # LIDAR'a birakilir; sadece kac metre surunulecegi sinirlidir.
+        # 4.0 -> 3.0 (22.08 arac olcumu): odometri kat edilen yolu EKSIK
+        # olcuyor, yani 4.0 m'lik butce sahada 4.39 m (tk_0822_1418) ve
+        # 5.24 m (tk_0822_1424) gercek yol demek oldu. Asil durusu artik
+        # planner'in "5,4,2" komutu veriyor; bu yalnizca yedek tavan.
+        self.hedef_creep_m   = 3.0   # m; 5,4,0 sonrasi en fazla bu kadar ilerle
+        self._hedef_creep_d0 = None  # sürünmenin basladigi odometri degeri
+        # PLANNER donusu kesilirse kalan sure burada saklanir ve yol acilinca
+        # donus TAMAMLANIR (bkz. obstacle_event / _update_state_machine).
+        self._pturn_kalan = None
         self.default_cooldown   = 4.0
 
         self.state_start_time      = time.time()
@@ -296,7 +376,14 @@ class Alkar_Function4:
         # icin o sayac hic dolmaz ve supap ise yaramazdi.
         # 40 sn: normal bir isik dongusu bunun altinda; supap yalnizca gercek
         # kilitlenmede devreye girer. 0 = kapali (eski davranis).
-        self.red_light_timeout = 40.0
+        # 40.0 -> 25.0 (26.08.2026). Sartname: yesil isikta 5 sn icinde
+        # hareket +40, 5-30 sn arasi +20, 30 sn icinde hic hareket etmedi
+        # -20 puan. Yesili KACIRDIYSAK (isik kadrajdan cikti, yanlis tespit
+        # vb.) 40 sn beklemek bizi kesin -20'ye goturur; 25 sn'de birakmak
+        # "5-30 sn arasi" kutusuna sokar. Risk: 25. saniyede isik gercekten
+        # hala kirmiziysa gecmis oluruz (-30). Hakemler isigi arac
+        # yaklasirken cevirdigi icin bu ihtimal dusuk goruldu.
+        self.red_light_timeout = 25.0
         # Supap actiktan sonra ayni tespit araci hemen tekrar kilitlemesin diye
         # KIRMIZI_ISIK'a uzun cooldown. Yoksa 40 sn dur / 1 sn git dongusu olur
         # (kirmizinin normal cooldown'u 1.0 sn).
@@ -304,7 +391,58 @@ class Alkar_Function4:
 
         self.stop_wait_sec      = 3.0
         self.crosswalk_wait_sec = 5.0
+        # ISIK / YAYA GECIDI TETIK MESAFESI (25.08.2026: 12.0 -> 9.0,
+        # operator sahada 9 m'yi ideal buldu). Mesafe bbox yuksekliginden
+        # kestiriliyor ve isik icin ayri sabit kullaniliyor
+        # (light_distance_constant=150 vs tabela 450), o yuzden iki esik
+        # ayri tutuldu.
+        # 4.5 -> 5.0 (26.08.2026, GEOMETRIDEN). Iki kisit arasinda:
+        #   (a) SARTNAME: on burun 0<d<5 m ise 60 puan, >5 m ise 20 puan.
+        #       Esik 5.0 -> fren 0.42 + kamera-tampon 0.205 sonrasi on burun
+        #       4.38 m -> pencerenin icinde 0.62 m payla.
+        #   (b) YESILI GORMEK: durdugumuz yerde isik hala kadrajda olmali
+        #       (40 puan). Kamera yerden ~0.95 m (mezura + homografi ters
+        #       cozumu; dokumandaki 0.685 ON AKS referansli, teker yaricapi
+        #       0.267 eklenmemis), goruntunun ust kenari +34.6 derece.
+        #       Esik 5.0 ile 4.05 m yuksekligindeki bir isik hala kadrajda;
+        #       4.5 ile bu sinir 3.73 m'ye iniyordu.
+        #   Esik 6.0 olsaydi on burun 5.38 m -> "erken durdu", 40 puan kaybi.
+        self.red_light_distance = 5.0   # eski: 4.5 / 9.0 (metre degildi)
+        # ⚠️ BAG OLCUMU (25.08.2026, 5 kameralı kayıt, 298 tespit): tabelalarin
+        # GORULDUGU en yakin mesafeler DUR 4.89 m, KIRMIZI_ISIK 5.19 m,
+        # DURAK 6.03 m, YAYA_GECIDI 7.39 m. Yani asagidaki esiklerin altinda
+        # kayitli TEK BIR tespit bile yok -- pay DUR'da 0.39 m. Tespitin yakin
+        # mesafede caliştigi ayrica dogrulandi (sola_don_yasak 2.83 m'de,
+        # h=128 px). Yine de pay dar oldugu icin bu esikler KONTROL DUGUMUNDEN
+        # ROS PARAMETRESIYLE ayarlanabilir yapildi; varsayilanlar degismedi.
+        self.yellow_light_distance   = 5.0   # eski: 10.0
+        self.stop_sign_distance      = 4.5   # eski:  9.0
+        # 5.0 -> 0.0 = DURAK TABELASI TETIGI KAPALI (26.08.2026).
+        # Yolcu alma 70 puan/nokta ve kosulu "on uc nokta JSON noktasinin
+        # en fazla 1 m gerisinde/ilerisinde". Iki ayri yol ayni BUS_STOP'a
+        # sokuyor: planner "5,2,0" (rota boyu durak_mesafe=2.3 m kala,
+        # yanal ofset + hizalama + fren hesaba katilmis) ve DURAK tabelasi
+        # (5.0 m, hicbir hesap yok). 5.0 > 2.3 oldugu icin TABELA ONCE
+        # ateslerdi, beyin ikinci tetigi yutar (state != BUS_STOP) ve arac
+        # noktanin ~3.9 m gerisinde dururdu: +70 yerine -20.
+        # 0.0 ile tetik hic olusmaz (distance < 0 asla dogru degil).
+        # Yedek istenirse planner'in ALTINA cekilir (or. 1.4), ama o pay
+        # cok dar; elle "5,2,0" basmak daha guvenli.
+        self.bus_stop_sign_distance  = 0.0   # eski: 5.0 / 10.0
+        self.sign_turn_distance      = 6.0   # eski: 12.0 (4 donus tabelasi)
+        self.crosswalk_distance = 4.5   # eski: 9.0 (metre degildi)
 
+        # ---- PARK BOLGESI KAPISI (25.08.2026) ----
+        # "P" tabelasi ARTIK TEK BASINA PARK_SEARCH'e sokmaz. Gerekce:
+        # PARK_SEARCH _is_blocking_state'de degil (serit olayi hizi/direksiyonu
+        # ezer) ve obstacle_event o durumda erken donuyor (ENGEL FRENI YOK).
+        # Yol kenarinda gorulen bir P tabelasi araci yolun ortasinda park
+        # moduna sokuyordu. Izin artik KONUMDAN gelir: planner "5,3,1"
+        # gonderene kadar (arac park noktasina park_bolge_m'den yakin)
+        # park_bolgesinde False kalir ve P tabelasi YOK SAYILIR.
+        self.park_bolgesinde   = False
+        # Izin geldikten sonra da tabela bu mesafeden yakin olmali (eski 10.0)
+        self.park_sign_distance = 4.0   # eski: 8.0 (metre degildi)
         self.bus_stop_align_time = 2.0
         self.bus_stop_wait_sec   = 17.0
         self.bus_stop_exit_time  = 2.0
@@ -438,6 +576,38 @@ class Alkar_Function4:
         # ama komşu şeridin engel bandına (şerit merkezi ±0.7 -> y>2.3) girmez
         # ve geçilen engel front koridorunun (±0.7) kenarına takılmaz.
         self.slalom_lateral_tight   = 1.55  # m, dar mod kaçış ofseti
+        # --- YANAL HEDEFI PROFILDEN OLC (2026-08-22) ---
+        # slalom_lateral_target/tight IKISI DE SABIT SAYI ve engelin nerede
+        # oldugunu bilmez. 21.08 bag'lerinde (slalom_0821_1508/1515) olculdu:
+        # 1. engelin sol kenari yanal -0.3 m, 2. engelin sag kenari +1.9 m,
+        # yani guvenli pencere +0.23..+1.37 (merkez +0.80). Sabit hedef 1.7
+        # o pencerenin 0.33 m DISINDA, ulasilan tepe 2.00 ise 0.63 m disinda
+        # -> arac 2. engelin ayak izine nisan aldi, 4.5 m kala son anda
+        # kirmak zorunda kaldi ve on tamponun 0.3 m'sinden gecti.
+        # Sartname s.835 "engel boyutlari/duzenleri belirli bir standarda
+        # sahip olmayacak" diyor; yani sabit bir hedef tanimi geregi
+        # tasinamaz. Lidar yanal klerans profili (ID-4'un P bolumu) bu
+        # bilgiyi ZATEN tasiyor, sadece kullanilmiyordu.
+        #   Tarama: kacis yonunde 0'dan disari, klerans >= hedef_min_mesafe
+        #   olan ILK hucre = bandin yakin kenari; hedef = yakin kenar + pay.
+        #   Profil hucresinin yari genisligi corridor (0.70) > aracin yari
+        #   genisligi (0.53), yani "bos" okunan bir hucre araca 0.17 m payla
+        #   zaten yer garantiler. Bulunamazsa None doner ve ESKI iki-modlu
+        #   davranisa dusulur (regresyon degil, bugunku davranis).
+        self.profil_hedef_enabled   = True
+        self.slalom_hedef_pay       = 0.30  # m, bandin yakin kenarindan pay
+        self.slalom_hedef_min       = 0.50  # m, altina inilmeyen taban
+        self.slalom_hedef_min_mesafe = 6.0  # m, "bu koridor acik" sayilma esigi
+        self.profil_tarama_max      = 3.5   # m, tarama siniri (profile_y_max)
+        # Profil hucresinin yari genisligi obstacle_lidar'in `corridor`i,
+        # aracin yari genisligi URDF body_width/2. IKISI DE O DOSYALARLA
+        # ESLESMELI (lidar -p corridor:=..., URDF body_width). Aradaki fark
+        # kadar (0.17 m) hucre merkezinin ICINE dogru gidilebilir: "bos"
+        # okunan bir hucre araca 0.17 m fazladan pay birakiyor demektir.
+        self.profil_koridor         = 0.70  # = obstacle_lidar corridor
+        self.arac_yari_genislik     = 0.53  # = URDF body_width / 2
+        self.profil_max_yas         = 1.0   # s, bundan bayat profil kullanilmaz
+        self._son_hedef_sebep       = ""    # log/teshis
         self.slalom_lateral_done    = 0.3   # m, dönüşte "şeride vardı" eşiği (yaw varsa)
         # Dönüş fazı burun şerit yönüne bu kadar yaklaşınca biter (derece).
         # Tek başına yanal eşiği beklemek aracı 30-45 derece fazla döndürüyordu
@@ -451,6 +621,9 @@ class Alkar_Function4:
         # "sim'i bozdu" diye reddedilmisti — o sim direksiyon gecikmesini
         # MODELLEMIYORDU, karar gecersizdi. 25 ile maks aci 54 -> 36 derece.
         self.slalom_return_max_deg = 25.0
+        # True  = _return_hard tam kilit donus yaptirir (eski davranis)
+        # False = zincirleme durumunda da slalom_return_steer kullanilir
+        self.slalom_return_hard    = True
         # Donus fazi FSM acisi. None = kacisin aynasi (eski davranis).
         # 25 gibi bir sayi daha yumusak donus verir (bkz. "return" fazi).
         # 25.0 (20.08.2026, gecikmeli masa simulatorunde olculdu). Sabit
@@ -662,6 +835,23 @@ class Alkar_Function4:
         # manevrası yapılmaz). Şerit çıktısının sıfır noktası koşudan koşuya
         # kaydığı için (algi7 +4.1, algi8 -1.7) hızlı EMA ile koşuya özel yavaş
         # bir taban EMA'nın FARKINA bakılır (sabit 45'e değil).
+        # VİRAJ TESPİTİ BİRİNCİL YOL: EĞRİLİK (2026-08-22, Taha).
+        # Şerit açısı EMA'sı (curve_lane_dev, aşağıda) algıdan türer ve şeridin
+        # sıfır noktası koşudan koşuya kayıyor; bu yol aracın FİİLEN döndüğü
+        # yaw'a bakar, şerit boru hattından bağımsızdır. `_note_lane_angle`
+        # YEDEK olarak duruyor.
+        # kappa = |yaw_rate| / hız (1/m). Sabit yaw-rate eşiği hıza bağlı
+        # olurdu; sahte engeli üreten geometri ise YARIÇAPA bağlı
+        # (x = sqrt(2R(d-koridor))), o yüzden ölçüt kappa.
+        # 0.04 1/m  <=>  R = 25 m. Ölçülen geometriyle (koridor 0.70,
+        # bariyer d=1.5) R<12.7 m slalom bandı, R<22.5 m yavaşlama bandı --
+        # 25 m slalom bandına düşen her virajı kapsar. Gözlenen 6 gerçek
+        # slalom girişi: 0.094/0.056/0.050 (R=11/18/20 m) bastırılır,
+        # 0.029/0.015/0.000 (R=34/68/sonsuz) geçirilir. Normal LANE_FOLLOW
+        # sürüşünde kappa medyanı 0.008-0.020 (R=51-127 m), eşiğin 2-5 katı altı.
+        self.curve_kappa      = 0.04   # 1/m (R<25 m viraj sayılır); 0 = kapalı
+        self.curve_min_speed  = 0.4    # m/s; altında yaw gürültüdür, kappa patlar
+        self.curve_min_time   = 0.0    # s; 0 = süreklilik şartı yok
         self.curve_lane_dev   = 6.0    # |hızlı-yavaş| bunu aşarsa viraj
         self.curve_hold_time  = 1.0    # s, viraj bittikten sonra da bastır
         self.curve_ema_fast   = 0.30   # ~3-4 karelik tepki
@@ -669,6 +859,8 @@ class Alkar_Function4:
         self._lane_fast       = None
         self._lane_slow       = None
         self._curve_until     = 0.0
+        self._curve_ustunde   = None   # kappa eşiğini ne zamandır aşıyor
+        self._curve_kaynak    = "-"    # teşhis: "yaw" | "serit" | "-"
 
         self.front_distance = 99.0
         self.left_distance  = 99.0
@@ -697,7 +889,20 @@ class Alkar_Function4:
         self._weave_pos_ref = None    # weave başındaki (x, y, yaw)
         self._weave_lat     = self.slalom_lateral_target  # bu weave'in ofset hedefi
 
-        self.park_forbidden   = False
+        # ⚠️ SURELI (25.08.2026). Eskiden bool idi ve BIR KEZ True olunca
+        # HIC TEMIZLENMIYORDU: park alaninda gorulen tek bir "park yasak"
+        # tabelasi, aracin o kosuda BIR DAHA park edememesi demekti. Oysa
+        # tabela "BURAYA park etme" der, "hic park etme" demez.
+        # Park hizinda (~0.33 m/s) 8 s ~ 2.6 m, yani bir cep genisligi.
+        self.park_stop_m       = 2.0    # PARK_SEARCH'te onde bu kadar kalinca dur
+        self.park_arama_max_s  = 60.0   # bu kadar arandiysa oldugu yerde dur
+        # TUNEL: planner konumdan "5,5,1/0" ile kurar (bkz. planner_event).
+        self.tunelde     = False
+        self.tunel_speed = 4.0    # km/h; tunelde hiz tavani
+        # Tunelde direksiyonun 45'ten sapabilecegi en fazla FSM birimi.
+        # 10 birim ~ ham 12 ~ teker 11.8 derece (R ~ 9 m): serit hatasini
+        # kapatmaya yeter, savurmaya yetmez.
+        self.tunel_steer_kirp = 10.0
         self.emergency_active = False
         self.last_event       = "baslangic: LANE_FOLLOW"
 
@@ -780,6 +985,32 @@ class Alkar_Function4:
             # EMA: yaw gurultusu dogrudan direksiyona gitmesin
             self._yaw_rate = (0.7 * self._yaw_rate + 0.3 * anlik
                               if self._yaw_rate is not None else anlik)
+        # ---- EĞRİLİK -> VİRAJ (2026-08-22) ----
+        # DİKKAT: bizim _yaw_rate DERECE/s (Taha'nınki rad/s) -> çevir.
+        if self.curve_kappa > 0.0:
+            _v = self.speed_mps
+            if (speed_mps is None and distance is not None and dt_yaw > 0.0):
+                _v = abs(self.odom_distance - prev_d) / dt_yaw
+            if self.state == DriveState.OBSTACLE_AVOID:
+                # Slalomda BAKILMAZ: araç zaten kasten dönüyor, kendi
+                # manevramızı viraj sayarsak sonraki weave'leri bastırırdık.
+                # Sayaç da sıfırlanır -- yoksa weave'den ÖNCE başlamış damga
+                # weave boyunca durur ve manevra biter bitmez eşik bir an
+                # aşılınca ANINDA "viraj" ilan edilir (çok engelli DÜZ YOL
+                # slalomunda tam olmaması gereken şey).
+                self._curve_ustunde = None
+            elif (self._yaw_rate is not None and _v is not None
+                    and _v >= self.curve_min_speed):
+                if abs(math.radians(self._yaw_rate)) / _v > self.curve_kappa:
+                    if self._curve_ustunde is None:
+                        self._curve_ustunde = now
+                    elif now - self._curve_ustunde >= self.curve_min_time:
+                        self._curve_until = now + self.curve_hold_time
+                        self._curve_kaynak = "yaw"
+                else:
+                    self._curve_ustunde = None
+            else:
+                self._curve_ustunde = None
         step = self.odom_distance - prev_d
         if self.state == DriveState.OBSTACLE_AVOID:
             if self._weave_pos_ref is not None and self._pos_ok:
@@ -834,13 +1065,21 @@ class Alkar_Function4:
         engel_event 10 Hz, serit 20 Hz. Iki cagirici da artik ayni tavani
         kullanir, boylece hiz yarisi tekrar dogamaz.
         """
+        # HEDEF YAKLASMASI (22.08.2026): engel gorunmese bile hiz tavani.
+        # Hedefte DURULMASI gerekiyor; 6 km/h ile varilirsa durma noktasi
+        # hedefi metrelerce asar. Tavan her zaman uygulanir, cunku bu fonksiyon
+        # hem serit (20 Hz) hem engel (10 Hz) olayindan cagriliyor.
+        hedef_tavan = self.hedef_speed if self._hedef_yaklasma else None
+        if self.tunelde:      # tunelde her halukarda yavas
+            hedef_tavan = min(self.tunel_speed, hedef_tavan or self.tunel_speed)
         if self.front_distance >= self.slow_distance:
-            return None
+            return hedef_tavan
         # Kacis penceresi kapaniyorsa surun (bkz. blocked_speed).
         if (self.front_distance < self.avoid_distance
-                and (self._in_curve() or self._pick_avoid_direction() is None)):
-            return self.blocked_speed
-        return self.slow_speed
+                and (self._hedef_yaklasma or self._in_curve()
+                     or self._pick_avoid_direction() is None)):
+            return min(self.blocked_speed, hedef_tavan) if hedef_tavan else self.blocked_speed
+        return min(self.slow_speed, hedef_tavan) if hedef_tavan else self.slow_speed
 
     def _smooth_angle(self, old_angle, new_angle, alpha=0.35):
         """Direksiyon EMA'si — TEK YÖNLÜ KAYMA (RATCHET) DÜZELTİLDİ (2026-08-13).
@@ -893,6 +1132,7 @@ class Alkar_Function4:
                            + (1.0 - self.curve_ema_slow) * self._lane_slow)
         if abs(self._lane_fast - self._lane_slow) > self.curve_lane_dev:
             self._curve_until = self._now() + self.curve_hold_time
+            self._curve_kaynak = "serit"
 
     def _in_curve(self):
         """Viraj içinde (veya çıkışından curve_hold_time geçmemiş) miyiz?"""
@@ -905,7 +1145,9 @@ class Alkar_Function4:
             DriveState.TURN_LEFT, DriveState.TURN_RIGHT,
             DriveState.GO_STRAIGHT_LEFT, DriveState.GO_STRAIGHT_RIGHT,
             DriveState.OBSTACLE_STOP, DriveState.OBSTACLE_AVOID,
-            DriveState.PARKING, DriveState.EMERGENCY,
+            DriveState.PARKING, DriveState.PARK_SEARCH,
+            DriveState.EMERGENCY, DriveState.PLANNER_TURN,
+            DriveState.MISSION_END,
         }
         return self.state in blocking
 
@@ -934,6 +1176,16 @@ class Alkar_Function4:
 
         # Şerit açısını FSM'e yaz; control_loop'ta waypoint ile karıştırılır
         fused = max(15, min(75, lane_angle))
+        # TUNEL (25.08.2026, ikinci surum). ⚠️ ILK SURUM YANLISTI: serit
+        # acisini tamamen yok sayip 45 (notr) suruyordu. Arac tunele egik ya
+        # da merkez disinda girerse duz gitmek onu DUVARA goturur -- operator
+        # uyarisi. Dogru davranis "serit takibini birak" degil, "serit
+        # takibini YUMUSAT": aci hala seritten gelir ama 45 etrafinda dar bir
+        # banda kirpilir. Boylece arac ortalamaya devam eder, karanlikta
+        # bozulan bir fit ise direksiyonu savuramaz.
+        if self.tunelde:
+            fused = max(45 - self.tunel_steer_kirp,
+                        min(45 + self.tunel_steer_kirp, fused))
         self.steering_angle = self._smooth_angle(self.steering_angle, fused)
         # HIZ YARIŞI DÜZELTMESİ (2026-08-03): eskiden burada koşulsuz
         # default_speed yazılıyordu ve obstacle_event'in "5 m'de yavaşla"
@@ -952,6 +1204,15 @@ class Alkar_Function4:
         except (IndexError, ValueError, TypeError):
             return
 
+        # 8. alan (25.08.2026): mesafe ZED derinliginden mi OLCULDU (1), yoksa
+        # bbox yuksekliginden mi TAHMIN edildi (0). Alani hic gondermeyen eski
+        # bir yayinci varsa tahmin kabul edilir -- kotumser taraf dogru taraf.
+        try:
+            olculdu = int(data[7]) == 1
+        except (IndexError, ValueError, TypeError):
+            olculdu = False
+        kaynak = "ZED" if olculdu else "tahmin"
+
         if sign == 24:
             sign = ILERI_SAG
         elif sign == 25:
@@ -962,12 +1223,31 @@ class Alkar_Function4:
             self._stop_vehicle()
             return
 
+        # Gorev sonu: tabela/isik da araci kaldiramaz (bkz. MISSION_END).
+        if self.state == DriveState.MISSION_END:
+            return
+
         if not self._update_sign_counter(sign): return
         if not self._cooldown_ok(sign):         return
 
         name = SIGN_NAMES.get(sign, str(sign))
-        self._explain(f"TABELA {name} (id={sign}, d={distance:.1f}m, h={h}) -> islendi")
+        self._explain(f"TABELA {name} (id={sign}, d={distance:.1f}m [{kaynak}], "
+                      f"h={h}) -> islendi")
 
+        # ======== MESAFE ESIKLERI: GERCEK METRE (25.08.2026) ========
+        # Asagidaki esikler once 9/10/12 idi ve BIRIMLERI METRE DEGILDI: gelen
+        # mesafe bbox yuksekliginden turetiliyor, olcegi de nesnenin fiziksel
+        # boyutuna gore kayiyordu. Ekibin arac uzerindeki deneme-yanilmasi bu
+        # sapmayi olcmustu: "kodda 4 m'ye ayarladigimizda gercek hayatta 2 m".
+        # Yani eski esikler gercekte YARISI kadar mesafede tetikleniyordu.
+        # ID-3 gercek metreye gectigi icin esikler o olculen 2.0 carpaniyla
+        # cevrildi: SAYILAR degisti, aracin gercek dunyada tetiklendigi MESAFE
+        # degismedi. Yeniden ayar YAPILMADI.
+        # ⚠️ Bu dosyadaki degerler BIZIM tabanimizin yarisidir; gelen dalin
+        # tablosu YAYA_GECIDI icin 12->6, PARK icin 10->5 diyordu, cunku o dal
+        # 25.08 sabahki "operator 9 m istedi" / park_sign_distance=8.0
+        # duzeltmelerinden ONCE ayrilmisti. Burada kural (bizim degerin yarisi)
+        # tutarli uygulandi: 9->4.5, 8->4.0.
         if sign in (HIZ_20, HIZ_20B):
             self.speed_limit   = 20.0
             self.default_speed = min(self.default_speed, 12.0)
@@ -979,7 +1259,7 @@ class Alkar_Function4:
             self._start_cooldown(sign, 5.0)
 
         elif sign == KIRMIZI_ISIK:
-            if distance < 12.0:
+            if distance < self.red_light_distance:
                 self.red_light_seen_time = self._now()
                 self._set_state(DriveState.RED_LIGHT_STOP)
                 self._start_cooldown(sign, 1.0)
@@ -988,7 +1268,7 @@ class Alkar_Function4:
                 self._explain(f"KIRMIZI ISIK ama uzak (d={distance:.1f}) -> bekle")
 
         elif sign == SARI_ISIK:
-            if distance < 10.0:
+            if distance < self.yellow_light_distance:
                 self.target_speed = self.slow_speed
                 self._explain(f"SARI ISIK (d={distance:.1f}) -> yavasla")
 
@@ -1003,25 +1283,25 @@ class Alkar_Function4:
             self._start_cooldown(sign, 1.0)
 
         elif sign == DUR:
-            if distance < 9.0:
+            if distance < self.stop_sign_distance:
                 self._set_state(DriveState.STOP_SIGN)
                 self._start_cooldown(sign, 8.0)
                 self._explain(f"DUR tabelasi (d={distance:.1f}) -> 3sn DUR")
 
         elif sign == YAYA_GECIDI:
-            if distance < 12.0:
+            if distance < self.crosswalk_distance:
                 self._set_state(DriveState.CROSSWALK_STOP)
                 self._start_cooldown(sign, 10.0)
 
         elif sign == DURAK:
-            if distance < 10.0:
+            if distance < self.bus_stop_sign_distance:
                 if self.state != DriveState.BUS_STOP:
                     self._set_state(DriveState.BUS_STOP)
                     self._start_cooldown(sign, 30.0)
                     self._explain(f"DURAK (d={distance:.1f}) -> duraga yanas + bekle")
 
         elif sign == SOLA_DON:
-            if distance < 12.0:
+            if distance < self.sign_turn_distance:
                 self._begin_left_turn()
                 self._explain(f"SOLA DON tabelasi (d={distance:.1f}) -> SOLA DONUS")
 
@@ -1029,7 +1309,7 @@ class Alkar_Function4:
             self._start_cooldown(sign, 6.0)
 
         elif sign == SAGA_DON:
-            if distance < 12.0:
+            if distance < self.sign_turn_distance:
                 self._begin_right_turn()
                 self._explain(f"SAGA DON tabelasi (d={distance:.1f}) -> SAGA DONUS")
 
@@ -1040,11 +1320,11 @@ class Alkar_Function4:
             self._start_cooldown(sign, 6.0)
 
         elif sign == ILERI_SOL:
-            if distance < 12.0:
+            if distance < self.sign_turn_distance:
                 self._begin_straight_then_left()
 
         elif sign == ILERI_SAG:
-            if distance < 12.0:
+            if distance < self.sign_turn_distance:
                 self._begin_straight_then_right()
 
         elif sign == ILERI:
@@ -1055,11 +1335,23 @@ class Alkar_Function4:
             self._start_cooldown(sign, 4.0)
 
         elif sign == PARK_YASAK:
-            self.park_forbidden = True
-            self._start_cooldown(sign, 8.0)
+            # ⚠️ ARAMAYI DURDURMAZ (25.08.2026, operator kararı). Once
+            # kalici bir bayrakti (tek tabela tum kosuda parki kapatiyordu),
+            # sonra sureli yapildi -- o da yanlis: tabelalarin HEPSI park
+            # bolgesinde ve arac aramaya devam etmeli. Bu FSM'de tek tek cep
+            # kavrami olmadigi icin "burasi olmaz" bilgisi eyleme
+            # cevrilemiyor; bu yuzden tabela yalnizca kaydediliyor.
+            self._start_cooldown(sign, 4.0)
+            self._explain(f"PARK YASAK (d={distance:.1f}) -> kaydedildi, "
+                          "arama SURUYOR")
 
         elif sign == PARK:
-            if not self.park_forbidden and distance < 10.0:
+            if not self.park_bolgesinde:
+                # Park bolgesine girilmedi -> tabela YOK SAYILIR (bkz. __init__)
+                self._start_cooldown(sign, 4.0)
+                self._explain(f"PARK tabelasi (d={distance:.1f}) park bolgesi "
+                              "DISINDA gorundu -> yok sayildi")
+            elif distance < self.park_sign_distance:
                 if self.state not in (DriveState.PARKING, DriveState.PARK_SEARCH):
                     self._set_state(DriveState.PARK_SEARCH)
                     self._start_cooldown(sign, 10.0)
@@ -1095,6 +1387,31 @@ class Alkar_Function4:
             self._stop_vehicle()
             return
 
+        if self.state == DriveState.PLANNER_TURN:
+            # KOMUTLU DONUS BIR MANEVRADIR (2026-08-22). Weave ile ayni mantik:
+            # burun kasitli olarak serit yonunden cikmistir, govdeye sabit on
+            # koridor donus boyunca yol kenarini/kose engellerini tarar. Olculdu:
+            # donus sirasinda 3-4 m'lik bir okuma slaloma, 2 m'lik okuma
+            # OBSTACLE_STOP'a sokuyordu ve HER IKI DURUMDA da donus komutu
+            # kaliciolarak KAYBOLUYORDU (planner olayi tuketmisti) -- arac
+            # kavsakta duz devam ediyordu. Teknik kontrolde virajin icine engel
+            # konuyor, yani bu tam olarak yasanacak senaryo.
+            #   * SLALOM YOK: donusun kendisi zaten kacinma manevrasi.
+            #   * Durma esigi weave'deki gibi SIKI (avoid_emergency_front),
+            #     cruise esigi (stop_distance) degil.
+            #   * Kesilirse kalan sure saklanir, yol acilinca donus TAMAMLANIR.
+            if self.front_distance <= 0.0 or self.front_distance < self.avoid_emergency_front:
+                gecen = self._elapsed()
+                faz_toplam = 5.5 * self._pturn_olcek + 3.0
+                self._pturn_kalan = max(0.0, faz_toplam - gecen)
+                self._set_state(DriveState.OBSTACLE_STOP)
+                self._stop_vehicle()
+                self.signal_status = 3
+                self._explain(
+                    f"DONUS KESILDI: front={self.front_distance:.1f} m -> DUR "
+                    f"(kalan donus {self._pturn_kalan:.1f} s saklandi)")
+            return
+
         if self.state == DriveState.OBSTACLE_AVOID:
             # ÇARPIŞMA KORUMASI (2026-08-03): eskiden kaçınma sırasında engel
             # verisi tamamen yok sayılıyordu — dönüş fazında engelin üstüne
@@ -1126,9 +1443,14 @@ class Alkar_Function4:
                 self.current_position, self.goal_position)
 
         # FSM'in açık şekilde durmaya/beklemeye karar verdiği durumları ezme
+        # ⚠️ MISSION_END BU LISTEDE OLMALI: yoksa surunme sirasinda engel
+        # gorulunce state OBSTACLE_STOP'a gecer, MISSION_END'den CIKILIR ve
+        # yol "acilinca" arac kapali yola devam eder. Durmayi MISSION_END'in
+        # kendisi veriyor (_mission_end_control, front_distance'a bakarak);
+        # mesafeler yukarida zaten yazildi.
         if self.state in (DriveState.RED_LIGHT_STOP, DriveState.STOP_SIGN,
                           DriveState.CROSSWALK_STOP, DriveState.BUS_STOP,
-                          DriveState.EMERGENCY):
+                          DriveState.EMERGENCY, DriveState.MISSION_END):
             return
 
         # --- Engel algılama eşiği (genel, reaktif) ---
@@ -1191,7 +1513,15 @@ class Alkar_Function4:
         # stop_distance) durur; sadece savurma manevrası yapılmaz.
         in_curve = self._in_curve()
 
-        if held >= self.avoid_confirm_time and not in_curve:
+        # HEDEF YAKLASMASI (22.08.2026): virajla ayni mantik -- arac yine
+        # yavaslar ve stop_distance icinde durur (yukarida), sadece savurma
+        # manevrasi yapilmaz. Teknik kontrolde hedefin ardindaki bariyeri
+        # slalomla gecmeye calismak dogrudan basarisizliktir.
+        if self._hedef_yaklasma and held >= self.avoid_confirm_time and not in_curve:
+            self._explain(f"ENGEL front={self.front_distance:.1f} -> HEDEF "
+                          f"yaklasmasi: slalom bastirildi, yavasla/dur")
+
+        if held >= self.avoid_confirm_time and not in_curve and not self._hedef_yaklasma:
             direction = self._pick_avoid_direction()
             if direction is not None:
                 # Boş taraf var -> DURMADAN doğrudan slaloma gir (akıcı geçiş)
@@ -1200,7 +1530,8 @@ class Alkar_Function4:
                 self._explain(
                     f"ENGEL front={self.front_distance:.1f} onay={held:.1f}s "
                     f"sol={self.left_distance:.1f} sag={self.right_distance:.1f} "
-                    f"-> SLALOM {direction} (durmadan)")
+                    f"-> SLALOM {direction} (durmadan) | yanal hedef "
+                    f"{self._weave_lat:.2f} m [{self._son_hedef_sebep}]")
                 return
 
         # SLALOM YAPILMADI — NEDEN? (2026-08-13)
@@ -1238,11 +1569,125 @@ class Alkar_Function4:
         self._explain(f"ENGEL front={self.front_distance:.1f} -> yavasla | {neden}")
 
     def planner_event(self, data):
+        """ID-5: route_planner'in mission komutlari (20.08.2026).
+
+        ESKI HALI grid A* hedefi okuyordu: `goal_position = (data[1], data[2])`.
+        Yeni sozlesmede data[1] KOMUT, data[2] argumandir; eski kod kalsaydi
+        "5,1,93.3" komutu grid hedefi (1, 93) diye okunurdu.
+
+            5,1,<isaretli_derece>   donus  (+ sol / - sag)  -> PLANNER_TURN
+            5,2,0                   yolcu al/birak          -> BUS_STOP
+            5,3,0                   park                    -> PARK_SEARCH
+            5,0,0                   iptal                   -> LANE_FOLLOW
+
+        BUS_STOP ve PARK_SEARCH beyinde ZATEN var; yeni manevra yazilmiyor,
+        mevcutlar cagriliyor. Grid A* (self.planner) engel yeniden planlamada
+        kullanilmaya devam ediyor, sadece bu giris noktasi degisti.
+        """
         try:
-            self.goal_position = (int(float(data[1])), int(float(data[2])))
+            cmd = int(float(data[1]))
         except (IndexError, ValueError, TypeError):
             return
-        self.path = self.planner.plan_path(self.current_position, self.goal_position)
+        # ⚠️ MISSION_END TERMINALDIR: hedefte durduktan sonra HICBIR planner
+        # komutu (donus/durak/park/iptal) araci tekrar hareket ettiremez.
+        # Sartnameye gore hedefin ardindaki kapali yola ilerlemek dogrudan
+        # basarisizlik; tek cikis emergency ya da dugumun yeniden baslatilmasi.
+        # ⚠️ cmd==4 (hedef alt komutlari) MUAF: onlar yalnizca DURDURUR ya da
+        # kisitlar, asla hareket ettirmez. "5,4,2" (hemen dur) zaten
+        # MISSION_END icindeyken gelir; kapiya takilirsa surunme butcesi
+        # dolana kadar arac ilerlemeye devam eder (olculdu, 22.08).
+        if self.state == DriveState.MISSION_END and cmd != 4:
+            return
+        if cmd == 1:
+            try:
+                deg = float(data[2])
+            except (IndexError, ValueError):
+                return
+            self._pturn_left  = deg > 0
+            self._pturn_olcek = max(0.35, min(1.6, abs(deg) / 90.0))
+            self._pturn_hedef = deg
+            self._pturn_yaw0  = self.yaw if self._yaw_ok else None
+            self.signal_status = 2 if deg > 0 else 1
+            self._set_state(DriveState.PLANNER_TURN)
+            self._explain(f"PLANNER donus {deg:+.0f} derece "
+                          f"(sure olcegi {self._pturn_olcek:.2f})")
+        elif cmd == 2:
+            if self.state != DriveState.BUS_STOP:
+                self._set_state(DriveState.BUS_STOP)
+                self._explain("PLANNER: yolcu al/birak -> BUS_STOP")
+        elif cmd == 5:
+            # 5,5,1 = tunele girildi (konumdan), 5,5,0 = cikildi.
+            try:
+                arg = int(float(data[2]))
+            except (IndexError, ValueError):
+                arg = 0
+            yeni_d = (arg == 1)
+            if yeni_d != self.tunelde:
+                self.tunelde = yeni_d
+                self._explain("TUNEL: duz (45) + hiz tavani" if yeni_d
+                              else "TUNEL bitti -> serit takibi")
+        elif cmd == 3:
+            # 5,3,1 = "park bolgesine girdin" -> yalnizca IZIN, durum degismez.
+            # 5,3,0 = "park et" -> eskisi gibi dogrudan PARK_SEARCH.
+            try:
+                arg = int(float(data[2]))
+            except (IndexError, ValueError):
+                arg = 0
+            if arg == 1:
+                if not self.park_bolgesinde:
+                    self.park_bolgesinde = True
+                    self._explain("PLANNER: park bolgesine girildi -> "
+                                  "P tabelasi artik kabul edilir")
+            elif self.state not in (DriveState.PARKING, DriveState.PARK_SEARCH):
+                self.park_bolgesinde = True
+                self._set_state(DriveState.PARK_SEARCH)
+                self._explain("PLANNER: park -> PARK_SEARCH")
+        elif cmd == 4:
+            # TEKNIK KONTROL hedefi. Iki kademe:
+            #   5,4,1 -> yaklasma: slalom girisi yasak + hiz tavani (surus surer)
+            #   5,4,0 -> hedef:    DUR ve kal (MISSION_END, cikis yok)
+            try:
+                arg = int(float(data[2]))
+            except (IndexError, ValueError):
+                arg = 0
+            if arg == 2:
+                # HEMEN DUR (surunmeden). Planner, aracin hedefe EN YAKIN
+                # noktadan gectigini gorunce gonderir -- olculdu: surunme
+                # butcesi (4 m odometri) tek basina biraklinca arac hedefi
+                # 2.42 m (tk_0822_1418) ve 4.53 m (tk_0822_1424) asiyordu,
+                # cunku o kosularda lidar'in duracagi bir bariyer yoktu ve
+                # butce sonuna kadar surdu. Konumu bilen taraf planner.
+                if self.state != DriveState.MISSION_END:
+                    self._hedef_yaklasma = True
+                    self._set_state(DriveState.MISSION_END)
+                self._hedef_creep_d0 = None      # surunme YOK -> hemen dur
+                self._stop_vehicle()
+                self.signal_status = 3
+                self._explain("PLANNER: HEDEF noktasi gecildi -> HEMEN DUR")
+            elif arg == 1:
+                if not self._hedef_yaklasma:
+                    self._hedef_yaklasma = True
+                    self._explain("PLANNER: HEDEF yaklasmasi -> slalom yasak, "
+                                  f"hiz tavani {self.hedef_speed:.1f} km/h")
+            else:
+                if self.state != DriveState.MISSION_END:
+                    self._hedef_yaklasma = True          # slalom yasagi sursun
+                    self._hedef_creep_d0 = self.odom_distance
+                    self._set_state(DriveState.MISSION_END)
+                    self.signal_status = 3
+                    self._explain(
+                        f"PLANNER: HEDEF -> surunerek yaklas (en fazla "
+                        f"{self.hedef_creep_m:.1f} m), engelde/limitte DUR")
+        elif cmd == 0:
+            # ⚠️ MISSION_END'i IPTAL ETMEZ: hedefte durduktan sonra gelecek bir
+            # iptal komutu araci kapali yola surerdi.
+            if self.state == DriveState.MISSION_END:
+                return
+            if self.state == DriveState.PLANNER_TURN:
+                self.steering_angle = 45
+                self.signal_status = 0
+                self._set_state(DriveState.LANE_FOLLOW)
+                self._explain("PLANNER: donus iptal -> SERIT TAKIBI")
 
     def emergency_event(self, active=True):
         self.emergency_active = bool(active)
@@ -1291,6 +1736,10 @@ class Alkar_Function4:
             return
         if self.state == DriveState.BUS_STOP:
             self._bus_stop_control(); return
+        if self.state == DriveState.MISSION_END:
+            self._mission_end_control(); return
+        if self.state == DriveState.PLANNER_TURN:
+            self._planner_turn_control(); return
         if self.state == DriveState.TURN_LEFT:
             self._left_turn_control(); return
         if self.state == DriveState.TURN_RIGHT:
@@ -1364,6 +1813,107 @@ class Alkar_Function4:
         else:
             self.signal_status  = 0
             self.steering_angle = 45
+            self._set_state(DriveState.LANE_FOLLOW)
+
+    def _mission_end_control(self):
+        """Gorev sonu: HEDEFE SURUNEREK VAR, sonra dur ve kal.
+
+        Neden hemen durmuyoruz: `5,4,0` konumdan tetikleniyor ve konum hatasi
+        1-3 m. Hedefe 2 m kala kesin dursaydik, hata ters yone dustugunde arac
+        hedefe VARMADAN durabilirdi -- sartnameye gore "hedef noktasina
+        ulasamayan" da basarisizlik. Bu yuzden:
+          * slalom yasak (yolu kapatan bariyerin etrafindan dolasmak yasak),
+          * hiz `hedef_speed` ile sinirli,
+          * asil durusu LIDAR veriyor (obstacle_event -> OBSTACLE_STOP),
+          * lidar hic gormezse `hedef_creep_m` kadar ilerleyip yine duruyoruz.
+        Surunme bittiginde state DEGISMEZ -- MISSION_END terminaldir.
+        """
+        self.signal_status = 3
+        gidilen = None
+        if self._hedef_creep_d0 is not None and self._motion_ok:
+            gidilen = self.odom_distance - self._hedef_creep_d0
+
+        # Odometri yoksa surunme mesafesi olculemez -> guvenli taraf: dur.
+        if gidilen is None:
+            self._stop_vehicle()
+            return
+        if gidilen >= self.hedef_creep_m:
+            if self.target_speed != 0.0:
+                self._explain(f"HEDEF: {self.hedef_creep_m:.1f} m surundu, "
+                              f"engel gorulmedi -> DUR (gorev sonu)")
+            self._stop_vehicle()
+            return
+        # LIDAR DURUSU (asil durus bu). front == 0 lidar fail-safe'idir.
+        if self.front_distance <= 0.0 or self.front_distance < self.stop_distance:
+            if self.target_speed != 0.0:
+                self._explain(f"HEDEF: engel front={self.front_distance:.1f} m "
+                              f"-> DUR (gorev sonu, {gidilen:.1f} m surundu)")
+            self._stop_vehicle()
+            return
+        self.brake = 0
+        self.steering_angle = 45
+        self.target_speed = min(self.hedef_speed, self.speed_limit)
+
+    def _planner_turn_control(self):
+        """route_planner donusu — tabela donusunun ACIYLA OLCEKLENMIS hali.
+
+        Beynin tabela donusu sabit 5.5 s tam direksiyon + 3 s toparlama ile
+        ~90 derece doner. Planner ise 233 yarisma kombinasyonunda 40..131
+        derece arasi komut uretiyor; olcekleme olmadan 45 derecelik bir donus
+        de 90 derece donerdi. Olcek __init__'te 0.35..1.60 araligina kirpilir.
+
+        ⚠️ ACIK DONGU: sureler hesap tahmini, hiza duyarli. Sahada bir
+        kavsakta izlenip ince ayar gerekebilir (tabela donusleri de ayni
+        yontemi kullaniyor, bkz. _left_turn_control).
+        """
+        t = self._elapsed()
+        self.brake = 0
+        self.target_speed = self.turn_speed
+        faz1 = 5.5 * self._pturn_olcek
+        sert = (self.left_turn_angle if self._pturn_left else self.right_turn_angle)
+        yumusak = (self.turn_recover_angle_left if self._pturn_left
+                   else self.turn_recover_angle_right)
+
+        # --- KAPALI CEVRIM: fazlari YAW bitirir, sure yalnizca tavan ---
+        if self._pturn_yaw0 is not None and self._yaw_ok and self.yaw is not None:
+            donulen = math.degrees(
+                ((self.yaw - self._pturn_yaw0 + math.pi) % (2 * math.pi)) - math.pi)
+            hedef = self._pturn_hedef
+            # Isareti hedefe gore normalle: sola donuste ilerleme pozitif olsun
+            if hedef < 0:
+                donulen, hedef = -donulen, -hedef
+            # Direksiyon merkeze donerken arac donmeye devam eder -> tahmin et
+            hiz = self._yaw_rate if self._yaw_rate is not None else 0.0
+            if self._pturn_hedef < 0:
+                hiz = -hiz
+            tahmin = donulen + hiz * self.pturn_lead_s
+            tavan = (faz1 + 3.0) * self.pturn_max_scale
+            if tahmin >= hedef - self.pturn_tol_deg or t >= tavan:
+                self.signal_status  = 0
+                self.steering_angle = 45
+                self._pturn_kalan   = None
+                self._pturn_yaw0    = None
+                self._explain(
+                    f"PLANNER donus BITTI: {donulen:+.0f}/{hedef:+.0f} derece"
+                    + (f" (SURE TAVANI {tavan:.1f}s)" if t >= tavan else ""))
+                self._set_state(DriveState.LANE_FOLLOW)
+            elif tahmin >= hedef - self.pturn_recover_deg:
+                self.steering_angle = yumusak
+                self._pturn_kalan = None
+            else:
+                self.steering_angle = sert
+            return
+
+        # --- YEDEK: yaw yoksa eski sure tabanli davranis (degismedi) ---
+        if t < faz1:
+            self.steering_angle = sert
+        elif t < faz1 + 3.0:
+            self.steering_angle = yumusak
+            self._pturn_kalan = None      # donus tamamlanmak uzere
+        else:
+            self.signal_status  = 0
+            self.steering_angle = 45
+            self._pturn_yaw0 = None
             self._set_state(DriveState.LANE_FOLLOW)
 
     def _right_turn_control(self):
@@ -1444,6 +1994,88 @@ class Alkar_Function4:
             return None
         return self._profil[i]
 
+    def _profil_taze(self):
+        """Profil var ve profil_max_yas'tan taze mi?"""
+        if not self._profil or self._profil_t is None:
+            return False
+        return (self._now() - self._profil_t) <= self.profil_max_yas
+
+    def _serbest_yanal_hedef(self, direction, varsayilan):
+        """Kacis yanal hedefini lidar yanal klerans profilinden olc.
+
+        `varsayilan` = eski sabit mantigin sectigi deger; sonuc ONU ASMAZ.
+        Yani bu fonksiyon hedefi yalnizca KUCULTEBILIR, buyutemez — engelin
+        icine dogru bir surpriz uretemez. Bulamazsa None doner, cagiran eski
+        davranisina duser.
+
+        Neden "yakin kenar + pay" ve bandin ortasi degil: band cogu zaman
+        pistin kalanina kadar (3.5 m) uzanir; ortalamak araci gereksiz yere
+        karsi seride surer ve bir sonraki engele manevra payi birakmaz.
+        Sadece band DAR ise ortalanir.
+        """
+        self._son_hedef_sebep = ""
+        if not self.profil_hedef_enabled:
+            self._son_hedef_sebep = "profil hedefi kapali"
+            return None
+        if not self._profil_taze():
+            self._son_hedef_sebep = "profil yok/bayat"
+            return None
+        isaret = 1.0 if direction == "left" else -1.0
+        adim = self._profil_dy if self._profil_dy > 0 else 0.5
+        gerek = self.slalom_hedef_min_mesafe
+
+        # 1) kacis yonunde ilk YETERINCE ACIK hucre = bandin yakin kenari
+        yakin = None
+        y = adim
+        while y <= self.profil_tarama_max + 1e-6:
+            k = self._klerans(isaret * y)
+            if k is None:
+                break
+            if k >= gerek:
+                yakin = y
+                break
+            y += adim
+        if yakin is None:
+            self._son_hedef_sebep = (
+                f"{direction} yonunde {gerek:.0f} m acik hucre yok")
+            return None
+
+        # 2) bandin dis kenari
+        uzak = yakin
+        y = yakin + adim
+        while y <= self.profil_tarama_max + 1e-6:
+            k = self._klerans(isaret * y)
+            if k is None or k < gerek:
+                break
+            uzak = y
+            y += adim
+
+        # 3) KORIDOR PAYI: hucre yari genisligi (corridor) aracin yari
+        # genisliginden buyuk, yani bos okunan bir hucrenin merkezinden
+        # `esneme` kadar ICERI de arac sigar. Bu pay kullanilmazsa profil
+        # 0.5 m adimla kuantize oldugu icin hedef gereksiz yere 0.5-0.7 m
+        # disari kayiyor (21.08 verisinde olculdu: gercek guvenli kenar
+        # ~0.83, tarama 1.00 diyor).
+        esneme = max(0.0, self.profil_koridor - self.arac_yari_genislik)
+        alt = yakin - esneme
+        ust = uzak + esneme
+        if alt > varsayilan:
+            # Bos band ayarli hedefin OTESINDE basliyor. Buraya kirpmak
+            # araci dolu bolgeye koyardi -> eski davranisa birak.
+            self._son_hedef_sebep = (
+                f"bos band {alt:.2f} m'de basliyor > hedef {varsayilan:.2f}")
+            return None
+
+        # 4) hedef: bandin yakin kenari + pay, band dar ise ortala
+        hedef = alt + self.slalom_hedef_pay
+        if hedef > ust:
+            hedef = 0.5 * (alt + ust)
+        hedef = max(self.slalom_hedef_min, min(varsayilan, hedef))
+        self._son_hedef_sebep = (
+            f"profil bandi {yakin:.2f}..{uzak:.2f} (arac icin {alt:.2f}.."
+            f"{ust:.2f}) -> hedef {hedef:.2f}, sabit {varsayilan:.2f} idi")
+        return hedef
+
     def _weave_tamamlandi(self, lat):
         """Yanal hedefe (buyuk olcude) varildi mi?
 
@@ -1516,6 +2148,22 @@ class Alkar_Function4:
             self.signal_status  = 0
             self.avoid_blocked  = False   # yol açıldı -> slalom tekrar serbest
             self._avoid_trigger_since = None
+            # KESILEN PLANNER DONUSUNU TAMAMLA (2026-08-22). Yol acildiginda
+            # duz seride donmek kavsagi kacirmak demek: planner olayi tuketti,
+            # bir daha gondermez. Kalan sure kadar donusu surdur.
+            if self._pturn_kalan is not None and self._pturn_kalan > 0.3:
+                kalan = self._pturn_kalan
+                self._pturn_kalan = None
+                # _elapsed() sifirdan baslasin diye state_start_time'i
+                # tamamlanmis sureyi telafi edecek sekilde geri al.
+                faz_toplam = 5.5 * self._pturn_olcek + 3.0
+                self._set_state(DriveState.PLANNER_TURN)
+                self.state_start_time = self._now() - (faz_toplam - kalan)
+                self.signal_status = 2 if self._pturn_left else 1
+                self._move_vehicle(self.turn_speed)
+                self._explain(f"YOL ACILDI -> kesilen PLANNER donusu "
+                              f"TAMAMLANIYOR (kalan {kalan:.1f} s)")
+                return
             self._set_state(DriveState.LANE_FOLLOW)
             # FRENİ DE BIRAK (2026-08-13): bu fonksiyon en başta
             # _stop_vehicle() çağırıyor (fren=1, hız=0) ve eskiden buradan
@@ -1551,9 +2199,15 @@ class Alkar_Function4:
         # üzerinden sığ geçiş, komşu şeridin engel bandına girilmez.
         clear = (self.left_distance if direction == "left"
                  else self.right_distance)
-        self._weave_lat = (self.slalom_lateral_target
-                           if clear >= self.safe_side_distance
-                           else self.slalom_lateral_tight)
+        sabit = (self.slalom_lateral_target
+                 if clear >= self.safe_side_distance
+                 else self.slalom_lateral_tight)
+        # PROFILDEN OLC (2026-08-22, bkz. __init__'teki "YANAL HEDEFI
+        # PROFILDEN OLC"). Olculemezse sabit degerle devam.
+        olculen = self._serbest_yanal_hedef(direction, sabit)
+        self._weave_lat = sabit if olculen is None else olculen
+        self._explain(f"SLALOM yanal hedef {self._weave_lat:.2f} m "
+                      f"({self._son_hedef_sebep or 'sabit'})")
         self._lane_home       = self.lane_index   # dönüşte hedef şerit
         self._return_hard     = False            # bkz. "return" fazı
         self.avoid_direction  = direction
@@ -1894,7 +2548,23 @@ class Alkar_Function4:
             # slalom_return_steer=None -> ayna (eski davranis, varsayilan),
             # sayi verilirse dogrudan o FSM acisi kullanilir (ornek 25 = daha
             # yumusak sag donus). _return_hard hala aynayi zorlar.
-            if self.slalom_return_steer is None or self._return_hard:
+            # SERT DONUS ARTIK ANAHTARLANABILIR (21.08.2026, aractan
+            # olculdu — slalom_0821_1508/1515/1520 uc bagde temiz bir
+            # kontrollu karsilastirma verdi, tek degisken bu bayrakti:
+            #   1508 sert  -> align 30 s, yanal +0.54 -> -1.09 (KARSI TARAF)
+            #   1515 sert  -> align 27 s, yanal +0.34 -> -1.54 (KARSI TARAF)
+            #   1520 yumusak -> align  6 s, yanal +0.55 -> +0.05 (temiz)
+            # Sebep: donus fazi acisal tavanla (slalom_return_max_deg) biter
+            # ama TEKERLEK hala tam sag kilitte (+31) ve 10 birim/s ile geri
+            # gelmesi ~6 s surer; o sure boyunca arac donmeye devam edip
+            # kendi seridini asiyor. align kalan mesafeyi 2 km/h'de 25 s
+            # surunerek kapatiyor, weave 24-36 s yerine 54-57 s suruyor.
+            # VARSAYILAN DEGISTIRILMEDI: masa simulatoru bu arizayi hic
+            # uretmiyor (align orada her senaryoda tek yonlu +1.39 -> +0.21,
+            # karsi tarafa gecmiyor), yani bu karari veremez. Aracta
+            # slalom_return_hard:=false ile A/B edilecek.
+            if self.slalom_return_steer is None or (
+                    self._return_hard and self.slalom_return_hard):
                 sap = self.slalom_escape_steer - 45.0
             else:
                 sap = 45.0 - float(self.slalom_return_steer)
@@ -2092,7 +2762,9 @@ class Alkar_Function4:
         self._begin_weave(direction)
         self._explain(
             f"SLALOM weave #{self.slalom_total} bitti, engel devam "
-            f"(front={self.front_distance:.1f}) -> {direction} yone yeni weave")
+            f"(front={self.front_distance:.1f}) -> {direction} yone yeni weave"
+            f" | yanal hedef {self._weave_lat:.2f} m "
+            f"[{self._son_hedef_sebep}]")
 
     def _pause_avoidance(self):
         """Kaçınmayı güvenli duruşla YARIDA KES (çarpışma koruması).
@@ -2160,24 +2832,44 @@ class Alkar_Function4:
     # Park
     # ------------------------------------------------------------
     def _park_search_control(self):
-        self.brake         = 0
-        self.target_speed  = self.park_speed
-        self.signal_status = 1
-        if self.front_distance < 3.0 and self.right_distance > 3.5:
+        """Park yeri ararken: DUZ, yavas, sag sinyal; onu kapaninca DUR.
+
+        ⚠️ ESKIDEN DIREKSIYONU HIC YAZMIYORDU ve PARK_SEARCH bloklayici
+        durum listesinde degildi -- yani her serit karesinde park alanindaki
+        BOYALI CEP CIZGILERINDEN gelen aci direksiyona yaziliyordu. Arac
+        park alaninda savruluyordu. Artik notr (45) surulur ve serit olayi
+        bu durumda direksiyona dokunamaz.
+        ⚠️ Gecis sarti da degisti: eski `front<3.0 ve right>3.5`, ID-4'un
+        21.07 oncesi anlamina gore yazilmisti (left/right o zaman YANAL
+        bosluktu, artik BOYLAMSAL klerans). Acik apronda front=99 okundugu
+        icin gecis hic olmuyor, arac alani durmadan geciyordu.
+        """
+        self.brake          = 0
+        self.target_speed   = self.park_speed
+        self.signal_status  = 1
+        self.steering_angle = 45
+        if self.front_distance <= self.park_stop_m:
             self._set_state(DriveState.PARKING)
+            self._stop_vehicle(); self.signal_status = 3   # ayni tikte dur
+            self._explain(f"PARK: onde {self.front_distance:.1f} m -> DURULUYOR")
+        elif self._elapsed() > self.park_arama_max_s:
+            self._set_state(DriveState.PARKING)
+            self._stop_vehicle(); self.signal_status = 3
+            self._explain(f"PARK: {self.park_arama_max_s:.0f} s arandi, "
+                          "uygun yer bulunamadi -> olundugu yerde DUR")
 
     def _parking_control(self):
-        if self.left_distance > 4.0:
-            self.steering_angle = 65
-        elif self.right_distance > 4.0:
-            self.steering_angle = 25
-        else:
-            self.steering_angle = 45
-        self.brake        = 0
-        self.target_speed = self.park_speed
-        if self.front_distance < 1.5:
-            self._stop_vehicle()
-            self.signal_status = 3
+        """Park edildi: OLDUGU YERDE KALIR.
+
+        ⚠️ ESKI HALI ARACI DAIRE CIZDIRIYORDU: `left_distance > 4.0` ise
+        direksiyon 65 (TAM SOL) yazip park hiziyla suruyordu. ID-4'un yeni
+        anlaminda left/right BOYLAMSAL klerans oldugu icin acik apronda
+        `left>4.0` neredeyse hep dogru; cikis sarti ise `front<1.5` ve
+        onunde bir sey olmadigi icin front=99 -- yani arac tam kilitte
+        surekli donuyordu. Park bir manevra degil, DURUS olmali.
+        """
+        self._stop_vehicle()
+        self.signal_status = 3
 
     # ------------------------------------------------------------
     # Çıktı

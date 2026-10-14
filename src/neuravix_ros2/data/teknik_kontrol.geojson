@@ -1,0 +1,50 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "datum",
+          "description": "Tüm Dosyalarda ortak olan, lokalizasyon için (x ve y değerleri için) kullanılan referans noktası",
+          "local_x": 0.0,
+          "local_y": 0.0,
+          "heading": 0.0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [29.508361, 40.789431]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "start",
+          "description": "Teknik kontrol için araç başlangıç konumu",
+          "local_x": 95.15,
+          "local_y": 48.88,
+          "heading": 229.17,
+          "nokta_id": 17
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [29.508934, 40.790290]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "hedef",
+          "description": "Teknik kontrol sonunda aracın durması gereken nokta",
+          "local_x": 57.24,
+          "local_y": 20.82,
+          "heading": 139.17,
+          "nokta_id": 58
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [29.508604, 40.789947]
+        }
+      }
+    ]
+  }
+  

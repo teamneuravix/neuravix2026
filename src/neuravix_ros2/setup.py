@@ -23,6 +23,12 @@ setup(
         (os.path.join('share', package_name, 'models'), glob('models/*.pt')),
         
         (os.path.join('share', package_name, 'tabela'), glob('tabela/*.png') + glob('tabela/*.json')),
+
+        # route_planner veri dosyalari (graf / GNSS datum / ornek geojson).
+        # Toplam 34 KB. Node bunlari share dizininden bulur; yarisma gunu
+        # geojson'u -p geojson:=... ile disaridan verilir.
+        (os.path.join('share', package_name, 'data'),
+            glob('data/*.json') + glob('data/*.npz') + glob('data/*.geojson')),
     ],
     install_requires=['setuptools', 'numpy', 'ultralytics', 'opencv-python','ament_index_python'],
     zip_safe=True,
@@ -41,6 +47,7 @@ setup(
             'tabela_overlay = neuravix_ros2.camera_overlay_node:main',
             'obstacle_lidar = neuravix_ros2.obstacle_lidar_node:main',
             'mjpeg_server = neuravix_ros2.mjpeg_server:main',
+            'route_planner = neuravix_ros2.route_planner_node:main',
         ],
     },
 )

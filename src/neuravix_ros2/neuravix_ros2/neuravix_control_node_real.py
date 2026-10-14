@@ -95,7 +95,15 @@ class DecisionControlNodeReal(Node):
     def __init__(self):
         super().__init__('neuravix_decision_control_node_real')
 
-        self.declare_parameter('odom_topic', '/odometry/filtered')
+        self.declare_parameter('odom_topic', '/odometry/can_wheel')
+        # VARSAYILAN DEGISTI (21.08.2026): eskiden '/odometry/filtered' idi
+        # ve ARACTA O TOPIC'I KIMSE YAYINLAMIYOR (EKF planindan kalma).
+        # Varsayilanla kosulan bir denemede 4 fazli slalomun yanal ofseti
+        # konumdan olculemeyip zaman/mesafe yedegine dustu ve arac hicbir
+        # donusu duzgun tamamlayamadi. Masa testinde ayni durum 8
+        # senaryonun 3'unu bozuyor (P3'te arac 2.7 m serit disina cikiyor).
+        # can_odom ve aracin kendi tekerlek odometrisi ikisi de bu topige
+        # yayinliyor -- koseden once: ros2 topic hz /odometry/can_wheel
         # use_planner=false (VARSAYILAN): araç REAKTİF sürer (lane+tabela+engel);
         # pure-pursuit ve konum-tabanlı A* karar DEVRE DIŞI. ROUTE CARLA pistine
         # özel/anlamsız olduğu için, odom (EKF/slam) aksa bile hayalet rotaya
@@ -151,7 +159,24 @@ class DecisionControlNodeReal(Node):
         # tekerleği "düz" sandı ve hata cırcır gibi birikti: -1 -> -3 -> -7 -> -8
         # -> -16. Son restarttan sonra FSM "düz" (45) derken hedef sabit -16, yani
         # neredeyse tam sol kilit; araç düz komutta daire çizer.
-        self.declare_parameter('steer_target_offset', 2.0)
+        self.declare_parameter('steer_target_offset', 3.4)
+        # 2.0 -> 3.4 (2026-08-22, Taha'nin olcumu BAGIMSIZ OLARAK DOGRULANDI).
+        # Eski 2.0, 2026-07-13'te arac DURURKEN kilitten kilide okunan sensor
+        # ORTA NOKTASIYDI. Araci duz goturen deger o degil: teker acikligi
+        # (toe) + sensor montaji yuzunden gercek "duz" baska yerde ve duran
+        # aracta olculemez. Yeni deger SURUSTEN, serit boru hattindan bagimsiz:
+        # egrilik k = yaw_rate/hiz (IMU + hiz) ile FeedbackSteeringAngle
+        # regresyonu; k'nin sifirlandigi geri besleme degeri gercek duzdur.
+        #   slalom_0821_1508  +3.54 (r=-0.97)   [Taha: +3.52]
+        #   slalom_0821_1515  +3.48 (r=-0.97)   [Taha: +3.47]
+        #   slalom_0821_1520  +3.53 (r=-0.98)   [Taha: +3.54]
+        # Semptom: "duz git" komutunda tekerlek gercek duzun 1.4 birim SOLUNA
+        # konuyordu -> R ~ 59 m sola kavis -> 20 m yolda ~3.4 m yanal kayma.
+        # Dever ve olcum artefakti elendi (cok yonlu harita turlari; iki farkli
+        # hiz kaynagi +3.36 vs +3.37).
+        # ⚠️ DEGER SABIT DEGIL: 18-19 Tem arasi ~5 birim kaymis (-2.05 -> +2.93).
+        # Arac servise girer / direksiyon sokulur / sensor sifirlanirsa
+        # YENIDEN OLCULMELI (betik: scratchpad'deki dever.py yontemi).
         # Düzden tam-kilide ham sapma (mekanik limit, clamp). Sol negatif.
         self.declare_parameter('steer_delta_left', -36.0)
         self.declare_parameter('steer_delta_right', 36.0)
@@ -195,7 +220,14 @@ class DecisionControlNodeReal(Node):
         #   (gercek ~ gonderilen * 2.4, 2026-07-18 tek olcumune gore).
         # Araca gore -p speed_target_scale:=X ile ayarla; 1.0 = FSM ham degerleri
         # (gercek ~12 km/h seyir -- fazla hizli, sadece kalibrasyon icin).
-        self.declare_parameter('speed_target_scale', 0.15)
+        self.declare_parameter('speed_target_scale', 0.25)
+        # VARSAYILAN DEGISTI (21.08.2026). _cmd_speed'de FSM km/h degeri
+        # BU OLCEKLE CARPILIR, sonra max_speed_kmh ile kirpilip
+        # min_speed_kmh ile tabanlanir -- yani slalom_speed_kmh ile bu
+        # ikisi CARPIM halinde calisir ve bu kolayca gozden kaciyor:
+        #   eski cift 4.0 x 0.15 = 0.60 -> tabana takilip 1.2 km/h
+        #   yeni cift 8.0 x 0.25 = 2.00 -> 2.0 km/h
+        # 1.2 km/h'de 9-10 m'lik bir weave 30 saniye suruyor.
         # SOFT-START (Bug 5): hız hedefi 0'dan tama tek tik'te sıçramasın ->
         # birim/sn artış sınırı. Kalkış yumuşar (aracın speed PID step-response'u
         # + auto_ignition ile eşzamanlı DRIVE sarsıntısını azaltır). Yavaşlama/
@@ -318,7 +350,12 @@ class DecisionControlNodeReal(Node):
         # bitmedi, 18 saniye tam kilitte kaldi ve operator acil stopa basti.
         # 8.0 * 0.25 = 2.0 km/h -> pedal 60, surucunun "guzel kalkis" dedigi
         # deger (throttle_ctrl dosya basi notu).
-        self.declare_parameter('slalom_speed_kmh', 4.0)
+        self.declare_parameter('slalom_speed_kmh', 8.0)
+        # VARSAYILAN DEGISTI (21.08.2026), speed_target_scale ile BIRLIKTE
+        # okunmali: 8.0 x 0.25 = 2.0 km/h araca gider. slalom_0821'de
+        # olculdu: 1-2 km/h'de yanal tepe 1.93-2.00 (hedef 1.7), 3 km/h'de
+        # 3.15 -- direksiyon slew'i sabit oldugu icin asim hizla buyuyor.
+        # 2.0 km/h iyi bandin icinde.
         self.brain.slalom_speed = float(
             self.get_parameter('slalom_speed_kmh').value)
 
@@ -332,7 +369,13 @@ class DecisionControlNodeReal(Node):
             float(self.get_parameter('blocked_speed_kmh').value),
             self.brain.slow_speed)
 
-        self.declare_parameter('slalom_lateral_target', 3.0)
+        self.declare_parameter('slalom_lateral_target', 1.7)
+        # VARSAYILAN DEGISTI (21.08.2026): 3.0 = TAM SERIT DEGISIMI ve
+        # donumlu engel dizisinde 2. engelin tam icidir. 2.96 m serit +
+        # 1.21 m engelde arac merkezi ancak 1.14..1.82 m arasinda olabilir
+        # (1. engeli siyir / 2. engele degme); 1.7 o araligin ust ucu.
+        # NOT: yan klerans safe_side_distance (13 m) altindaysa beyin bu
+        # degeri degil slalom_lateral_tight (1.55) kullanir.
         self.brain.slalom_lateral_target = float(
             self.get_parameter('slalom_lateral_target').value)
 
@@ -343,19 +386,123 @@ class DecisionControlNodeReal(Node):
         self.declare_parameter('slalom_max_weaves', 3)
         self.brain.slalom_max_weaves = int(
             self.get_parameter('slalom_max_weaves').value)
+        # ZINCIRLEME DONUSU SERT MI? (21.08.2026, aractan olculdu)
+        # true  = pass fazinda one engel girince tam kilit donus (eski)
+        # false = o durumda da slalom_return_steer kullanilir
+        # Uc bagde olculdu: sert -> align 27-30 s ve arac kendi seridinin
+        # 1.1-1.5 m obur tarafina geciyor; yumusak -> align 6 s, temiz.
+        self.declare_parameter('slalom_return_hard', True)
+        self.brain.slalom_return_hard = bool(
+            self.get_parameter('slalom_return_hard').value)
         self.declare_parameter('slalom_progress_distance', 3.0)
         self.brain.slalom_progress_distance = float(
             self.get_parameter('slalom_progress_distance').value)
 
+        # --- YANAL HEDEFI PROFILDEN OLC (2026-08-22) ---
+        # Kacis yanal hedefi artik sabit degil, lidar yanal klerans
+        # profilinden olculur (bkz. decision_brain._serbest_yanal_hedef).
+        # Kapatmak: -p profil_hedef:=false -> eski iki-modlu sabit davranis.
+        self.declare_parameter('profil_hedef', True)
+        self.brain.profil_hedef_enabled = bool(
+            self.get_parameter('profil_hedef').value)
+        self.declare_parameter('slalom_hedef_pay', 0.30)
+        self.brain.slalom_hedef_pay = float(
+            self.get_parameter('slalom_hedef_pay').value)
+        self.declare_parameter('slalom_hedef_min', 0.50)
+        self.brain.slalom_hedef_min = float(
+            self.get_parameter('slalom_hedef_min').value)
+        self.declare_parameter('slalom_hedef_min_mesafe', 6.0)
+        self.brain.slalom_hedef_min_mesafe = float(
+            self.get_parameter('slalom_hedef_min_mesafe').value)
+
+        # --- ARACTA AYARLANAMAYAN ESIKLER ARTIK PARAMETRE (2026-08-22) ---
+        # Bunlarin hepsi 21.08 bag analizinde belirleyici cikti ama gercek
+        # aracta -p ile gecilemiyordu (yalnizca yorumda geciyorlardi) ve
+        # ROS 2 tanimsiz override'i SESSIZCE yutuyor: "denedim" diye
+        # kaydedilen bir kosu aslinda varsayilanla kosuyordu.
+        self.declare_parameter('slalom_lateral_tight', 1.55)
+        self.brain.slalom_lateral_tight = float(
+            self.get_parameter('slalom_lateral_tight').value)
+        # pass fazindan "onum kapaniyor" ile cikis esigi. 4.5 -> manevra
+        # 4.4 m istiyor, yani 0.1 m pay. 1508/1515'te tek calisan cikis buydu.
+        self.declare_parameter('slalom_pass_front_min', 4.5)
+        self.brain.slalom_pass_front_min = float(
+            self.get_parameter('slalom_pass_front_min').value)
+        # "kendi seridim acildi" kapisi. 1520'de 12.6/14 okuyup acildi ve
+        # weave temiz bitti; 1508/1515'te 5-8 okudu, hic acilmadi.
+        self.declare_parameter('slalom_return_free', 12.0)
+        self.brain.slalom_return_free = float(
+            self.get_parameter('slalom_return_free').value)
+        # pass fazinin mesafe tavani (dorduncu cikis). Sim node'unda zaten
+        # parametreydi, gercek node'da degildi -> parite.
+        self.declare_parameter('slalom_pass_max_distance', 20.0)
+        self.brain.slalom_pass_max_distance = float(
+            self.get_parameter('slalom_pass_max_distance').value)
+        self.declare_parameter('slalom_escape_lat_frac', 0.30)
+        self.brain.slalom_escape_lat_frac = float(
+            self.get_parameter('slalom_escape_lat_frac').value)
+        self.declare_parameter('avoid_distance', 4.5)
+        self.brain.avoid_distance = float(
+            self.get_parameter('avoid_distance').value)
+
         # Kirmizi isik emniyet supabi (bkz. decision_brain.red_light_timeout).
         # 0 = kapali. Supap acildiginda KIRMIZI_ISIK'a red_light_release_cooldown
         # kadar cooldown konur, yoksa ayni yanlis tespit araci hemen kilitler.
-        self.declare_parameter('red_light_timeout', 40.0)
+        # ---- TABELA MESAFE ESIKLERI (25.08.2026, ID-3 gercek metreye gecti) ----
+        # Bag olcumu (5 kameralı kayit, 298 tespit) tabelalarin GORULDUGU en
+        # yakin mesafeleri verdi: DUR 4.89 m, KIRMIZI_ISIK 5.19 m, DURAK
+        # 6.03 m, YAYA_GECIDI 7.39 m. Varsayilan esiklerin ALTINDA kayitli tek
+        # bir tespit yok; DUR'da pay yalnizca 0.39 m. Tespit yakin mesafede
+        # calisiyor (sola_don_yasak 2.83 m'de gorulduı), ama pay dar oldugu
+        # icin esikler sahada YENIDEN DERLEMEDEN ayarlanabilsin diye
+        # parametrelestirildi. Sahada tabelaya yaklasip durmuyorsa bu
+        # degerleri 1-1.5 m yukari alin.
+        for _ad, _var in (('red_light_distance', 5.0),     # 26.08: bkz. decision_brain
+                          ('yellow_light_distance', 5.0),
+                          ('stop_sign_distance', 4.5),
+                          ('crosswalk_distance', 4.5),
+                          ('bus_stop_sign_distance', 0.0),  # 26.08: DURAK tabela tetigi KAPALI
+                          ('sign_turn_distance', 6.0),
+                          ('park_sign_distance', 4.0),
+                          # MISSION_END'de durmadan once surunulecek yol.
+                          # 0.0 = KOMUTU ALIR ALMAZ DUR (duraga girip orada
+                          # kalmak icin gereken deger, bkz. son_gorev).
+                          ('hedef_creep_m', 3.0)):
+            self.declare_parameter(_ad, _var)
+            setattr(self.brain, _ad, float(self.get_parameter(_ad).value))
+        self.declare_parameter('red_light_timeout', 25.0)  # 26.08: 30 sn puan esigi (bkz. decision_brain)
         self.brain.red_light_timeout = float(
             self.get_parameter('red_light_timeout').value)
         self.declare_parameter('red_light_release_cooldown', 15.0)
         self.brain.red_light_release_cooldown = float(
             self.get_parameter('red_light_release_cooldown').value)
+
+        # --- DURAK (yolcu al/birak) sureleri ---
+        # Beyindeki BUS_STOP acik dongu uc fazdir: hizalama (direksiyon 25 =
+        # saga cek) -> DUR -> cikis (direksiyon 65 = sola don) -> LANE_FOLLOW.
+        # Ucu de simdiye kadar YALNIZCA kod icinde sabitti; koseden koseye
+        # senaryo degistiginde yeniden derleme gerekiyordu.
+        # ⚠️ SARTNAME (s.1195-1198): "Yolcu indirme/bindirmeyi en az 15 en
+        # fazla 20 saniye kadar duraklama yaparak gerceklestirmelidir." Yani
+        # PUANLI kosuda bus_stop_wait_sec 15..20 araliginda OLMALI; disina
+        # cikan bir deger "hatali indirme/bindirme" sayilir (+70 yerine -20).
+        # Varsayilan 17.0 bilerek o araligin ortasindadir. Kisa degerler
+        # yalnizca PROVA/deneme kosulari icindir.
+        self.declare_parameter('bus_stop_wait_sec', 17.0)
+        self.brain.bus_stop_wait_sec = float(
+            self.get_parameter('bus_stop_wait_sec').value)
+        self.declare_parameter('bus_stop_align_time', 2.0)
+        self.brain.bus_stop_align_time = float(
+            self.get_parameter('bus_stop_align_time').value)
+        self.declare_parameter('bus_stop_exit_time', 2.0)
+        self.brain.bus_stop_exit_time = float(
+            self.get_parameter('bus_stop_exit_time').value)
+        if not (15.0 <= self.brain.bus_stop_wait_sec <= 20.0):
+            self.get_logger().warn(
+                f"bus_stop_wait_sec={self.brain.bus_stop_wait_sec:.1f} s -- "
+                "sartname yolcu duraklamasini 15-20 s istiyor. Bu deger PUANLI "
+                "kosuda 'hatali indirme/bindirme' (-20) sayilir; prova icin "
+                "kasitliysa sorun yok.")
 
         # --- Bee1 CAN çıkışları ---
         self.pub_omux = self.create_publisher(Rcunittoomux, '/beemobs/rc_unittoOmux', 10)
@@ -448,6 +595,18 @@ class DecisionControlNodeReal(Node):
             f"(baslangic {self.brain.lane_index}, "
             f"{'sola kacis YASAK' if self.brain.lane_max <= self.brain.lane_index else 'sola serbest'}, "
             f"{'saga kacis YASAK' if self.brain.lane_min >= self.brain.lane_index else 'saga serbest'}), "
+            # YANAL HEDEF POLITIKASI (22.08.2026). Bag'den "bu kosu hangi
+            # ayarla yapildi" sorusu cevaplanabilsin diye: profil modu acik
+            # mi, sabit tavan kac, cikis esikleri neler.
+            f"yanal hedef={'PROFIL' if self.brain.profil_hedef_enabled else 'SABIT'} "
+            f"(tavan {self.brain.slalom_lateral_target:.2f}/dar "
+            f"{self.brain.slalom_lateral_tight:.2f}, pay "
+            f"{self.brain.slalom_hedef_pay:.2f}, taban "
+            f"{self.brain.slalom_hedef_min:.2f}, acik esigi "
+            f"{self.brain.slalom_hedef_min_mesafe:.1f} m), "
+            f"pass cikis: front<{self.brain.slalom_pass_front_min:.1f} veya "
+            f"{self.brain.slalom_pass_max_distance:.0f} m"
+            f"{f' veya kendi serit>={self.brain.slalom_return_free:.0f} m' if self.brain.return_home_when_free else ' (kendi serit refleksi KAPALI)'}, "
             f"20 Hz.")
 
     # ----------------------------------------------------------------
@@ -593,7 +752,22 @@ class DecisionControlNodeReal(Node):
             # boyunca hic engel verisi almadi ve bariyere girdi). Artik
             # isaretciden ONCESI sayisal alanlar, sonrasi ayri ayristirilir.
             sayisal = parts[:parts.index('P')] if 'P' in parts else parts
-            data  = [float(x) for x in sayisal]
+            # ALAN ALAN CEVIR, METNI OLDUGU GIBI BIRAK (21.08.2026).
+            # Toptan float() iki kez bu projeyi vurdu:
+            #   ID-4'e "P" isaretcisi eklenince (17.08) her engel mesaji dustu,
+            #   arac tum surus boyunca engel verisi almadi ve bariyere girdi.
+            #   ID-2 "2,<steer>,<guven>,<yas>,<durum>" oldugunda (21.08) son
+            #   alan METIN ("TAZE"/"ZAYIF"/"KAYIP") ve ayni sey serit icin
+            #   olacakti -- arac hic serit verisi almazdi.
+            # Artik cevrilebilen sayiya, cevrilemeyen ham metne kalir; hem
+            # data[0]/data[1] gibi konumsal okumalar hem de ileride eklenecek
+            # metin alanlari birlikte calisir.
+            def _don(x):
+                try:
+                    return float(x)
+                except ValueError:
+                    return x
+            data  = [_don(x) for x in sayisal]
             mid   = int(data[0])
         except (ValueError, IndexError):
             self.get_logger().warn(f"/master parse hatasi: '{msg.data}'")

@@ -1,0 +1,94 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "datum",
+        "description": "Referans Noktası",
+        "local_x": 0.0,
+        "local_y": 0.0,
+        "heading": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.508361,
+          40.789431
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "start",
+        "description": "Araç başlangıç konumu",
+        "local_x": 93.27,
+        "local_y": 46.71,
+        "heading": 229.17,
+        "nokta_id": 19
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.508908,
+          40.790273
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "gorev_1",
+        "description": "1. görev noktası",
+        "local_x": 22.86,
+        "local_y": 27.23,
+        "heading": 139.17,
+        "nokta_id": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.508682,
+          40.789638
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "gorev_2",
+        "description": "2. görev noktası",
+        "local_x": 60.05,
+        "local_y": 52.69,
+        "heading": 319.17,
+        "nokta_id": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.508981,
+          40.789974
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "park_giris",
+        "description": "Araç park giriş bölgesi noktası",
+        "local_x": 79.295,
+        "local_y": 73.225,
+        "heading": 49.17,
+        "nokta_id": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.509224,
+          40.790149
+        ]
+      }
+    }
+  ]
+}

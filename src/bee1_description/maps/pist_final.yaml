@@ -1,0 +1,7 @@
+free_thresh: 0.25
+image: pist_final.pgm
+mode: trinary
+negate: 0
+occupied_thresh: 0.65
+origin: [-48.01483256810706, -44.99976839045727, 0.0]
+resolution: 0.05

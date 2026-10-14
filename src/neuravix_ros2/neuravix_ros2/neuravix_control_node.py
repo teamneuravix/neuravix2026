@@ -162,9 +162,44 @@ class DecisionControlNode(Node):
         self.declare_parameter('slalom_max_weaves', 3)
         self.brain.slalom_max_weaves = int(
             self.get_parameter('slalom_max_weaves').value)
+        # ZINCIRLEME DONUSU SERT MI? (21.08.2026, aractan olculdu)
+        # true  = pass fazinda one engel girince tam kilit donus (eski)
+        # false = o durumda da slalom_return_steer kullanilir
+        # Uc bagde olculdu: sert -> align 27-30 s ve arac kendi seridinin
+        # 1.1-1.5 m obur tarafina geciyor; yumusak -> align 6 s, temiz.
+        self.declare_parameter('slalom_return_hard', True)
+        self.brain.slalom_return_hard = bool(
+            self.get_parameter('slalom_return_hard').value)
         self.declare_parameter('slalom_progress_distance', 3.0)
         self.brain.slalom_progress_distance = float(
             self.get_parameter('slalom_progress_distance').value)
+
+        # --- YANAL HEDEFI PROFILDEN OLC (2026-08-22) ---
+        # Gercek nodeun aynisi; CARLA'da da ayni kod yolu kossun diye.
+        self.declare_parameter('profil_hedef', True)
+        self.brain.profil_hedef_enabled = bool(
+            self.get_parameter('profil_hedef').value)
+        self.declare_parameter('slalom_hedef_pay', 0.30)
+        self.brain.slalom_hedef_pay = float(
+            self.get_parameter('slalom_hedef_pay').value)
+        self.declare_parameter('slalom_hedef_min', 0.50)
+        self.brain.slalom_hedef_min = float(
+            self.get_parameter('slalom_hedef_min').value)
+        self.declare_parameter('slalom_hedef_min_mesafe', 6.0)
+        self.brain.slalom_hedef_min_mesafe = float(
+            self.get_parameter('slalom_hedef_min_mesafe').value)
+        self.declare_parameter('slalom_lateral_tight', 1.55)
+        self.brain.slalom_lateral_tight = float(
+            self.get_parameter('slalom_lateral_tight').value)
+        # slalom_pass_front_min / slalom_return_free ASAGIDA zaten
+        # tanimli (mukerrer declare_parameter ParameterAlreadyDeclared
+        # firlatir ve dugum HIC kalkmaz -- 22.08'de smoke testte yakalandi).
+        self.declare_parameter('slalom_escape_lat_frac', 0.30)
+        self.brain.slalom_escape_lat_frac = float(
+            self.get_parameter('slalom_escape_lat_frac').value)
+        self.declare_parameter('avoid_distance', 4.5)
+        self.brain.avoid_distance = float(
+            self.get_parameter('avoid_distance').value)
 
         self.declare_parameter('slalom_return_free', 12.0)
         self.brain.slalom_return_free = float(
@@ -184,7 +219,29 @@ class DecisionControlNode(Node):
         # Kirmizi isik emniyet supabi (bkz. decision_brain.red_light_timeout).
         # 0 = kapali. Supap acildiginda KIRMIZI_ISIK'a red_light_release_cooldown
         # kadar cooldown konur, yoksa ayni yanlis tespit araci hemen kilitler.
-        self.declare_parameter('red_light_timeout', 40.0)
+        # ---- TABELA MESAFE ESIKLERI (25.08.2026, ID-3 gercek metreye gecti) ----
+        # Bag olcumu (5 kameralı kayit, 298 tespit) tabelalarin GORULDUGU en
+        # yakin mesafeleri verdi: DUR 4.89 m, KIRMIZI_ISIK 5.19 m, DURAK
+        # 6.03 m, YAYA_GECIDI 7.39 m. Varsayilan esiklerin ALTINDA kayitli tek
+        # bir tespit yok; DUR'da pay yalnizca 0.39 m. Tespit yakin mesafede
+        # calisiyor (sola_don_yasak 2.83 m'de gorulduı), ama pay dar oldugu
+        # icin esikler sahada YENIDEN DERLEMEDEN ayarlanabilsin diye
+        # parametrelestirildi. Sahada tabelaya yaklasip durmuyorsa bu
+        # degerleri 1-1.5 m yukari alin.
+        for _ad, _var in (('red_light_distance', 5.0),     # 26.08: bkz. decision_brain
+                          ('yellow_light_distance', 5.0),
+                          ('stop_sign_distance', 4.5),
+                          ('crosswalk_distance', 4.5),
+                          ('bus_stop_sign_distance', 0.0),  # 26.08: DURAK tabela tetigi KAPALI
+                          ('sign_turn_distance', 6.0),
+                          ('park_sign_distance', 4.0),
+                          # MISSION_END'de durmadan once surunulecek yol.
+                          # 0.0 = KOMUTU ALIR ALMAZ DUR (duraga girip orada
+                          # kalmak icin gereken deger, bkz. son_gorev).
+                          ('hedef_creep_m', 3.0)):
+            self.declare_parameter(_ad, _var)
+            setattr(self.brain, _ad, float(self.get_parameter(_ad).value))
+        self.declare_parameter('red_light_timeout', 25.0)  # 26.08: 30 sn puan esigi (bkz. decision_brain)
         self.brain.red_light_timeout = float(
             self.get_parameter('red_light_timeout').value)
         self.declare_parameter('red_light_release_cooldown', 15.0)
@@ -337,7 +394,22 @@ class DecisionControlNode(Node):
             # boyunca hic engel verisi almadi ve bariyere girdi). Artik
             # isaretciden ONCESI sayisal alanlar, sonrasi ayri ayristirilir.
             sayisal = parts[:parts.index('P')] if 'P' in parts else parts
-            data  = [float(x) for x in sayisal]
+            # ALAN ALAN CEVIR, METNI OLDUGU GIBI BIRAK (21.08.2026).
+            # Toptan float() iki kez bu projeyi vurdu:
+            #   ID-4'e "P" isaretcisi eklenince (17.08) her engel mesaji dustu,
+            #   arac tum surus boyunca engel verisi almadi ve bariyere girdi.
+            #   ID-2 "2,<steer>,<guven>,<yas>,<durum>" oldugunda (21.08) son
+            #   alan METIN ("TAZE"/"ZAYIF"/"KAYIP") ve ayni sey serit icin
+            #   olacakti -- arac hic serit verisi almazdi.
+            # Artik cevrilebilen sayiya, cevrilemeyen ham metne kalir; hem
+            # data[0]/data[1] gibi konumsal okumalar hem de ileride eklenecek
+            # metin alanlari birlikte calisir.
+            def _don(x):
+                try:
+                    return float(x)
+                except ValueError:
+                    return x
+            data  = [_don(x) for x in sayisal]
             mid   = int(data[0])
         except (ValueError, IndexError):
             self.get_logger().warn(f"/master parse hatasi: '{msg.data}'")

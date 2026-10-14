@@ -1,0 +1,103 @@
+# AMCL (Adaptive Monte Carlo Localization) - GERÇEK ARAÇ
+# ======================================================
+# slam_toolbox'ın localization moduna ALTERNATİF. Mevcut yol
+# (pist_localization_real.launch.py) OLDUĞU GİBİ DURUYOR; bu ayrı bir seçenek.
+#
+# NEDEN (2026-08-12 ölçümü, pist_C_19_3tem haritası + pist_17tem_2 bag'i):
+#   slam_toolbox localization kilitliyken çok hassas -- tarama haritanın 5-7 cm
+#   içinde oturuyor. AMA araç hareket etmeye başlayınca (t≈110 s) kilidi
+#   kaybediyor ve BİR DAHA GERİ GELMİYOR; koşunun yalnızca %15'i kilitli geçiyor,
+#   medyan tarama-harita mesafesi 3.01 m.
+#   Dört varyant denendi (use_ekf false / throttle_scans 5→2 /
+#   correlation_search 0.5→1.5 / üçü birden) -- HİÇBİRİ fark yaratmadı, hepsi
+#   aynı anda aynı şekilde koptu.
+#   Kanıt ki sorun harita değil: her zaman noktasında haritada global arama
+#   yapıldığında taramanın oturduğu poz 0.03-0.27 m hata veriyor. Bilgi orada,
+#   slam_toolbox oraya geri dönemiyor -- tek hipotez taşıyor, kaybettiğini fark
+#   etme mekanizması yok.
+# AMCL'in farkı: yüzlerce hipotez (parçacık), belirsizlikte dağılma, güven
+# düşünce rastgele parçacık enjekte etme = GERİ DÖNÜŞ yeteneği.
+
+amcl:
+    ros__parameters:
+        use_sim_time: false          # offline bag replay'de launch'tan true geçilir
+
+        # --- Frame'ler (slam_toolbox ile birebir aynı, alt katman fark görmez) ---
+        base_frame_id: "base_link"
+        odom_frame_id: "odom"
+        global_frame_id: "map"
+        scan_topic: "/scan_bee1"     # p2l çıktımız; /scan DEĞİL (host çakışması)
+        tf_broadcast: true           # map->odom'u AMCL sürer (slam_toolbox gibi)
+        transform_tolerance: 1.0
+
+        # --- Parçacık sayısı ---
+        # Varsayılan 500/2000. Pistin bariyer geometrisi tekrarlı (aliasing riski)
+        # ve taramamız seyrek -- ışınların yalnızca ~%35'i isabetli. Daha çok
+        # hipotez, yanlış bir tanesine erken kilitlenmeyi zorlaştırır.
+        min_particles: 800
+        max_particles: 4000
+
+        # --- ⚠️ GERİ DÖNÜŞ (bu dosyanın asıl varlık sebebi) ---
+        # nav2_amcl'de VARSAYILAN 0.0/0.0'dır ve bu, kurtarma davranışını
+        # TAMAMEN KAPATIR. Ölçtüğümüz kusur tam olarak "kaybolunca geri
+        # dönememek" olduğu için bunlar açılmadan AMCL'in slam_toolbox'a
+        # üstünlüğü kalmaz.
+        # slow: uzun vadeli ortalama ağırlık, fast: kısa vadeli. Kısa vadeli
+        # ağırlık uzun vadelinin altına düşünce (= "eşleşme aniden bozuldu")
+        # rastgele parçacık enjekte edilir.
+        recovery_alpha_slow: 0.001
+        recovery_alpha_fast: 0.1
+
+        # --- Hareket modeli ---
+        # Araç Ackermann ama AMCL yalnızca odom farklarını kullanır; differential
+        # standart yaklaşımdır.
+        robot_model_type: "nav2_amcl::DifferentialMotionModel"
+        # alpha1 dönmeden dönme, alpha2 ötelemeden dönme,
+        # alpha3 ötelemeden öteleme, alpha4 dönmeden öteleme.
+        # Hız CAN'de uint8 km/h olarak KUANTALANMIŞ (tüm koşuda yalnız 0,1,2,3,4
+        # değerleri) -> öteleme belirsizliği büyük, alpha3 cömert verildi.
+        # GNSS'e karşı ölçülen sistematik ölçek hatası %12 (382 m vs 432 m).
+        # Yaw tarafı gyro entegrasyonundan geliyor ve bias ihmal edilebilir
+        # (0.01 °/s, 740 s'de 3.7°) -> alpha1 daha dar tutuldu.
+        alpha1: 0.2
+        alpha2: 0.2
+        alpha3: 0.4
+        alpha4: 0.2
+        alpha5: 0.2
+
+        # --- Ölçüm modeli ---
+        # likelihood_field: haritadaki en yakın engele uzaklık alanı üzerinden
+        # puanlar. Seyrek ve eksik taramada beam modelinden daha dayanıklı --
+        # bizim durumumuz tam olarak bu.
+        laser_model_type: "likelihood_field"
+        laser_min_range: 0.5         # p2l range_min ile aynı
+        laser_max_range: 40.0        # ⚠️ HARİTAYI ÜRETEN max_laser_range ile AYNI olmalı
+        max_beams: 120               # varsayılan 60; seyrek taramada daha çok ışın işe yarar
+        sigma_hit: 0.2
+        z_hit: 0.5
+        z_rand: 0.5
+        z_max: 0.05
+        z_short: 0.05
+        lambda_short: 0.1
+        laser_likelihood_max_dist: 2.0
+
+        # --- Güncelleme sıklığı ---
+        # Varsayılan 0.25 m / 0.2 rad. Araç ~0.6 m/s ile çok yavaş gidiyor;
+        # daha sık güncelleme = düzeltmeler arası daha az odom kayması.
+        update_min_d: 0.1
+        update_min_a: 0.1
+        resample_interval: 1
+        pf_err: 0.05
+        pf_z: 0.99
+
+        # --- Başlangıç pozu ---
+        # true iken aşağıdaki poz kullanılır (offline test için; elle tıklamaya
+        # gerek kalmaz). Araçta false yapıp RViz "2D Pose Estimate" ile vermek
+        # ya da start çizgisine göre buradaki değeri güncellemek gerekir.
+        set_initial_pose: true
+        always_reset_initial_pose: false
+        initial_pose:
+            x: 2.05                  # kullanıcının RViz'de verdiği ve 105 s
+            y: 0.76                  # kusursuz kilitlenen poz (pist_C_19_3tem
+            z: 0.0                   # haritası + pist_17tem_2 bag'i için)
+            yaw: 0.0

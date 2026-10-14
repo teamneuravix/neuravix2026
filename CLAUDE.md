@@ -252,6 +252,10 @@ earlier guesswork:
     from the spec doc and shouldn't need changing. Being pure dead-reckoning, yaw drifts over time by design — that's exactly what
     `slam_toolbox`'s scan-matching (`map -> odom`) is meant to correct on top of it; this node only needs
     to supply a reasonable-enough short-term `odom -> base_link`.
+    **`max_dt` (0.5 s, 2026-08-22)**: `_integrate`'in adım süresi sınırsızdı ve bir saat sıçraması
+    (ölçülen: `dt = 1.787.210.527 s`) yaw'ı rastgele bir değere atıyordu — AMCL'in `lokal_0820_0722`
+    bag'inde hiç yakınsamamasının kök nedeni buydu. Aşan tik entegre edilmeden atlanır (bir kez WARN).
+    Önce/sonra tablosu aşağıdaki AMCL bölümünde.
   - Until `can_odom_node` is wired up and launched, `odom_topic` in `neuravix_control_node_real.py`
     receives nothing and the real control node degrades gracefully to FSM-only driving (lane+sign+
     obstacle, no pure-pursuit/A* position updates) — no code branch needed for that "no odometry yet"
@@ -2137,3 +2141,1150 @@ sonunda gerçek bir hatayı gizleyebilir (`can_odom`'da aynısı 13.07'de düzel
 varsayılanı + `blocked_speed`, lidarda `side_x_min`, `steering_ctrl`'de `_on_params`,
 `tabela_tespit`'te `Yasin_Her_Sey.pt`, `models/` içinde `serit_v2.pt` + `Yasin_Her_Sey.pt`.
 Bir önceki tar `~/robotaksi_deploy/robotaksi_humble_0820_1736.tar` adıyla korundu.
+
+`route_planner` (mission/rota katmanı) entegre edildi (2026-08-21, kaynak
+`~/loc_planner_map.zip`). GEOJSON oku → GNSS'i map'e çevir → yol grafında dönüş-cezalı A* →
+doğru anda `/master` ID-5 ile beynin hook'larını tetikle. Yazarı 233 yarışma kombinasyonunun
+hepsini offline sürüş benzetimiyle test etmiş (233/233, 2622 komut, 0 rota uyarısı).
+
+**Yeni ID-5 sözleşmesi** (eskisi grid A* hedefiydi, `5,<gx>,<gy>`):
+
+| mesaj | anlam | beyin |
+|---|---|---|
+| `5,1,<±derece>` | dönüş (+sol / −sağ) | `PLANNER_TURN` (yeni state, 20) |
+| `5,2,0` | yolcu al/bırak | `BUS_STOP` (zaten vardı) |
+| `5,3,0` | park | `PARK_SEARCH` (zaten vardı) |
+| `5,0,0` | iptal | `LANE_FOLLOW` |
+
+⚠️ **Üç alan zorunlu.** `master_cb`, ID-5 için `len(data) < 3` olan mesajı atıyor; iki alanlı
+`5,2` beyne hiç ulaşmaz. Planner dolgu sıfır gönderiyor, kontrol düğümüne dokunulmadı.
+
+Beyne uygulanan beş dokunuş: `DriveState.PLANNER_TURN = 20`, `__init__`'e `_pturn_left` /
+`_pturn_olcek`, `planner_event` yeniden yazıldı (eski grid-hedefi okuması `5,1,93.3`'ü
+`(1, 93)` diye okurdu), `_is_blocking_state`'e `PLANNER_TURN`, dispatch + `_planner_turn_control`.
+Grid A* (`self.planner`) engel yeniden planlamada **kullanılmaya devam ediyor** — sadece bu
+giriş noktası değişti.
+
+**Dönüş süresi açıyla ölçekleniyor** (`|derece|/90`, 0.35..1.60'a kırpılı): planner 40–131°
+arası komut üretiyor, beynin sabit 5.5 s + 3 s tabela manevrası hepsini ~90° döndürürdü.
+⚠️ Açık döngü, hıza duyarlı — tabela dönüşleriyle aynı sınırlama, sahada bir kavşakta
+izlenip ince ayar gerekebilir.
+
+**Yamanın yazıldığı beyin bizimki DEĞİLDİ.** Belgesi "workspace'teki beyin 975 satır, yaw hiç
+yok" diyor; bizimki 2219 satır ve yaw'ı var. Yama yine de uyuyor çünkü yaw kullanmıyor —
+bağımlılıklarının (`turn_speed`, `left/right_turn_angle`, `turn_recover_angle_*`, `_elapsed`,
+`BUS_STOP`, `PARK_SEARCH`, `sign_cooldown`) tamamı bizde de var, tek tek doğrulandı.
+`DriveState` en yükseği 13'tü, 20 boştu.
+
+**Entegrasyonda değiştirilen tek şey veri yolu.** Node veri dosyalarını `__file__` yanında
+arıyordu; `--symlink-install` ile kurulu modül src'ye sembolik bağ olduğu için orada bulunmaz.
+Artık önce `share/neuravix_ros2/data/` bakılıyor (setup.py oraya kuruyor), bulunamazsa eski
+davranışa düşüyor. Dosyalar `src/neuravix_ros2/data/`: `route_graph_refined.json` (7 KB),
+`datum_yt.npz` (26 KB), `teknik_kontrol.geojson` (1.3 KB).
+
+Çalıştırma:
+```
+ros2 run neuravix_ros2 route_planner --ros-args \
+  -p geojson:=<yarış_günü.geojson> -p pose_topic:=/amcl_pose -p trigger_dist:=6.0
+```
+
+⚠️ **En kritik ön koşul: `pose_topic` MAP çerçeveli olmalı.** Graf map frame'inde;
+`/odometry/filtered` odom-frame ve kayar, planner ilerlemeyi ölçemez. Şu an workspace'te
+AMCL koşmuyor — planner'ı denemeden önce lokalizasyon zinciri ayağa kalkmalı.
+
+Doğrulandı (2026-08-21): node kalkıyor ve `teknik_kontrol.geojson` için rota kuruyor
+(`[1,0,4,50]`, tek dönüş `5,1,70` sol, doğrulama sapması 20° — eşik içinde); dört komut da
+kontrol düğümü üzerinden uçtan uca çalışıyor (`PLANNER_TURN`/`BUS_STOP`/`PARK_SEARCH`/iptal),
+"Planner mesaji eksik" uyarısı çıkmıyor; 28 maddelik beyin regresyonu (14'ü planner'a özel:
+açı kırpma, bozuk giriş, faz zamanlaması, şerit ezmemesi, fail-safe'in yine durdurması) tam
+geçiyor; slalom suite 6/8'de değişmedi; dört düğüm de traceback'siz kalkıyor.
+
+Bilinmeyen/riskli kalanlar (yazarının kendi listesi + entegrasyon gözlemi):
+- `pose_topic` map-frame olmadan planner çalışmaz — sahada ilk doğrulanacak şey.
+- `5,3` (park) gerçek araçta hiç çalışmadı; `5,2` (durak) yalnız benzetimde.
+- `trigger_dist=6.0` yarış hızında yeterli mi — her şey 0.66 m/s'de ölçüldü.
+- `PLANNER_TURN` sırasında **engel olayı bloke değil** (tabela dönüşleriyle aynı): burun
+  açılıyken ön koridor yol kenarını tarayabilir ve dönüş yarıda kesilebilir. Slalomdaki
+  `front_trust_deg` koruması burada YOK. Bilinçli bırakıldı — gerçek engelde durabilmek
+  daha önemli — ama sahada izlenmeli.
+
+AMCL lokalizasyon yığını entegre edildi (2026-08-21, `~/loc_planner_map.zip` → `maps/lokalizasyon/`).
+`route_planner` `pose_topic:=/amcl_pose` beklediği için bu, planner'ın **önkoşuluydu** — yığının
+hiçbir dosyası workspace'te yoktu.
+
+**`pist_localization_real.launch.py` (slam_toolbox localization) ARTIK KULLANILMIYOR.** 12.08'de
+ölçülüp terk edilmiş: koşunun yalnızca **%15'inde kilitli**, medyan tarama-harita mesafesi
+**3.01 m**, kilidi kaybedince geri dönemiyor. Yerine `pist_localization_amcl.launch.py`
+(AMCL + GNSS gözetmeni): `pist_17tem_2` üzerinde medyan **1.19 m**, %90 **2.57 m**.
+
+Kurulanlar (`bee1_description`): `launch/pist_localization_amcl.launch.py`,
+`config/amcl_pist_real.yaml`, `scripts/{gnss_supervisor,tekerlek_odom_tf,yer_tanima,yer_tanima_db}.py`,
+`maps/` (pist_final.pgm 11 MB + .yaml + datum_yt.npz + tunel.json + 3 dönüşüm scripti).
+CMakeLists'e **yalnızca dört `install(PROGRAMS)` bloğu** eklendi, mevcut kurallar korundu.
+
+**Entegrasyonda değiştirilen iki şey:**
+1. **`nav2_amcl` bu sistemde ve deploy imajında YOKTU** — onsuz launch hiç kalkmaz.
+   Dockerfile'a `nav2-amcl` + `nav2-map-server` + `nav2-lifecycle-manager` eklendi.
+   ⚠️ Laptopta hâlâ kurulu değil (sudo gerekiyor): yerel deneme için
+   `sudo apt install ros-humble-nav2-amcl`.
+2. **`map_yaml` varsayılanı `/root/maps/pist_haritasi_img.yaml` → paketin içindeki
+   `pist_final.yaml`.** Eski yol (a) bu workspace'te yok, (b) terk edilen slam_toolbox
+   yığınına ait, (c) 20.08'de lidar montaj yüksekliği 0.62 → 1.35 düzeltilince zaten
+   geçersizleşti. Harita artık imajla birlikte geliyor, volume'a bağımlı değil; daha yenisi
+   için `map_yaml:=/root/maps/<yeni>.yaml`.
+
+AMCL config bizim yığınla uyumlu: `scan_topic: /scan_bee1` (host `/scan` çakışması için
+13.07'de yaptığımız remap), frame'ler `map/odom/base_link`, `recovery_alpha_slow/fast` açık.
+
+**Yarış kurulumu** (bringup ÖNCE çalışıyor olmalı):
+```
+ros2 launch bee1_description pist_localization_amcl.launch.py \
+  use_gnss:=true gnss_enabled:=true \
+  initial_pose_x:=<gunun_start_x> initial_pose_y:=<gunun_start_y> \
+  initial_pose_yaw:=<radyan> \
+  use_yer_tanima:=false
+```
+İlk denemede `gnss_enabled:=false` — gözetmen ayrışmayı loglar ama karışmaz. `GNSS-AMCL ayrisma`
+1-3 m ise datum doğru, 10 m üstüyse yanlış, öyle bırakma.
+
+⚠️ **`datum_lat/lon` YARIŞ GÜNÜ DEĞİŞMEZ — bu dosya 21.08'de yanlış kaydetmişti.** Eski komut
+`datum_lat:=<yarisma> datum_lon:=<yarisma>` diyordu; yazar 22.08'de teyit etti ki bu **yanlış**
+(kendi `OKU.md`/`KURULUM.md`'sindeki yer tutucu da onun hatasıymış, `KURULUM.md`'nin gövde metni
+doğruyu söylüyordu). Gözetmenin modeli **ötelemesiz** (`to_map` yalnızca `R.T @ v`), yani
+`datum_lat/lon` **haritanın (0,0) noktasının enlem/boylamı** olmak zorunda:
+
+    datum_lat:=40.79041010  datum_lon:=29.50912636  datum_yaw_deg:=-149.20   <- SABİT, haritaya bağlı
+
+Üçü de artık launch varsayılanı, komut satırında **verilmemeli**. Yarışmanın geojson'undaki
+`datum` satırı (40.789431 / 29.508361) **yalnızca** `maps/yarisma_donusum.py` içinde, geojson
+koordinatlarını haritaya çevirirken kullanılır; gözetmene asla verilmez. İki çift arasında
+**109 m kuzey + 64.5 m doğu** fark var — karıştırılırsa gözetmen AMCL'i 126 m öteye tohumlar.
+
+**Yazarın 22.08 teyitleri ve bizde yapılan değişiklikler:**
+- **`gnss_threshold` launch varsayılanı 18.0 → 3.0.** 18.0 13 Ağustos'tan kalmaydı (o gün
+  haritanın kendisi ~11 m burulmuştu); 19.08'de datum yeniden çözülünce burulma medyanı 1.54 m'ye
+  indi ve 3.0 üç bağımsız bag'de doğrulandı. Artık komut satırında vermeye gerek yok.
+- **`initial_pose` artık launch argümanı** (`set_initial_pose`, `initial_pose_x/y/yaw`).
+  `amcl_pist_real.yaml`'daki gömülü `(2.05, 0.76)` **başka harita+bag içindi**
+  (`pist_C_19_3tem` + `pist_17tem_2`) — yazarın kendi başarılı koşuları da 16.5 m yanlış başlayıp
+  gözetmenin düzeltmesiyle oturuyormuş. Her yarış gününün geojson'unun kendi `start`'ı olduğu için
+  gömülü kalması tanımı gereği yanlış; günün değerini `maps/yarisma_donusum.py` üretir.
+  Varsayılan = teknik kontrol start'ı: `(20.51, 3.89)` yaw `0.1749` rad (10.03°).
+  ⚠️ Yarış günü hazırlık süresi **3 dakika** — RViz'de tıklamak yerine argümanla verin
+  (`set_initial_pose:=false` + 2D Pose Estimate yedek yol).
+- **Yarış hızı için iki yeni argüman: `gnss_sustain_s` (2.0) ve `gnss_min_interval_s` (5.0).**
+  Gözetmenin tepki gecikmesi **`sustain_s`**'tir; log'daki 25 s bir kontrol aralığı DEĞİL, sadece
+  `n_fix % 100` log satırıdır (karar her GNSS fix'inde, 4 Hz). 0.66 m/s'de `sustain 2.0` = 1.3 m
+  yol, ama 15 km/h'de aynı 2 s = **8.4 m**. Yazarın yarış önerisi `sustain 1.0` / `min_interval 3.0`
+  — **sahada A/B edin**, ölçüt tur boyunca tohum sayısı + ortalama ayrışma (tohum 15-20'yi
+  geçiyorsa `sustain`'i geri açın). `gnss_threshold` ve `seed_std_xy` hıza bağlı değil, 3.0/2.0 kalsın.
+- **`pointcloud_to_laserscan_real.yaml` bizde zaten doğru** — yazar kendi kopyasıyla karşılaştırdı,
+  birebir aynı. `laser_max_range: 40.0` da haritayı üreten `slam_toolbox_pist_real.yaml`'ın
+  `max_laser_range: 40.0` değeriyle eşleşiyor. İkisi de şüpheli listesinden çıktı.
+- **`ekf_odom_real.yaml`** `use_ekf:=false` iken hiç okunmuyor (node koşullu), sorun değil.
+
+⚠️ **`base_link → velodyne` SADECE `bee1_bringup`'tan gelir.** Yazar bag'in `/tf_static`'ini açıp
+baktı: içinde **yalnızca `zed_*` frame'leri** var, `base_link`/`velodyne`/`odom` YOK. p2l'nin
+`target_frame`'i `velodyne` ve bulutun `frame_id`'si de `velodyne` olduğu için **p2l hiç TF
+olmadan da `/scan_bee1` üretir** — yani *"scan üretildi ve AMCL tüketti"* gözlemi TF ağacının
+sağlam olduğunu **göstermez**. Kontrol: `ros2 run tf2_ros tf2_echo base_link velodyne`.
+(Bag'de `/tf` topic'i hiç yok, yani çakışma da imkânsızmış.)
+
+**Yazarının üç kararı, aynen korundu:**
+- **Yer tanıma yarışta KAPALI** (`use_yer_tanima:=false`): çapraz-oturum hatası medyan 6.83 m,
+  en kötüsü 46.7 m. Dosya pakette duruyor, tünelde GNSS keserse tek alternatif.
+- **`gnss_threshold` 3.0** (4.5'ten): araç kalkarken poz ~3.8 m kayıyor, 4.5 bunu düzeltmiyordu.
+- **Gözetmen ŞART**: gözetmensiz AMCL bu pistte kilitlenmiyor — doğru başlangıç pozuna rağmen
+  iki bağımsız koşuda 27.3 ve 29.3 m medyana dağıldı.
+
+⚠️ **Bu yığın gerçek araçta BİR KEZ BİLE çalışmadı.** 20 Ağustos otonom kayıtlarının hiçbirinde
+`/amcl_pose` yok — araç yalnız şerit takibiyle sürüyordu. Planner o topic olmadan hiç komut
+üretmez. Araçtaki ilk iş bu yığını ayağa kaldırmak (`maps/KAYIT_LISTESI.md` madde 0).
+
+**Yazarın ölçüm script'leri kuruldu** (`src/bee1_description/maps/lokalizasyon/`):
+`run_lokal3.sh` (bringup + lokalizasyon + pose_logger + bag, tek komut), `pose_logger.py`
+(`map→base_link` TF'ini CSV'ye yazar), `puanla_lokal.py` (CSV'yi GNSS'e karşı puanlar).
+`puanla_lokal.py` datum'u `<script>/../datum_yt.npz`'de arar, o yüzden bu klasörde durmalılar.
+Kullanım:
+```
+WS=~/Desktop/carla-ros2-ws BAG_DIR=~ OUT=/tmp/loc ./run_lokal3.sh TAG lokal_0820_0722 3.0 0
+BAG_DIR=~/lokal_0820_0722 OUT=/tmp/loc python3 puanla_lokal.py TAG:lokal_0820_0722
+```
+⚠️ Script'te bizde **bir düzeltme** var: artık-süreç kontrolü yazarın sürümünde
+`[ -n "$LEFT" ] && { ...; exit 1; }` idi ve `set -e` altında **`LEFT` boşken de** (yani temiz
+sistemde) script'i sessizce, hiç log üretmeden öldürüyordu. `if/fi`'ye çevrildi.
+⚠️ Script'in üç kritik detayı, elle koşarken de uyulmalı: **bringup önden ve `use_sim_time:=true`**,
+**`/tf_static` bag'den oynatılmaz** (topic filtresi), **`--clock 100`**. Ayrıca t=20 s'de
+`map_server` deactivate/activate yapıyor — yazarın 0.21 m üreten koşularının hepsinde bu vardı,
+nedenselliği kanıtlanmış değil ama `izle_rviz.sh`'te yok.
+
+**Kayıt tarifine üç ekleme** (yazarın önerisi): `/filter/quaternion` + `/filter/positionlla`
+(Xsens'in kendi füzyon çıktısı — dönme açısını sahada bunlarla doğrulamış, bağımsız referans ve
+bedava) ve **`/scan_bee1`** (AMCL'in gerçekten ne gördüğünü çevrimdışı inceleyebilmek için).
+En iyisi topic filtresi hiç koymadan hepsini kaydetmek.
+
+Doğrulandı (2026-08-21): `bee1_description` derleniyor, dört yeni çalıştırılabilir kuruluyor,
+launch `--show-args` ile çözümleniyor, harita paketin share'inde, `gnss_supervisor` datum'u
+okuyup kalkıyor, `tekerlek_odom_tf` odometri gelmeyince doğru şekilde ERROR basıyor,
+`map_server` haritayı lifecycle node olarak açıyor. Beyin regresyonu 28/28, slalom suite 6/8,
+altı düğüm de traceback'siz.
+
+**AMCL yığını laptopta offline denendi (2026-08-21) — boru hattı çalışıyor, LOKALİZASYON
+YAKINSAMIYOR.** `lokal_0820_0722` bag'i `--clock` ile oynatılıp `pist_localization_amcl.launch.py`
+koşuldu (`nav2_amcl` laptopa kuruldu).
+
+**Çalışan kısım (entegrasyon doğrulandı):**
+- Altı düğüm de kalkıyor; `map_server` ve `amcl` lifecycle **active [3]**
+- Harita yükleniyor: **3401 x 3265 @ 0.05 m/pix**
+- `pointcloud_to_laserscan` `/scan_bee1` üretiyor, AMCL tüketiyor (`createLaserObject`)
+- AMCL `/amcl_pose` yayınlıyor (126 s'de 7121 mesaj)
+- GNSS gözetmeni ayrışmayı ölçüyor ve tohumluyor; **25 tohumlamanın 25'i de kabul edildi**
+  (`Setting pose`, TF reddi 0)
+- Tohumlanan koordinatlar haritada **boş alanda** (kontrol edildi), yani GNSS->map dönüşümü
+  ve datum doğru
+
+**Çalışmayan kısım:** AMCL yakınsamıyor. Gözetmen 126 saniyede **24 kez** yeniden tohumluyor,
+ayrışma **23-84 m** bandında kalıyor, AMCL poz kestirimi x in [-197, +250], y in [-269, +237]
+aralığında uçuşuyor (araç gerçekte ~14 m gitti). Yazarının aynı bag'de ölçtüğü değer
+**medyan 0.21 m / %90 2.54 m**.
+
+**Elenen sebepler** (hepsi denendi, sonuç değişmedi):
+- Oynatma hızı: 4x ve 1x aynı sonucu verdi
+- Tarama yükseklik penceresi: yeni (-1.13/0.77) ve eski (-0.4/1.5) aynı
+- `/tf_static` çakışması: bag'den hariç tutuldu, değişmedi (CLAUDE.md'nin kendi kuralı)
+- `can_odom` girdisi: düğüm çalışıyor, IMU/hız/direksiyon akıyor, gyro yaw aktif
+- Harita/datum: tohum noktaları boş alanda, harita doğru boyutta yükleniyor
+
+**Denenmeyenler / açık şüpheliler:**
+- `use_wheel_odom:=true` (bag'de `/odometry/can_wheel` var; `can_odom` yolu %25 eksik ölçüyor)
+- AMCL config'indeki `initial_pose` başka bir konum için ve `always_reset_initial_pose: false`
+- Replay ortamına özgü bir şey (yazar kendi makinesinde tam workspace'le ölçtü)
+
+**ÇÖZÜLDÜ 2026-08-22 — ama HANGİ değişikliğin çözdüğü İZOLE EDİLMEDİ, aşağıyı oku.**
+
+⚠️ **Önce bir düzeltme.** Bu bölüm ilk yazıldığında "kök neden `can_odom`'daki sınırsız `dt`"
+deniyordu; **bu iddia ölçümle çürütüldü** (aynı gün, aşağıdaki A/B). Yakınsayan koşu yazarın
+`run_lokal3.sh`'i ile alındı ve o koşu bir anda **beş** şeyi birden değiştirdi: (1) `bee1_bringup`
+önden ve `use_sim_time:=true` (yani `base_link→velodyne` TF'i ilk kez var), (2) `--clock 100`,
+(3) topic filtreli oynatma (`/tf_static` bag'den gelmiyor), (4) t=20 s'de `map_server`
+deactivate/activate, (5) `max_dt` koruması. **Hangisinin çözdüğü bilinmiyor**; en güçlü aday (1),
+çünkü o TF olmadan AMCL taramayı `base_link`'e taşıyamaz. Yığın bütün olarak çalışıyor, yani
+akşamki koşuyu bloke etmiyor — ama tek değişkenli doğrulama açık iş olarak duruyor.
+
+**`max_dt` koruması yine de doğru ve duruyor** (yazarın hipotezi): sınırsız `dt` gerçek bir açıktı.
+`_integrate` her tikte `dt = now - _last_time` hesaplıyordu ve **üst sınırı yoktu**.
+`use_sim_time:=true` iken `/clock` gelmeden `get_clock().now()` sıfır döner; bag başlayıp saat
+bag zamanına sıçrayınca ilk `dt` dev olur. Ölçüldü: **`dt = 1.787.210.527 saniye`**. Hız tarafını
+`speed_ok` kazara koruyordu (`v=0` → `x += 0`) ama **yaw korumasızdı** —
+`yaw = yaw + yaw_rate*dt` rastgele bir değere gidiyor ve AMCL'e dev bir dönme deltası olarak
+ulaşıyordu. Hangi tarafın patlayacağı `/clock` ile ilk hız/IMU mesajının sırasına bağlı bir yarış
+durumu; bu yüzden yazarın makinesinde çıkmayıp bizde çıkmıştı.
+**Düzeltme**: `max_dt` parametresi (0.5 s) — aşan tik entegre edilmeden atlanır (`_last_time`
+yine güncellenir), bir kez WARN basar. Ölçülen etki, aynı bag (`lokal_0820_0722`), aynı komut:
+
+| | önce | sonra |
+|---|---|---|
+| yeniden tohumlama | **24** (126 s'de, yani mümkün olan her fırsatta) | **0** |
+| GNSS-AMCL ayrışma | 23-84 m | **2.7-2.8 m** |
+| AMCL pozu | x∈[-197,+250] y∈[-269,+237] | harita içinde, izliyor |
+
+⚠️ Bu düzeltme **gerçek araçta da geçerli**: orada `/clock` yok ama sistem saati düzeltmesi,
+düğümün geç başlaması ya da uzun bir donma aynı sınırsız `dt`'yi üretir.
+
+**AMA sıçrama tek başına zararsız çıktı — çünkü iki bayatlık koruması zaten devrede.**
+`slalom_0820_1212` bag'i `can_odom`'dan iki kez geçirildi (tek değişken `max_dt`; `0.5` vs
+`1e9` = eski davranış):
+
+| | koruma AÇIK | koruma KAPALI (eski) |
+|---|---|---|
+| "Saat sicramasi" | 1 kez (açılışta) | — (yok) |
+| ilk 100 tikte maks \|yaw\| | 0.00002 rad | **0.00002 rad** |
+| bitiş pozu (16 m sürüş) | x 16.045 / y -0.341 / yaw -1.315 | x 16.046 / y -0.251 / yaw -1.310 |
+
+Sebep: `dt > 0.5 s` olduğunda **hız mesajı da `speed_timeout` (0.5 s), IMU da `imu_timeout`
+(0.3 s) sınırını aşmış oluyor** → eski kod da `v=0` ve `yaw_rate=0` ile hiçbir şey entegre
+etmiyordu. Yazarın tarif ettiği yarış durumu (dev `dt` + TAZE veri) bu koşularda oluşmadı.
+Yani koruma **sigorta**, kanıtlanmış bir arızanın tamiri değil.
+
+**Yazarın sayıları artık bizde de üretiliyor.** Aynı bag, yazarın başlangıç pozuyla
+(`IPX=2.05 IPY=0.76 IPYAW=0`) koşulduğunda log satırları onun referansıyla **birebir** çıkıyor
+(`TOHUMLAMA #1: 16.5 m ayrisma 2.0 s surdu -> (18.5, 2.1)`, ardından `anlik 0.3 m`), puanlama:
+
+    kosu       n     medyan   %90    maks    DURURKEN  HAREKETTE  tohum
+    YAZAR    1048    0.29 m   1.80   3.94      0.27      1.12       2      <- yazarin: 0.21 / 2.54
+    YENI     1048    2.74 m   2.80   2.96      2.75      1.66       0
+
+⚠️ **YENI satırı yeni bir tuzağı gösteriyor: eşiğin ALTINDA kalan sabit bir yanlılık asla
+düzeltilmiyor.** O koşuda başlangıç pozu teknik kontrol start'ıydı (20.51, 3.89) ama bag'de araç
+oraya **2.7 m** uzakta duruyordu (`KAYIT_LISTESI.md` madde 3 bunu zaten söylüyor: "araç start'a
+2-2.7 m mesafedeydi"). AMCL oraya kilitlendi, ayrışma `gnss_threshold` 3.0'ın hemen altında kaldı,
+gözetmen hiç tohumlamadı ve **medyan 2.74 m sabit hata** koşu boyunca sürdü — dağılma yok
+(maks 2.96), yani bu bir kaçış değil, kabul edilmiş bir kayma.
+**Sonuç, sezgiye aykırı: 2-3 m yanlış bir başlangıç pozu, 16 m yanlış olandan DAHA KÖTÜ.**
+16 m tohumlamayı tetikler ve 0.29 m'ye oturur; 2.7 m tetiklemez ve öyle kalır.
+Sahada karşılığı: yığın kalkınca log'daki `GNSS-AMCL ayrisma` satırına bak — **1-3 m'de sabit
+duruyorsa poz yanlıdır**, `gnss_threshold:=1.0` ile bir kez tohumlatıp sonra normal değere dönmek
+(ya da aracı gerçekten start'a park etmek) gerekir. "1-3 m ise datum doğru" kuralı datum için
+geçerli, poz doğruluğu için değil.
+
+Şerit düğümü 2026-08-21 15:57 sürümüyle güncellendi (`~/carla-ros2-wss-bal.zip`). Yine
+**yalnızca `lane_follower_node.py`** alındı (2136 → 2251 satır): o pakette `decision_brain.py`
+2148 satır (bizimki 2295 — route_planner yaması ve 20.08 slalom düzeltmeleri onda YOK) ve
+kontrol düğümlerinde kapanış düzeltmesi yok.
+
+Eklediği: `guven_zayif_s` (0.30), `guven_kayip_s` (1.00), `cift_ikisi_de_taze` (True) —
+şerit güvenini yaşlandırıp durumunu bildiriyor.
+
+⚠️ **ID-2 SÖZLEŞMESİ GENİŞLEDİ, VE BU BİR TUZAKTI:**
+
+    "2,<steer>"  ->  "2,<steer>,<guven>,<yas_s>,<durum>"
+
+`durum` bir **METİN**: `TAZE` | `TAHMIN` | `ZAYIF` | `KAYIP`. Yazarı "eski ayrıştırıcılar
+`data[1]`'i okumaya devam eder, bozulmaz" demiş — bu **beyin** için doğru
+(`lane_detect_event` yalnız `data[1]` okuyor) ama **kontrol düğümü için DEĞİL**:
+`master_cb` bütün alanları `[float(x) for x in ...]` ile çeviriyordu, `float("TAZE")`
+`ValueError` verir ve **her şerit mesajı tamamen düşerdi** — araç hiç şerit verisi almazdı.
+Bu, 17.08'de ID-4'e `P` işaretçisi eklenince yaşananın birebir aynısı (o zaman araç tüm
+sürüş boyunca engel verisi almamış ve bariyere girmişti).
+
+**Düzeltildi (her iki kontrol düğümünde):** ayrıştırma artık alan alan — çevrilebilen sayıya,
+çevrilemeyen ham metne kalıyor. Hem konumsal okumalar (`data[0]`, `data[1]`) hem ileride
+eklenecek metin alanları birlikte çalışıyor. Doğrulandı: `2,52,0.85,0.05,TAZE`,
+`2,45,0.0,3.20,KAYIP`, `2,38,0.4,0.5,ZAYIF` ve eski `2,60` — dördü de geçiyor,
+**parse hatası 0**.
+
+`steer_mode` yine `pursuit` geliyordu, tekrar `pid` yapıldı (gerekçe ve iki bagdeki ölçüm
+bir önceki bölümde). Kapanış düzeltmesi (`ExternalShutdownException` + `rclpy.ok()`) yeniden
+uygulandı — arkadaşın kopyasında yok, her merge'de tekrar gerekiyor.
+
+Doğrulandı: derleniyor, düğüm iki ayarda da traceback'siz kalkıyor, beyin regresyonu 28/28,
+slalom suite 6/8 (değişmedi). ⚠️ **En yeni sürümün gerçek ZED karelerindeki ölçümü YAPILAMADI**
+(T7 çıkarılmıştı); bir önceki sürümün ölçümü geçerli ve bu sürüm onun üstüne yalnızca güven
+takibi ekliyor.
+
+**SLALOM İÇİN NE GEREKLİ — kontrol edildi (2026-08-21).** Üç slalom düğümünün
+(`lane_follower`, `obstacle_lidar`, `neuravix_control_real`) **hiçbiri TF kullanmıyor**
+(`TransformListener`/`lookup_transform` sayısı üçünde de 0). Yani **`bee1_bringup` ve
+lokalizasyon çalıştırmadan slalom denenebilir** — TF ağacı yalnızca AMCL/slam ve
+`route_planner` için gerekli.
+
+⚠️ **Tek istisna `can_odom`.** Kontrol düğümü `odom_topic`'ten (varsayılan
+`/odometry/filtered`, araç komutunda `/odometry/can_wheel`) **topic** olarak konum okuyor,
+TF'ten değil. Konum beslenmezse 4 fazlı slalomun yanal ofseti zaman/mesafe yedeğine düşer ve
+masa testinde 8 senaryonun 3'ü geriliyor (bkz. "Konumsuz slalom" bölümü). Yani slalom için
+gereken en küçük küme: `lane_follower` + `obstacle_lidar` + `neuravix_control_real` +
+**odometri kaynağı**.
+
+⚠️ `can_odom` da `/odometry/can_wheel`'e yayınlıyor (`odom_topic` parametresi, aynı
+varsayılan). `maps/lokalizasyon/KURULUM.md`'ye göre **araçta hazır bir tekerlek odometrisi
+zaten bu topic'te yayınlıyor**. İkisi birden koşarsa tek topic'te iki yayıncı olur.
+Araçta önce şunu kontrol et:
+
+    ros2 topic info /odometry/can_wheel -v
+
+Yayıncı **varsa** `can_odom` çalıştırma (aracınki daha iyi: %6-9 eksik, `can_odom` %25).
+Yayıncı **yoksa** `ros2 run bee1_description can_odom` ile başlat.
+Koşu öncesi zorunlu ön kontrol zaten kayıtlı: `ros2 topic hz /odometry/can_wheel`.
+
+**Deploy imajı yeniden derlendi 2026-08-21 17:49.** Image ID `87b47d4854ee`, tar
+`~/robotaksi_deploy/robotaksi_humble.tar` **4.489.662.464 bayt**, SHA-256
+`fa7b321a0ccfa7d3ff796fd919384c8cdfa86165989239551998bf4f3e6dc243`. Bu imaj bugünkü üç işi
+birden taşıyor: yeni şerit düğümü (15:57 sürümü), `route_planner` mission katmanı, AMCL
+lokalizasyon yığını.
+
+İmajın *içinde* doğrulandı: `nav2_amcl`/`nav2_map_server`/`nav2_lifecycle_manager` kurulu;
+şerit düğümü 2260 satır + `steer_mode="pid"` + üç güven parametresi; kontrol düğümünde
+metin-toleranslı `/master` ayrıştırması; `route_planner` çalıştırılabilir + `share/data/`
+üç dosya; `gnss_supervisor` + `tekerlek_odom_tf` kurulu; `share/maps/pist_final.pgm` var;
+beyinde `slalom_return_steer=25` / `slalom_escape_lat_frac=0.30`.
+
+⚠️ `/home`'da 33 GB kaldı ve `~/robotaksi_deploy` altında **dört tar** birikti (0819_1033,
+0820_1736, 0821_1252 ve güncel) = ~17.6 GB. T7'ye kopyalandıkça eskileri silin.
+
+`slalom_0821` bag analizi (3 slalom + 1 şerit takip, 2026-08-21) — **weave'lerin neden
+54-57 s sürdüğü bulundu ve sebebi ayar değil, tek bir bayrak.**
+
+**Önce doğrulananlar:** yeni şerit düğümü araçta çalıştı — ID-2 dört bag'de de **5 alanlı**
+(`2,<steer>,<guven>,<yas>,<durum>`) ve **ayrıştırma hatası 0**, yani 21.08'de iki kontrol
+düğümüne yapılan `float()` düzeltmesi gerekliydi ve tuttu. Algı kalitesi slalom koşularında
+iyi: `TAZE` %70/%88/%81, güven ort 0.73/0.92/0.88. 08-20'ye göre engel verisi de belirgin
+daha temiz: fail-safe **0**, 99↔engel sıçraması **0.02-0.07/s** (08-20'de 0.21/s), weave yaw
+aralığı **-37..+43** (08-20'de +52/-72).
+
+**⚠️ `1526` (şerit takip denemesi) dört bag'in en kötüsü**: `KAYIP` **%50**, güven ort 0.47.
+Direksiyon std'si 0.8 ile çok yumuşak ama bunun sebebi bilgi değil bilgisizlik — karelerin
+yarısında nötr 45 basılıyor. Şerit takibi ayrıca incelenmeli; slalom bag'lerindeki %70-88
+oranı burada tutmuyor.
+
+**KÖK NEDEN — `_return_hard` tam kilit dönüşü.** Üç bag temiz bir kontrollü karşılaştırma
+verdi (aynı gün, aynı pist, aynı kod; tek değişken bu bayrak):
+
+| bag | dönüş modu | dönüş FSM | **align süresi** | align'da yanal | weave |
+|---|---|---|---|---|---|
+| 1508 | **sert** | 19 | **30 s** | +0.54 → **-1.09** | **57 s** |
+| 1515 | **sert** | 19 | **27 s** | +0.34 → **-1.54** | **54 s** |
+| 1520 w1 | yumuşak | 36 | **6 s** | +0.55 → +0.05 | 36 s |
+| 1520 w2 | yumuşak | 36 | **6 s** | +1.71 → +0.88 | 24 s |
+
+`pass` fazında ön koridora engel girince (`front < avoid_distance`) `_return_hard = True`
+oluyor ve dönüş **tam kilitte** yapılıyor. Dönüş fazı `slalom_return_max_deg` (25°) açı
+tavanıyla biter — **ama tekerlek hâlâ +31'de, yani tam sağ kilitte**. 10 birim/s slew ile
+geri gelmesi ~6 s sürer ve o sürede araç dönmeye devam eder: yaw -25 → -34, yanal +1.5'ten
+geçip **-1.1 / -1.5'e**, yani kendi şeridinin ÖBÜR tarafına. `align` kalan mesafeyi 2 km/h'de
+25 saniye sürünerek kapatır. Yumuşak dönüşte aynı fazlar 6 saniyede bitiyor.
+Bu, kaçış fazının aşmasıyla **aynı sınıf** hata: faz çıkış ölçütü kasada sağlanıyor ama
+aktüatör hız sınırlı olduğu için fiziksel dönüş devam ediyor.
+
+**İKİNCİ, BAĞIMSIZ BULGU — yanal aşım hıza bağlı.** Direksiyon slew'i sabit olduğu için:
+
+| weave | hız | yanal tepe (hedef 1.70) |
+|---|---|---|
+| 1508 / 1515 / 1520 w1 | 1-2 km/h | 1.93 - 2.00 (**+15%**) |
+| **1520 w2** | **3 km/h** | **3.15** (**+85%**) |
+
+Yani `slalom_speed_kmh` düşürmek manevra geometrisini bozmaz, **düzeltir** — 20.08'de
+"emniyet direksiyonu kısarak değil hızı düşürerek alınır" diye yazılan kural burada
+niceliksel olarak doğrulandı.
+
+**Acil pencereleri (kural uygulandı):** `1515` t=87-106 ve `1520` t=95-102 `fb_emergency`
+aktif — o iki bag'in sonundaki `OBSTACLE_STOP`'lar **operatör müdahalesi**, kod arızası
+değil. **`1508`'de acil YOK**, tek tam yorumlanabilir kayıt odur: 57 s'lik weave'den sonra
+t=138'de gerçek bir `OBSTACLE_STOP` (front 1.5, araç şeridinin 0.44 m solunda).
+
+**`slalom_return_hard` parametre yapıldı, VARSAYILAN DEĞİŞTİRİLMEDİ (True = eski davranış).**
+Gerekçe: masa simülatörü bu arızayı **hiç üretmiyor** — ölçüldü, sim'in align fazı sekiz
+senaryonun hepsinde tek yönlü (+1.39 → +0.21) ve karşı tarafa hiç geçmiyor; sert/yumuşak
+dönüş arasındaki suite farkı da yok (P2 min 1.39→1.43). Projenin üç kez tekrarlanmış dersi
+gereği (bkz. 08-10 / 08-17 / 08-19 kararları) bu kararı sim veremez, **araçta A/B edilmeli**:
+
+    ros2 run neuravix_ros2 neuravix_control_real --ros-args -p slalom_return_hard:=false
+
+Doğrulandı: kapsamlı derleme, masa suite 8 senaryo değişmedi (regresyon yok), düğüm
+`slalom_return_hard:=false` ile traceback'siz kalkıyor, yumuşak modda sapma 30 → 20 birim.
+
+**Simülatörün hâlâ modellemediği şey:** `align` fazına tam kilitten girildiğinde oluşan
+karşı-tarafa geçiş. Sim'i bu bağlamda güvenilir kılmak için önce bu imzayı üretmesi
+sağlanmalı (araçta ölçülen: align girişinde tekerlek +31, çıkışta yanal -1.1).
+
+`1526` şerit takip bag'i — **"fit atıyor ama direksiyona gitmiyor" ölçüldü: zincir sağlam,
+iptal şerit düğümünün İÇİNDE** (2026-08-21):
+- **Zincir kopuk değil.** ID-2 → beynin FSM açısı korelasyonu **+0.751**, FSM →
+  `steering_target_value` **−1.000** (birebir doğrusal eşleme). Şerit ne ürettiyse direksiyona
+  eksiksiz gitti. Ama çıktının kendisi ölü: ID-2 std **0.87**, direksiyon hedefi aralığı
+  **−4.0..+4.4 ham** (mevcut ±36'nın %12'si), tekerlek −5..+4, direksiyon motoru pwm=0 **%71**.
+- **MEKANIZMA — `Yön` terimi `Yanal` terimini iptal ediyor.** Overlay'den 12 kare okundu:
+  `Error` tüm koşu boyunca **−57/−58 px'e çivili** kalırken `Yanal` +1 → +8 → +69 → **+92 px**
+  gidiyor; `Yön` her seferinde ters işaretle büyüyüp (−59 → −65 → −109 → **−150**, doyuma
+  vurmuş) hatayı sıfırlıyor. Yanal hata 90 kat arttı, çıktı kıpırdamadı.
+- **KÖK NEDEN — sağ "şerit" fiti BARİYER.** BEV karesi belirleyici: doğru bir IPM'de şerit
+  çizgisi dikeydir; kırmızı sağ fit ~45° eğimle bariyer tabanına oturmuş. `Yanal` ve `Yön`
+  **aynı yanlış fitten** türediği için biri diğerini götürüyor. Yani "fit atıyor" doğru
+  (`TAZE`, güven 1.00) — ürettiği iki terim birbirini yiyor.
+- İki ayar bunu mümkün kılıyor, ikisi de arkadaşın 15:57 sürümünden: **`heading_gain=75`**
+  (dosyanın kendi yorumu 30 diyor, bayat) ve **`fit_max_slope=5.0`** (yorumu 3.0 diyor, bayat).
+  Gözlenen Yön −65 → eğim 0.87; Yön −150 → eğim ≥2.0. Sürülebilir en dar viraj 3.0'a karşılık
+  gelir (5.6 m yarıçap), yani 5.0 hiçbir gerçek virajın gerektirmediği kadar gevşek.
+- **Genişlik kapısı bu sınıfı yakalayamaz** (yine): LaneW 329-399 px = 2.6-3.2 m, 250..600
+  bandının tam ortası. 08-20'de S4 diye kaydedilen "yanlış çizgi çifti" sınıfının aynısı.
+- **Varsayılanlar DEĞİŞTİRİLMEDİ**: bu bag'de kamera topic'i kayıtlı olmadığı için boru hattı
+  yeniden koşturulup ölçülemiyor; arkadaşın seçtiği iki değeri ölçemeden ezmek doğru değil.
+  Sıradaki koşuda çalıştırma anında denenecek (⚠️ `lane_follower`'da parametre geri çağrımı
+  YOK, `ros2 param set` sessizce hiçbir şey yapmaz — `err_offset`'teki tuzağın aynısı):
+
+      ros2 run neuravix_ros2 lane_follower --ros-args \
+        -p heading_gain:=0.0 -p fit_max_slope:=3.0
+
+  Overlay'de bakılacak şey: `Error` artık `Yanal` ile birlikte hareket ediyor mu.
+- **Asıl çözüm algı tarafında**: bariyerin asfaltla birleştiği çizgi model tarafından `lane`
+  etiketlenmiş. Düğümün `bariyer_ele_oran=0.25` süzgeci ancak model oraya `barrier` maskesi
+  koyarsa çalışır; koymamış. `serit_v2.pt`'nin eğitim setine bariyer tabanı örneği eklenmeli —
+  parametreyle çözülmez.
+- Yan bulgular: **`1526`'nın %77'sinde araç DURUYORDU** ve `KAYIP` %50'sinin büyük kısmı meşru
+  (t=46 BEV karesi aracın bariyere baktığını, ortada yol olmadığını gösteriyor) — algı arızası
+  değil, sahne. Overlay'deki **`FPS: 8` yanıltıcı**: gerçek yayın hızı 20.8 Hz (slalom
+  bag'lerinde 14-17 Hz); yine de 08-20'deki 26-27 Hz'e göre ~%40 düşüş var, yeni düğümün ek
+  işi (çift seçimi, bariyer eleme, güven takibi) muhtemel sebep.
+
+**Deploy imajı yeniden derlendi 2026-08-21 19:19** (17:49 build'in yerine). Image ID
+`0ead8620455b`, tar `~/robotaksi_deploy/robotaksi_humble.tar` **4.489.669.120 bayt**, SHA-256
+`863166773af707dc2642a2681a2301454035c9e675eaf5b93ab1063f57642425`. İçerdiği üç yenilik,
+imajın *içinde* doğrulandı: beyinde+iki kontrol düğümünde `slalom_return_hard` (varsayılan
+True = eski davranış), şerit düğümünde `cift_paralel` paralellik kapısı +
+`cift_paralel_tol=0.25` (düğüm 2322 satır). Bir önceki tar
+`~/robotaksi_deploy/robotaksi_humble_0821_1752.tar` adıyla korundu.
+
+⚠️ **`cift_paralel` kapısı TEST EDİLMEDEN imaja girdi** (operatör kararı, hız gerekçesiyle).
+Sözdizimi kontrolü ve kapsamlı derleme yapıldı; kapının geometrik davranışı (bariyer fitini
+reddedip gerçek çifti/virajı geçirdiği) **ölçülmedi**. Araçta şerit takibi kötüleşirse
+yeniden derlemeye gerek yok: `-p cift_paralel_tol:=0.0` ile kapanır. Gerçek karelerde
+ateşlenme oranı ölçümü de bekliyor (T7'deki `joystick_46` gerekiyor, disk bağlı değildi).
+
+⚠️ **ROS 2 tanımlanmamış parametre override'ını HATA VERMEDEN YOK SAYAR.** 19:19 öncesi imajla
+`-p slalom_return_hard:=false` çalıştırılsaydı araç sorunsuz kalkar, koşu "sert dönüş
+kapatıldı" diye kaydedilir, ama eski davranış koşardı. Yeni bir parametreyi araçta denemeden
+önce imajda var mı diye bak:
+`docker run --rm robotaksi_humble:latest grep -c <param> /ros2_ws/install/neuravix_ros2/lib/python3.10/site-packages/neuravix_ros2/<dosya>.py`
+
+⚠️ `/home`'da **27 GB** kaldı ve `~/robotaksi_deploy` altında **beş tar** birikti (~22 GB).
+T7'ye kopyalandıkça eskileri silin.
+
+**Gerçek kontrol düğümünün dört varsayılanı araç-doğrusu yapıldı (2026-08-21 akşamı).** Tetikleyen
+olay: operatör düğümü **hiçbir `-p` vermeden** çalıştırdı ve araç hiçbir dönüşü düzgün
+tamamlayamadı. Sebep tercih değil, varsayılanın araçta yanlış olmasıydı:
+
+| parametre | eski | **yeni** | neden tercih değil |
+|---|---|---|---|
+| `odom_topic` | `/odometry/filtered` | **`/odometry/can_wheel`** | araçta o topic'i **kimse yayınlamıyor** (EKF planından kalma). Konum gelmeyince 4 fazlı slalomun yanal ofseti zaman/mesafe yedeğine düşüyor — masa testinde 8 senaryonun 3'ü bozuluyor, P3'te araç 2.7 m şerit dışına çıkıyor |
+| `slalom_lateral_target` | 3.0 | **1.7** | 3.0 = tam şerit değişimi = dönümlü dizide 2. engelin tam içi. Ölçülmüş pencere 1.14..1.82 m |
+| `speed_target_scale` | 0.15 | **0.25** | `slalom_speed_kmh` ile **ÇARPIM** halinde çalışıyor ve bu gözden kaçıyor |
+| `slalom_speed_kmh` | 4.0 | **8.0** | eski çift `4.0×0.15=0.60` → tabana takılıp **1.2 km/h**; yeni çift `8.0×0.25=2.0 km/h`. 1.2 km/h'de 9-10 m'lik weave 30 s sürüyor |
+
+**Bilerek varsayılan YAPILMAYAN ikisi** (bunlar gerçek A/B seçimleri, ölçmeden çevrilmemeli):
+- **`return_home_when_free`** `False` kalıyor — strateji seçimi; operatör *"parametre olarak
+  kalsın, ikisini de deneyeceğim"* demişti. `false` = geçtiği şeritte kal (bilinçli tasarım).
+- **`slalom_align_lateral`** `0.6` kalıyor — `slalom_return_hard=True` ile **kötü etkileşiyor**:
+  `slalom_0821`'de sert dönüş yüzünden align zaten 27-30 s sürüyordu ve −0.44/−0.86 m'de
+  bitiyordu, 0.3 eşiği hep zaman aşımına düşerdi. Bu ikisi **birlikte** değişmeli; önce sert
+  dönüş A/B'si.
+
+⚠️ **Sim düğümü (`neuravix_control_node.py`) DEĞİŞMEDİ** — CARLA kendi değerlerini arayüzün 8p
+butonundan geçiriyor (`slalom_lateral_target=3.0`, `slalom_speed_kmh=2.0`; `odom_topic` ve
+`speed_target_scale` o düğümde zaten yok).
+
+⚠️ **Bu değişiklikten sonra 19:19 imajı BAYAT** — dört varsayılan imajın içinde eski.
+Doğrulandı: kapsamlı derleme, gerçek düğüm traceback'siz kalkıyor, açılış log'u
+`odom_topic='/odometry/can_wheel' ... speed_scale=0.25` yazıyor.
+
+⚠️ **ROS 2 tanımlanmamış parametre override'ını hata vermeden yok sayar** — bu yüzden "koşuda
+`-p` verdim" demek onun etkili olduğu anlamına gelmiyor. Yeni bir parametreyi araçta denemeden
+önce imajda var mı diye bak, ve koşu log'unun ilk satırındaki açılış özetiyle doğrula.
+
+**İmaj yeniden derlendi 2026-08-22 09:54 — TAR OLUŞTURULMADI** (operatör kararı). Image ID
+`d225cee655a3`; dört yeni varsayılan imajın içinde doğrulandı (`odom_topic=/odometry/can_wheel`,
+`speed_target_scale=0.25`, `slalom_speed_kmh=8.0`, `slalom_lateral_target=1.7`), üç A/B bayrağı
+bilerek eski (`slalom_align_lateral=0.6`, `slalom_return_hard=True`, `return_home_when_free=False`),
+sim düğümü bozulmadı. ⚠️ `~/robotaksi_deploy/robotaksi_humble.tar` hâlâ **0ead8620455b (21 Ağu
+19:19)** imajını taşıyor — yeni imaj yalnızca laptopta, araca gitmesi için `docker save` gerekiyor.
+
+**Kayıt tarifine `/rosout` eklendi (2026-08-22).** `slalom_0821` bag'lerinde tesadüfen vardı ve
+analizde belirleyici oldu; artık tarifte açıkça yazılı. Metin olduğu için maliyeti ihmal
+edilebilir (`/velodyne_points` ~250 MB/dk, `/rosout` birkaç yüz KB) ve bag'den şunları okunur
+kılıyor: kontrol düğümünün **açılış özeti** (`odom_topic=`, `speed_scale=`, `steer gain=`,
+`serit araligi=` — yani "bu koşu hangi ayarla yapıldı" sorusu bag'in içinden cevaplanır),
+`hareket=odom | ODOM YOK (CAN hizi) | HAREKET VERISI YOK` satırı, `SLALOM konum verisi OLMADAN
+basladi` uyarısı, şerit düğümünün `Fit cifti PARALEL DEGIL` / `Serit genisligi ... tek fite
+dusuldu` sayaçları, `obstacle_lidar`'ın açılıştaki yükseklik penceresi doğrulaması ve hangi
+düğümlerin gerçekten koştuğu.
+
+**Araç koşusu düğüm listesi ve sırası (2026-08-22, doğrulandı):** (0) `ros2 topic info
+/odometry/can_wheel -v` + `ros2 topic hz /velodyne_points`; (1) `can_odom` **yalnızca**
+`/odometry/can_wheel`'de yayıncı yoksa (aracınki %6-9 eksik, `can_odom` %25 — aracınki tercih
+edilir, ikisi birden koşarsa tek topic'te iki yayıncı olur); (2) `lane_follower -p
+camera_topic:=/zed/zed_node/rgb/image_rect_color -p show_window:=false` (camera_topic zaten
+varsayılan); (3) `obstacle_lidar -p side_offset:=3.0 -p side_corridor:=1.26` — **`side_offset`
+2.74 DEĞİL 3.0**: 2.74 CARLA'nın değeri, gerçek pist şeridi 2.96 m ölçüldü ve `side_offset`
+komşu şeridin merkezidir; `side_corridor` 1.26 (varsayılan 1.0) kör bandı 1.30 → 1.04 m'ye
+daraltır; `lidar_height` bayrağı gereksiz, 1.35 zaten varsayılan; (4) `neuravix_control_real`
+(yeni imajla yalnızca üç A/B bayrağı); (5) `steering_ctrl -p tolerance:=2.0` — **`max_delta`
+bayrağı VERİLMEMELİ**, 90'a çıkarmak ölçülmüş çıkmaz sokaktır (joystick sapma 73 ile aynı hız,
+9.5 vs 9.2 birim/s; doygunluk motorda) ve koşuyu önceki kayıtlarla kıyaslanamaz kılar;
+(6) `throttle_ctrl` **EN SON**, alan boş ve sürücü frende — gazı devreye alan adım budur.
+Yol B kullanıldığı için `speed_fb_relay`/`throttle_relay` **çalıştırılmaz**. Hepsi `tmux` veya
+`docker exec -d` içinde.
+
+Şerit yön-terimi arızası ölçüldü ve düzeltildi (2026-08-22, **dört gerçek veri seti**:
+T7'deki `joystick_46/47/48` ham ZED kareleri + `slalom_0821_1526`'nın overlay kareleri).
+Ölçüm aracı `scratchpad/serit_olc.py` — gerçek `LaneFollowerNode`'u rclpy parametre
+override'larıyla kurup bag karelerini `cb()`'ye veriyor, iç terimleri (`_lat_err`,
+`_head_err`, `_paralel_red`) okuyor. `1526`'nın **ham kamerası hiçbir yerde yok**, o yüzden
+`lane_debug` JPEG'leri kullanıldı (üstüne ince çizgi/yazı çizilmiş orijinal kare) — **yaklaşık**,
+ama arızanın gerçekleştiği tek sahne o.
+
+- **DÜN VERDİĞİM İKİ ÖNERİDEN BİRİ YANLIŞTI.** `-p fit_max_slope:=3.0` ölçüldü ve **zararlı**:
+  `joystick_46`'da TAZE %91 → **%83**, `1526`'da hata std 84 → **174 px**. Önerilmiyor,
+  `fit_max_slope=5.0` kalıyor.
+- **"Yön terimi Yanal'ı iptal ediyor" bulgusu genel DEĞİL, `1526` sahnesine özgü.** İyi
+  kayıtlarda iki terim **toplanıyor** (örn. `lat −54, head −59 → err −113`) ve kor(lat,err)
+  0.984. Yani terim normalde tasarlandığı işi yapıyor.
+- **Gerçek arıza şu: yön terimi hatanın İŞARETİNİ çevirebiliyor** — araç ölçülen sapmanın
+  tersine kırılıyor. Ateşlenme oranı: joystick_46 %4, _47 %9, _48 %2, **1526 %35**
+  (tipik kare: yanal +10 px, yön −43 px → hata −33 px).
+- **Çözüm `heading_no_flip` (yeni parametre, varsayılan True)**: yön terimi hatayı sıfıra
+  kadar küçültebilir ama ötesine geçemez. Yanal 0 iken tam öngörü serbest (viraj başında en
+  çok ihtiyaç duyulan an), yanal büyüdükçe öngörü onu yalnızca yumuşatır.
+
+  | | işaret ters çevirme | öngörü korunumu | TAZE | oynaklık |
+  |---|---|---|---|---|
+  | mevcut | 8 / 17 / 3 / **69** kare | %100 | — | referans |
+  | **`heading_no_flip`** | **0 / 0 / 0 / 0** | **%95 / %90 / %98 / %74** | değişmedi | +%3-6 |
+  | `heading_gain:=0` | 0 | **%0** | değişmedi | −%16-39 |
+
+  `heading_gain:=0` de arızayı bitiriyor ve daha yumuşak, **ama öngörüyü tamamen atıyor** ve
+  yumuşaklık kazancının doğruluk kazancı olduğunu gösterecek yer gerçeği yok. Hedefe yönelik
+  olan tercih edildi. Kaba geri dönüş hâlâ mümkün: `-p heading_no_flip:=false -p heading_gain:=0.0`.
+- **Paralellik kapısı (`cift_paralel`) doğrulandı ama bu arızayı ÇÖZMÜYOR.** Sentetik geometri
+  testi geçiyor (dikey çift, aynı eğimli viraj ve %3.8 eğim farkı KABUL; bariyer eğim 0.87 →
+  %27.7 RED, eğim 2.0 → %64.3 RED, eğim 0.5 → %16.1 kabul). Ama **794 gerçek karede 0 kez
+  ateşledi**: `1526`'nın fit çifti *paralel ama eğik*ti (iki fit de aynı açıda), kapı ise
+  **ıraksayan** çifti yakalar — o sınıfı tasarımı gereği göremez. Zararsız, varsayılan 0.25'te
+  kalıyor, ama "1526'yı çözer" diye sayılmamalı.
+- ⚠️ **`lane_w_min_px` 250 → 300'e geri gitmiş** (arkadaşın 15:57 sürümü). 20 Ağustos'taki 250
+  ölçümü **eski çift-seçim boru hattına** aitti; yeni sürümde `cift_sec`/`lane_w_tol` var, o
+  yüzden ölçümü doğrudan taşımak doğru değil. Düzeltmeden önce ham çift genişlikleri yeniden
+  ölçülmeli. Şimdilik 300'de bırakıldı.
+- **Asıl kök neden hâlâ modelde**: `serit_v2.pt` bariyerin asfaltla birleştiği çizgiyi `lane`
+  diye etiketliyor. `bariyer_ele_oran=0.25` süzgeci ancak model oraya `barrier` maskesi
+  koyarsa çalışır. Yukarıdakiler semptomu sınırlıyor; sebebi eğitim seti çözer.
+
+`joystick_47` yanlış anlaşılması — **bayrak değil SAHNE** (2026-08-22). Bag 21 Ağustos 19:39'da,
+yani `heading_gain:=0` önerisinden sonra kaydedildi ve overlay'de **`Yon: +0`** yazıyor, yani
+gerçekten o bayrakla koşulmuş. Overlay'de `Error` −3 → +32 → +87 → **+317 → +352 px (+2.60 m)**
+büyüyor ve bu ilk bakışta bayrağın zararı gibi görünüyor. **Değil:**
+- `t=38 s` karesi aracın **açık padok/apron alanında** olduğunu gösteriyor — ortada şerit yok;
+  `cizgi:4` maske bulmus ama mavi "sol serit" fiti yerdeki ince direge, sari merkez saga
+  savrulmus.
+- Aynı kareler her ayarla replay edildiğinde **hata dağılımı aynı**: `mevcut` (heading 75)
+  max |err| 386 / 41 kare >250; `yon0` max 418 / **33** kare >250; `egim3` 454 / 42. Yani
+  bayrak o hatayı üretmedi, hatta büyük-hata karesi sayısını biraz azalttı.
+- ⚠️ **Güven değeri kalite ölçüsü DEĞİL**: düğüm bu bag'de %96 `TAZE` ve güven ort **0.98**
+  diyor — padokta direk fitlerken de kendinden emin. `durum`/`guven` alanlarını "fit doğru"
+  diye okumayın; yalnızca "fit taze" demek.
+- Ders: bir ayarın zararlı olduğuna karar vermeden önce **aynı kareleri diğer ayarla da**
+  koştur (`tools/serit_olc.py`). Sahne kaynaklı hata, ayar kaynaklı sanılabiliyor.
+
+**Şerit düğümü için tampon (rollback) komutu** — bu oturumda eklenen iki değişikliği birden
+kapatır ve arkadaşın 15:57 sürümünün birebir davranışına döner, yeniden derleme gerekmez:
+
+    ros2 run neuravix_ros2 lane_follower --ros-args \
+      -p camera_topic:=/zed/zed_node/rgb/image_rect_color -p show_window:=false \
+      -p heading_no_flip:=false -p cift_paralel_tol:=0.0
+
+**Deploy imajı yeniden derlendi 2026-08-22 11:49 ve tar alındı.** Image ID `7fe692ac1991`, tar
+`~/robotaksi_deploy/robotaksi_humble.tar` **4.489.713.152 bayt**, SHA-256
+`caa6c26adf1fdb390595b765f9bb35823b999db4e1da847c651cdcea2d2c42e6`. Bir önceki
+`robotaksi_humble_0821_1919.tar` adıyla korundu. İmajın *içinde* doğrulandı — şerit düğümü:
+`heading_no_flip=True` (yeni), `cift_paralel_tol=0.25`, `heading_gain=75.0`, `fit_max_slope=5.0`
+(geri çekilen 3.0 önerisi UYGULANMADI); gerçek kontrol düğümü: `odom_topic=/odometry/can_wheel`,
+`speed_target_scale=0.25`, `slalom_speed_kmh=8.0`, `slalom_lateral_target=1.7`,
+`slalom_return_hard=True`.
+
+⚠️ `/home`'da **19 GB** kaldı, `~/robotaksi_deploy` altında **altı tar** (~26 GB). T7'ye
+kopyalandıkça eskileri silin.
+
+## TEKNİK KONTROL (2026-08-22)
+
+Şartlar `Finalist_Bilgilendirme.pdf` §1'den (dosya `~/loc_planner_map.zip` içinde, workspace'te
+yoktu): araç başlangıçtan hareket edip **hedef bölgesine ulaşmalı**; **engel algılayıp sakınma
+manevrası yapmalı** (birden fazla engel olabilir); **sakınma dışında şerit ihlali yapmamalı**;
+**hedef noktasından sonra yolu kapatan bir engel var** ve "hedefe ulaşamayan VEYA hedefi geçip bu
+engele çarparak duran" araç başarısız; **bariyere çarpan** araç başarısız.
+
+`teknik_kontrol.geojson`: `start` (95.15, 48.88) h=229.17° → harita **(20.51, 3.89)** yaw 10.03°,
+`hedef` (57.24, 20.82) h=139.17° → harita **(64.02, 22.09)**. Planner rotası `[1, 0, 4, 50]`,
+iki olay: node 4'te **70° sol dönüş**, node 50'de **hedef**.
+
+**KAPATILAN BOŞLUK — hedefte durma kodda HİÇ YOKTU.** `route_planner_node.py`'nin goal dalı
+`else: # goal (hedef) — barier durdurur, komut yok` diyordu, yani durma tamamen lidara
+bırakılmıştı: tek nokta arıza, üstelik engel `avoid_distance` (4.5 m) içine girdiğinde beyin onu
+sıradan bir engel sanıp **etrafından dolaşmaya** kalkardı — bu doğrudan başarısızlık (hedefi geçmek
++ şerit ihlali). Artık iki kademeli:
+
+    5,4,1   hedefe trigger_dist (6 m) kala  -> slalom girişi YASAK + hız tavanı (hedef_speed 3 km/h)
+    5,4,0   hedefe hedef_dur_m (2 m) kala   -> DriveState.MISSION_END: SÜRÜNEREK yaklaş, engelde dur
+
+**`5,4,0` neden hemen durdurmuyor (karar 2026-08-22):** komut konumdan tetikleniyor ve konum
+hatası 1-3 m. "2 m kala kesin dur" deseydik hata ters yöne düştüğünde araç hedefe **varmadan**
+durabilirdi — şartnamede "hedef noktasına ulaşamayan" da başarısızlık. `MISSION_END` bu yüzden
+sürünme yapıyor: hız `hedef_speed` (3 km/h), direksiyon nötr, slalom yasak, ve **asıl durușu
+LİDAR veriyor** (`front < stop_distance` ya da fail-safe `front=0`). Lidar hiç görmezse
+`hedef_creep_m` (4.0 m) sonunda yine duruyor. Odometri yoksa sürünme ölçülemez → güvenli taraf,
+hemen durur.
+⚠️ `MISSION_END` `obstacle_event`'in erken-dönüş listesinde **olmak zorunda**: olmasaydı sürünme
+sırasında engel görülünce state `OBSTACLE_STOP`'a geçer, `MISSION_END`'den ÇIKILIR ve yol
+"açılınca" araç kapalı yola devam ederdi.
+
+- **`MISSION_END` terminaldir**: şerit, engel (yol açılsa bile), tabela/yeşil ışık, planner
+  dönüş/durak/park/iptal komutlarının hiçbiri aracı tekrar hareket ettiremez. Tek çıkış düğümün
+  yeniden başlatılması. Gerekçe: hedeften sonrası kapalı yol.
+- **Hedef olayı ATLANMAZ** (diğer olaylardaki `gecis_payi` atlama mantığı goal için devre dışı) ve
+  araç hedefi geçmişse (`_yay > S[ri]`) mesafeye bakılmaksızın DUR gönderilir.
+- Hız tavanı `_engel_hiz_tavani()` üzerinden uygulanır — Bug A'nın aynısına düşmemek için
+  (şerit olayı 20 Hz, engel 10 Hz; ayrı yazılsa 50 ms'de ezilirdi).
+- Yaklaşma kademesinde araç **yine yavaşlar ve `stop_distance` içinde durur**; bastırılan yalnızca
+  savurma manevrası (virajdaki `_in_curve()` bastırmasıyla aynı mantık).
+
+Doğrulandı: 18 maddelik hedef testi (yaklaşmada slalom yapmıyor / aynı engel yaklaşma yokken
+slalom yapıyor = regresyon yok / hedefte dur / MISSION_END'den şerit-engel-tabela-planner ile
+çıkış yok / yaklaşmada yakın engel yine durduruyor / fail-safe `0,0,0` yine durduruyor);
+planner uçtan uca sürüş benzetimi tek örnekle **`5,1,70` (38.8 m) → `5,4,1` (48.5 m) →
+`5,4,0` (52.2 m)**; slalom masa suite'i **7/8** (değişmedi, `_hedef_yaklasma` kapalıyken kod yolu
+birebir aynı).
+
+**Hedef yaklaşmasında lidar durması BOZULMUYOR** (ölçüldü, `5,4,1` açıkken):
+
+| front | durum | hız | fren |
+|---|---|---|---|
+| 99 / 7.0 / 5.5 m | LANE_FOLLOW | 3.0 km/h (hedef tavanı) | 0 |
+| 4.0 / 3.0 / 2.5 m | LANE_FOLLOW (slalom YOK) | 2.5 km/h | 0 |
+| **2.0 / 1.0 / 0.5 / 0.0 m** | **OBSTACLE_STOP** | **0.0** | **1** |
+
+Yani bastırılan tek şey savurma manevrası; yavaşlama ve `stop_distance` (2.2 m) freni aynen
+duruyor, 20 Hz'lik şerit olayı hız tavanını ezemiyor. Kıyas: aynı 4.0 m engel yaklaşma
+KAPALIYKEN `OBSTACLE_AVOID`'a giriyor (regresyon yok). Planner hiç komut göndermezse (lokalizasyon
+yok) ve iki yan koridor da kapalıysa yine 2.0 m'de duruyor — eski davranış korunuyor.
+
+**⚠️ Operatör kaçış yolu — lokalizasyon ayağa kalkmazsa el ile tetiklenebilir:**
+
+    ros2 topic pub --once /master std_msgs/String "data: '5,4,1'"   # slalom yasak + yavasla
+    ros2 topic pub --once /master std_msgs/String "data: '5,4,0'"   # DUR (gorev sonu)
+
+**Teknik kontrole hazırlık durumu:**
+
+| şart | durum |
+|---|---|
+| engel algılayıp sakınma | ✅ masa 7/8; araçta 08-21'de iki weave tamamlandı |
+| engele/bariyere çarpmama | ✅ `avoid_abort_distance` + `stop_distance` + fail-safe `0,0,0` |
+| **sakınma dışında şerit ihlali yok** | ⚠️ **EN BÜYÜK RİSK**, aşağıya bak |
+| hedefe ulaşma (dönüş komutu) | ⚠️ `/amcl_pose` gerekiyor, araçta hiç çalışmadı |
+| **hedefte durma** | ✅ bugün eklendi (kodda yoktu) |
+
+**VİRAJDAKİ ENGELLER — ikinci kritik açık, aynı gün kapatıldı.** Teknik kontrolde virajın içine
+iki engel konuyor: araç düz gidemez, sola dönmesi gerekiyor ve dönüşü planner komutluyor
+(`5,1,70` @ node 4). Ölçüldü — **komutlu dönüş engel yüzünden kesiliyor ve komut kalıcı olarak
+kayboluyordu**:
+
+| dönüş sırasında front | eski davranış |
+|---|---|
+| 5 m | dönüş sürüyor |
+| **4 / 3 m** | dönüş kesildi → **OBSTACLE_AVOID (slalom)** |
+| **2 / 1 m** | dönüş kesildi → **OBSTACLE_STOP** |
+
+Kesilince planner olayı zaten tükettiği için (`ev_i += 1`) komut bir daha gelmiyordu; araç yol
+açılınca `LANE_FOLLOW`'a dönüp **kavşağı düz geçiyordu**. CLAUDE.md bu boşluğu 21.08'de
+"PLANNER_TURN sırasında engel olayı bloke değil ... `front_trust_deg` koruması burada YOK,
+bilinçli bırakıldı ama sahada izlenmeli" diye kaydetmişti — teknik kontrol senaryosu tam olarak
+onu tetikliyor.
+
+**Düzeltme: komutlu dönüş artık bir MANEVRA olarak ele alınıyor, weave ile aynı kurallarla.**
+- **Slalom yok**: dönüşün kendisi zaten kaçınma manevrası.
+- **Durma eşiği sıkı**: `stop_distance` (2.2 m) yerine `avoid_emergency_front` (1.0 m) — gerekçe
+  weave'deki ile aynı: burun kasıtlı olarak şerit yönünden çıkmıştır, gövdeye sabit ön koridor
+  dönüş boyunca yol kenarını ve köşe engellerini tarar.
+- **Kesilirse kaybolmuyor**: kalan süre `_pturn_kalan`'da saklanıyor, `_obstacle_stop_control`
+  yol açıldığında `LANE_FOLLOW` yerine **dönüşü kaldığı yerden tamamlıyor** (sinyal ve ölçek
+  korunur).
+
+Doğrulandı (15/15): 5.0/4.0/3.0/2.0/1.5 m engelde dönüş sürüyor; 0.7 m'de duruyor ve kalan süre
+saklanıyor; yol açılınca `PLANNER_TURN`'e geri dönüp sola kırıyor; `0,0,0` fail-safe dönüşte de
+durduruyor; engelsiz dönüş normal bitiyor ve bayrak temizleniyor. Hedef sürünmesi 12/12,
+hedef davranışı 17/17, slalom masa suite **7/8 (değişmedi)**.
+
+**KONUM KAYNAĞI: TEKNİK KONTROLDE YALNIZ GNSS** (operatör kararı 2026-08-22, "şu an riske
+giremeyiz"). Yeni düğüm `bee1_description/scripts/gnss_pose_node.py` (çalıştırılabilir adı
+`gnss_pose`): `/gnss` → map dönüşümü + Xsens `/filter/quaternion`'dan yön, çıktı
+`/gnss_pose` (`PoseWithCovarianceStamped`, frame `map`).
+
+    ros2 run bee1_description gnss_pose
+    ros2 run neuravix_ros2 route_planner --ros-args -p pose_topic:=/gnss_pose \
+      -p geojson:=<gunun.geojson> -p trigger_dist:=6.0
+
+Gerekçe: AMCL bu pistte **tek başına kullanılamıyor** (medyan 27-29 m) — doğruluğu zaten GNSS
+gözetmeninden geliyor, ve ölçülen 0.29-1.19 m sayıları **GNSS'e karşı** ölçüldü, yani "AMCL
+GNSS'i takip ediyor" diyorlar. Yığın gerçek araçta hiç çalışmadı. Teknik kontrol rotası ~54 m,
+tünel yok, iki olay var (6 m / 2 m eşikleri) — GNSS bunu taşır ve AMCL'in sahada denenmemiş
+yakınsama/aliasing riskini ortadan kaldırır.
+⚠️ **AMCL yığını YERİNDE DURUYOR ve değişmedi**; `gnss_pose` ayrı bir topic'e yayın yapıyor,
+ikisi aynı anda koşabilir (AMCL'i izlemek için). Yarış günleri kararı sonra verilecek.
+
+Doğrulandı (`lokal_0820_0722`, gerçek araç GNSS'i):
+- **Konum**: düğümün ürettiği `(18.46, 2.09)`, aynı bag'de GNSS gözetmeninin AMCL'e attığı
+  tohumla (`18.5, 2.1`) birebir aynı — dönüşüm bağımsız olarak doğrulandı.
+- **Yön**: `yaw = filter_yaw − datum_yaw` formülü GNSS gidiş yönüne karşı **medyan +0.3°,
+  std 0.4°** (30 hareketli örnek). Yazarın saha ölçümüyle (−2.2° / +0.1°) tutarlı. Üç alternatif
+  formül denendi ve elendi (ofsetsiz +149.5°, ters işaret +18.4°, pusula/NED −10.0°).
+- Başlangıçta okunan `+9.1°`, geojson'dan türetilen start yaw'ı `10.03°` ile ~0.9° uyuşuyor.
+- `route_planner` `pose_topic:=/gnss_pose` ile hatasız kalkıyor ve rotayı kuruyor.
+- Yön henüz yoksa (filtre gelmiyor + araç duruyor) düğüm **poz yayınlamaz** ve sebebini loglar —
+  yanlış yönle dönüş komutu ürettirmemek için bilinçli.
+
+**Kalan iki iş, önem sırasıyla:**
+1. **Araçta `gnss_pose` + `route_planner` bir kez koşsun.** Kontrol: `ros2 topic hz /gnss_pose`
+   (~4 Hz) ve planner log'unda `ROTA (... node)` satırı. Yedek yol: el ile tetikleme (yukarıda).
+2. **`slalom_return_hard:=false` A/B'si** (isteğe bağlı — operatör şerit ihlalini teknik
+   kontrol için kritik görmüyor). 08-21 ölçümü: `True` iken align 27-30 s
+   sürüyor ve araç weave'i şeridinin **öbür tarafında** (−1.1 / −1.5 m) bitiriyor — bu tam olarak
+   "sakınma dışında şerit ihlali" demek. `false` ölçülen iki weave'de align'ı **6 s**'ye indirmiş
+   ve yanalı +0.05 / +0.88'de bırakmıştı. Varsayılan hâlâ `True` (masa simülatörü bu arızayı
+   üretmediği için karar sim'e bırakılmadı).
+3. ~~Şerit ayar denemesi~~ — **bu madde ZATEN KAPANDI**, yukarıdaki "Şerit yön-terimi arızası"
+   bölümüne bak: `fit_max_slope:=3.0` ölçülüp **zararlı** çıktı (TAZE %91→%83), çözüm
+   `heading_no_flip` oldu ve **varsayılan True**, yani ek bayrak gerekmiyor. Teknik kontrolde
+   şerit için yapılacak bir şey yok; kalan kök neden (`serit_v2.pt`'nin bariyer tabanını `lane`
+   etiketlemesi) eğitim seti işi, koşu ayarı değil.
+
+**Deploy imajı yeniden derlendi 2026-08-22 14:37.** Image ID `10ea17e7fd02`, tar
+`~/robotaksi_deploy/robotaksi_humble.tar` **4.542.557.184 bayt**, SHA-256
+`45470c170a726b7125d4d5546588f6c855243a0ba781253266306ac26ea815c0`. Bir önceki tar
+`robotaksi_humble_0822_1150.tar` adıyla korundu. İmajın *içinde* doğrulandı: beyinde
+`MISSION_END` + `_mission_end_control` + `hedef_creep_m` + komutlu dönüş manevra kapısı +
+`_pturn_kalan`; planner'da `hedef_dur_m` + `_send(4, 1)`; `bee1_description` içinde **`gnss_pose`**
+ve `can_odom` (`max_dt` ile); AMCL launch'ında `gnss_threshold` 3.0 + `initial_pose_x`;
+`models/` içinde `serit_v2.pt` + `zurnazurna.pt`.
+
+⚠️ **Tabela modeli varsayılanı bu imajda `zurnazurna.pt`** (bir takım arkadaşı 22.08 14:25'te
+değiştirmiş, `Yasin_Her_Sey.pt` yerine). İmaja koymadan önce sınıf eşlemesi denetlendi:
+**24/24 sınıf `canonical_sign_id()` ile doğru eşleşiyor** (`DUR_TT-2`→11, `Kirmizi_Isik`→15,
+`Yesil_Isik`→17, `YayaGecidi`→20 dahil), yani 18 Ağustos'ta kapatılan "DUR tabelasında durmama"
+hatası geri gelmiyor.
+
+⚠️ **Araçta hâlâ eski imaj koşuyor**: `docker load` + `docker rm -f robotaksi_container` +
+`docker run` yapılmadan yeni kod araca ulaşmaz (`docker load` çalışan konteyneri güncellemez).
+
+⚠️ `/home`'da **15 GB** kaldı ve `~/robotaksi_deploy` altında **yedi tar** (~31 GB) birikti.
+T7 bağlı değil; bağlanınca eskileri oraya taşıyın.
+
+## `slalom_0822` bag'leri — İLK BAŞARILI PLANNER KOŞUSU (2026-08-22)
+
+Araçta planner + `gnss_pose` ilk kez koştu ve **zincirin tamamı çalıştı**.
+`slalom_0822_1157` (169 s, sağlam) `/master`'da sırayla:
+
+    t=115.6s   5,1,70.0     <- kavşakta 70° sol dönüş
+    t=130.1s   5,4,1        <- hedef yaklaşması
+    t=135.4s   5,4,0        <- hedefte dur
+
+Durum akışı: `LANE_FOLLOW` → 3 kez `OBSTACLE_AVOID` (slalomlar) → `PLANNER_TURN`
+(114.9-122.2) → `LANE_FOLLOW` → `MISSION_END` (134.7). Yani slalom, kavşak dönüşü
+ve hedefte durma **araçta uçtan uca çalıştı**.
+
+**AÇIK DÖNGÜ DÖNÜŞ KOMUT EDİLEN AÇIYI TESLİM ETMİYOR — ölçüldü ve düzeltildi.**
+Odometri yaw'ı dönüş penceresinde:
+
+| t | durum | yaw | Δyaw | steer |
+|---|---|---|---|---|
+| 115.0 | PLANNER_TURN başladı | +0.4° | — | 73 (tam sol) |
+| 117.0 | | +9.8° | +9.4 | 73 |
+| 120.0 | toparlama fazı | +37.6° | +37.2 | 50 |
+| **122.2** | **LANE_FOLLOW (süre doldu)** | **+46.6°** | **+46.2** | 45 |
+| 134.0 | hâlâ dönüyor | +65.4° | +65.0 | 45 |
+| 138.0 | MISSION_END, sürünme | +70.4° | +70.0 | 45 |
+
+Yani 7.3 s'lik faz süresi **tamamen doldu** (kesilme yok) ama araç yalnızca
+**+46°** döndü; kalan 24 dereceyi şerit takibi 16 saniyede toparladı. Operatörün
+"tam sola girip şeride oturtamadı" gözlemi tam olarak bu.
+Kök neden ölçüldü: faz 1'in ilk ~2 saniyesinde tekerlek hâlâ tam kilide gidiyor
+(yaw hızı 2.3 → 7.1 → 9.6 °/s diye tırmanıyor), yani sabit süre gerçek dönüşün
+yarısını kaçırıyor. **Direksiyon hızı (10 birim/s) burada da bağlayıcı kısıt.**
+
+**Düzeltme: `PLANNER_TURN` artık kapalı çevrim.** Fazları YAW bitiriyor, süre
+yalnızca tavan (`pturn_max_scale` 2.5×):
+- faz 1 (tam kilit) → tahmini dönüş hedefe `pturn_recover_deg` (20°) kalana kadar
+- faz 2 (toparlama) → tahmin hedefe `pturn_tol_deg` (2°) kalana kadar
+- `tahmin = dönülen + yaw_hızı × pturn_lead_s` — tekerlek merkeze dönerken araç
+  dönmeye devam ettiği için ham açıyla bitirmek her dönüşü aşırdı.
+- **Yaw beslenmiyorsa eski süre tabanlı yol aynen korunuyor** (regresyon yok).
+
+Ayar masa taramasıyla seçildi; simülatör önce **araç verisine kalibre edildi**
+(sahte saatle eski kod 7.3 s / +48° veriyor — bag'deki 7.3 s / +46° ile birebir):
+
+| lead / tol | +40° | +70° | +90° | +110° |
+|---|---|---|---|---|
+| 1.5 / 5.0 (ilk) | −9.1 | −9.3 | −9.3 | −9.1 |
+| **0.8 / 2.0 (seçilen)** | **−3.0** | **−3.1** | **−3.1** | **−3.2** |
+| 0.6 / 0.0 (en iyi) | −0.2 | −0.3 | −0.1 | −0.1 |
+
+⚠️ **En iyi satır BİLEREK seçilmedi.** Sönüm modeli tek bag'den kestirildi ve sola
+dönüşte **aşmak karşı şeride girmek** demek; **eksik** kalmayı şerit takibi zaten
+toparlıyor. Hata her açıda düz (−3°), yani sistematik ve öngörülebilir.
+
+Doğrulandı: 35 maddelik regresyon (hedef yaklaşması + lidar durma tablosu, sürünme,
+dönüş-engel etkileşimi ve kesilen dönüşün devamı, kapalı çevrim dönüş 6 açıda),
+slalom masa suite **7/8 değişmedi**, düğüm traceback'siz.
+
+⚠️ **`slalom_0822_1203` KULLANILAMAZ — dosyanın yalnızca %29'u var.** `.db3.zstd`
+122 MB, bag1'in mesaj/bayt oranına göre beklenen ~423 MB; `zstd -l` "Error while
+reading block header" diyor, sqlite şemayı okuyamıyor. Kurtarılan 313 MB koşunun
+**başı** (20 kez `OBSTACLE_AVOID` var, `PLANNER_TURN`/`MISSION_END` YOK) — yani
+sorulan kavşak bölümü eksik %71'de. **Araçtaki orijinali yeniden kopyalayın**
+(`rsync -avP --append-verify`, `scp` koptuğunda baştan başlar).
+
+⚠️ **İKİ BAG'DE DE `/gnss`, `/gnss_pose`, `/filter/*` KAYITLI DEĞİL** — kayıt eski
+topic listesiyle alınmış. Bu yüzden "GPS kaydı mı" sorusu bu bag'lerden
+**cevaplanamaz**: konum verisi hiç kaydedilmemiş. `TEKNIK_KONTROL_KOSU.md`'deki
+kayıt komutu bu dört topic'i içeriyor; bir sonraki koşuda o komut kullanılmalı.
+Kayıtlı olsaydı cevaplanabilecek soru: dönüş komutunun ateşlendiği andaki
+`/gnss_pose` ile rota düğümü 4'ün (62.4, 12.7) arasındaki mesafe.
+
+Şerit düğümü Taha'nın 2026-08-22 11:07 sürümüyle güncellendi
+(`~/carla-ros2-wss-taha-serit-22082026.zip`). Yine **yalnızca `lane_follower_node.py`** alındı
+(2344 → 2472 satır, birleştirme sonrası). Alınmayanlar ve sebepleri — hepsi bugünkü işi geri
+götürürdü:
+
+| dosya | onunki | neden alınmadı |
+|---|---|---|
+| `decision_brain.py` | 2239 satır (bizde 2660) | `MISSION_END` 0, `PLANNER_TURN` 0, `hedef_creep_m` 0, `slalom_return_hard` 0 — teknik kontrol hedef-durması, route_planner ve sert-dönüş A/B'si yok |
+| `neuravix_control_node_real.py` | 871 (bizde 988) | `slalom_return_hard` 0, `odometry/can_wheel` 0 — bugünkü dört varsayılan yok |
+| `neuravix_control_node.py` | 603 (bizde 674) | eski |
+| `obstacle_lidar_node.py` | 515 (bizde 522) | eski |
+| `tabela_tespit_node.py` | 740 | `zurnazurna.pt` yok (eski model varsayılanı) |
+| `models/serit_v2.pt` | — | **birebir aynı** (md5 `649d24df…`), değişmemiş |
+
+⚠️ **`carla-ros2-wss-newlane.zip` (aynı gün 14:36) BOZUK — kullanmayın.** 1,04 GB indi ama
+`neuravix_ros2` metni dosyanın **hiçbir yerinde geçmiyor** (0 kez; dosya adları zip'te
+sıkıştırılmadan durduğu için bu arama kesindir). Son yerel başlık 71,8 MB'ta ve kalan ~970 MB tek
+başına `.vscode/browse.vc.db` (VSCode IntelliSense veritabanı, açılmış hâli 950 MB). Aktarım
+yolunda **~1,043 GB'lık bir kesme** var: `bal.zip` 1.043.193.672, `newlane.zip` 1.043.547.229,
+`taha-serit` 1.043.576.263 — üçü de aynı tavana dayanmış. `bal` ve `taha` sürümlerinde şerit
+dosyası kesme noktasından önce yazıldığı için kurtuldu, `newlane`'de `.vscode` payı yiyip
+`src/neuravix_ros2` hiç sıraya gelmedi. **Arşiv gönderilirken `.vscode/`, `build/`, `install/`,
+`log/` ve `bee1_map.pcd` dışarıda bırakılmalı** — o zaman paket birkaç MB olur.
+
+Taha'nın eklediği: **beş yeni parametre** (`taraf_kural` varsayılan `"sureklilik"`,
+`taraf_bant_px=40`, `taraf_hist_px=0`, `taraf_hist_s=0.5`, `guven_taban=0.4`) — belirsiz bantta
+(`|x−ref| < taraf_bant_px`) sol/sağ atamasını sürekliliğe bırakan bir kural, yani 08-20'de S4
+diye kaydedilen "yanlış çizgi çifti" sınıfına yönelik.
+
+**Merge'de yeniden uygulanan dördü** (her merge'de tekrar gerekiyor):
+`steer_mode` `"pursuit"` → **`"pid"`**, `heading_no_flip`, `cift_paralel` + `cift_paralel_tol`,
+ve kapanış düzeltmesi (`ExternalShutdownException`). `src_pts` / `yolo_conf` / `camera_topic`
+bu sefer korunmuştu (bizim sürümü temel almış).
+
+Ölçüldü (dört veri seti, `tools/serit_olc.py`) — **regresyon yok, ölçülebilir kazanç da yok**:
+
+| bag | TAZE | steer std | oynaklık | işaret TERS |
+|---|---|---|---|---|
+| joystick_46 | %91 → %91 | 4.95 → 4.93 | 1.54 → 1.62 | 8 → **0** |
+| joystick_47 | %97 → %97 | 3.26 → 3.24 | 1.09 → 1.15 | 17 → **0** |
+| joystick_48 | %87 → %87 | 4.32 → 4.58 | 0.57 → 0.58 | 3 → **0** |
+| 1526 | %94 → %94 | 2.38 → 2.26 | 1.00 → 1.02 | 69 → **0** |
+
+Birleştirme öncesi sürümle aynı karelerde A/B: `joystick_46` ve `1526`'da sonuçlar **birebir
+aynı** (LaneW 468/427, std 15.1/2.2 — hepsi eşit). Yani yeni taraf mantığı bu veri setlerinde
+**tetiklenmiyor**; ölü kod DEĞİL (`taraf_kural:=eksen` steer std'yi 2.26 → 2.32 değiştiriyor),
+sadece belirsiz bant bu sahnelerde nadiren isabet ediyor. Paralellik kapısı da yine 0 kez
+ateşledi. Doğrulandı: kapsamlı derleme, düğüm hem varsayılanla hem tampon komutla traceback'siz
+kalkıyor, `serit sinif idx=0` ve `src_pts` ZED trapezi log'da doğru.
+
+⚠️ **Deploy imajı bu merge'den sonra YENİDEN BAYAT** — 11:49 build'i (`7fe692ac1991`) eski şerit
+düğümünü taşıyor.
+
+Taha'nın diğer üç değişikliği değerlendirildi (2026-08-22) — **ikisi alındı, biri reddedildi.**
+
+**✅ ALINDI — direksiyon sıfır noktası 2.0 → 3.4 (`steer_target_offset` + `can_odom`'un
+`steer_feedback_offset`'i).** Semptom: "araç sürekli hafif sola kayıyor". Eski 2.0,
+2026-07-13'te araç **DURURKEN** kilitten kilide okunan sensör orta noktasıydı; aracı düz götüren
+değer o değil (teker açıklığı + sensör montajı) ve duran araçta ölçülemez. Yeni değer
+**SÜRÜŞTEN**, şerit boru hattından bağımsız: `κ = yaw_rate/hız` (IMU + hız) ile
+`FeedbackSteeringAngle` regresyonu, κ'nın sıfırlandığı geri besleme değeri gerçek düzdür.
+**Bağımsız olarak yeniden ölçüldü ve Taha'nın sayılarıyla 0.02-0.03 içinde tutuyor:**
+
+| kayıt | bizim ölçüm | Taha |
+|---|---|---|
+| `slalom_0821_1508` | **+3.54** (r −0.97) | +3.52 |
+| `slalom_0821_1515` | **+3.48** (r −0.97) | +3.47 |
+| `slalom_0821_1520` | **+3.53** (r −0.98) | +3.54 |
+
+Etkisi: "düz git" komutunda tekerlek gerçek düzün 1.4 birim **soluna** konuyordu → R ≈ 59 m sola
+kavis → 20 m yolda ~3.4 m yanal kayma. Yol deveri elendi (çok yönlü harita turlarında değer
+yönle değişmiyor) ve ölçüm artefaktı elendi (iki farklı hız kaynağı +3.36 vs +3.37).
+⚠️ **DEĞER SABİT DEĞİL**: 18–19 Temmuz arasında ~5 birim kaymış (−2.05 → +2.93). Araç servise
+girer / direksiyon sökülür / sensör sıfırlanırsa **yeniden ölçülmeli**. Ölçüm tarifi: `/imu/data`
+yaw hızı + herhangi bir hız kaynağı + `/beemobs/FeedbackSteeringAngle`; κ=yaw/hız ile feedback'in
+doğrusal regresyonu; hareket eşiği v>0.5 m/s, r>0.9 beklenir. **Duran araçta kilitten kilide
+okuma bu değeri VERMEZ** — 2.0 hatası tam oradan geldi.
+⚠️ Yan etki: offset 3.4 + `steer_delta ±36` + `ham_limit [−34,38]` ⇒ sol 36, sağ 34.6 birim
+(sağda 1.4 birim kırpma). Küçük asimetri; gerekirse `steer_raw_max` 39.4 yapılabilir ama mekanik
+limit önce doğrulanmalı.
+
+**✅ ALINDI — viraj tespiti artık EĞRİLİKTEN, şerit açısından değil.** `_note_lane_angle` yolu
+**yedek** olarak duruyor (`_curve_kaynak` = `"yaw"` | `"serit"` | `"-"` hangisinin gördüğünü
+söyler). Yeni birincil yol `update_motion(yaw=...)` içinde: κ = |yaw_rate|/hız.
+`curve_kappa=0.04` ⇔ **R = 25 m**; `curve_min_speed=0.4` m/s altında hesaplanmaz (dururken yaw
+gürültüdür); `curve_min_time=0.0` (süreklilik şartı kapalı). `OBSTACLE_AVOID` sırasında
+**bilerek bakılmaz ve sayaç sıfırlanır** — slalomda araç zaten kasten dönüyor; sayaç
+sıfırlanmazsa weave'den önce başlamış damga manevra bitince anında "viraj" ilan edip sonraki
+weave'i bastırıyor. ⚠️ **Bizim `_yaw_rate` DERECE/s tutuyor** (Taha'nınki rad/s) — port ederken
+`math.radians()` eklendi.
+Doğrulandı: düz yol ve R=67/33 m kavisler viraj sayılmıyor; R=18/11 m viraj sayılıyor (kaynak
+`yaw`); slalom içinde ve v<0.4 m/s'de bastırılıyor. **Masa suite'inde beklenmedik kazanç:**
+`P2` (5 m aralık, bilinen geometrik sınır) artık **geçiyor** (min 0.86 m) ve `P3`'te şerit dışına
+taşma **1.78 → 1.39 m** düştü — eski şerit-açısı EMA'sı bazı durumları yanlış bastırıyormuş.
+
+**❌ ALINMADI — `steering_ctrl -p min_drive:=30.0`.** Bu öneri **Taha'nın kendi CLAUDE.md'sindeki
+ölçümle çelişiyor**: `semantik_1` bag'inde PWM 150 (sapma +23) tekerleği **+1.50 birim/s**
+döndürüyor, yani `min_drive=22` tekerleği kıpırdatıyor; "ölü bölge yüzünden hareket etmiyor"
+hipotezi **ölçümle reddedilmiş ve min_drive değiştirilmemiş** (dosyasının kendi ifadesi). Asıl
+olgu takip gecikmesi: aktüatör 1.5–4.4 birim/s, hedef ise 0.10–0.15 s'de bir değişiyor. Bu, bizim
+`max_delta` ölçümümüzle de tutarlı (joystick sapma 73 ile aynı hız → doygunluk motorda).
+**Koşuda `-p min_drive:=30.0` vermeyin** — etkisi ölçülmemiş ve koşuyu önceki kayıtlarla
+kıyaslanamaz kılar.
+
+**Deploy imajı yeniden derlendi 2026-08-22 16:53 ve tar alındı.** Image ID `254eb5e66ce7`, tar
+`~/robotaksi_deploy/robotaksi_humble.tar` **4.542.577.664 bayt**, SHA-256
+`7d8563cdf91a12ecebca27da7359e8ae7574aae028a36c3e06fc6c431bb1d246`. Bir önceki
+`robotaksi_humble_0822_1149.tar` adıyla korundu. İmajın *içinde* doğrulandı:
+`steer_target_offset=3.4`, `can_odom`'da `steer_feedback_offset=3.4`, beyinde eğrilik viraj
+tespiti (`curve_kappa`/`curve_min_speed`/`_curve_kaynak`), şerit düğümü **2472 satır** (Taha
+11:07 + `heading_no_flip=True`, `cift_paralel_tol=0.25`, `steer_mode="pid"`, kapanış düzeltmesi)
+ve Taha'nın yeni `taraf_kural="sureklilik"` / `guven_taban=0.4` parametreleri.
+
+🔴 **`/home` KRİTİK: 7,8 GB kaldı** (%97 dolu), `~/robotaksi_deploy` altında **yedi tar ~31 GB**.
+Bir sonraki `docker build` yer yetmediği için başarısız olabilir. T7'ye kopyalanan eski tar'lar
+hemen silinmeli.
+
+## `tk_0822` bag'leri — teknik kontrol denemesi ölçüldü (2026-08-22)
+
+Beş bag geldi. **İçeriklerinden çıkarılan kimlikleri** (operatörün hatırladığı sıra tutmuyor,
+aşağıdakiler ölçüm):
+
+| bag | süre | ne | GNSS izi |
+|---|---|---|---|
+| `tk_0822_1418` | 315 s | **otonom teknik kontrol #1** | start (16.7,1.0) → hedefe **0.15 m** → durdu (64.29, 24.49) |
+| `tk_0822_1424` | 173 s | **otonom teknik kontrol #2** | hedefe **1.69 m** → durdu (66.49, 25.89) |
+| `tk_0822_1429` | 25 s | hareketsiz kayıt, start bölgesi (15.9, 3.4). **`metadata.yaml` YOK** | — |
+| `tk_0822_1434` | 45 s | manuel; (61,9)'dan node4'ün 3.2 m yanından geçip **(78.8, 14.2)**'ye | kavşakta **sola DÖNMEDİ**, sağa/düz gitti |
+| `tk_0822_1436` | 136 s | tam tur: (78.65,18.52) → (−2.52,15.33) park alanı | — |
+
+⚠️ Operatör "3. bag manuel sola dönüş testi, doğru noktada durdu" demişti; **ölçüm bunu
+doğrulamıyor** — `1434` kavşakta sola dönmüyor ve hedefe en yakın 12.1 m'den geçiyor. Yani
+elimizde "doğru sol dönüş" referansı YOK.
+
+**PLANNER VE GNSS KUSURSUZ ÇALIŞTI — sorun onlarda değil.** Komutlar tasarlanan mesafede ateşledi:
+
+| komut | 1418 | 1424 | tasarım |
+|---|---|---|---|
+| `5,1,70` (node 4'e) | 5.97 m | 5.96 m | `trigger_dist` 6.0 |
+| `5,4,1` (hedefe) | 5.99 m | 5.86 m | `trigger_dist` 6.0 |
+| `5,4,0` (hedefe) | 1.99 m | 1.96 m | `hedef_dur_m` 2.0 |
+
+Ve `1418`'de araç hedefin **0.15 m** yanından geçti — yani GNSS→map dönüşümü, datum ve rota
+sahada doğrulandı. Kayma yok.
+
+**"Daha yukarıda durdu"nun sebebi: sürünme bütçesi.** `5,4,0` sonrası `MISSION_END` lidar
+bariyeri görene kadar sürünüyor; o koşularda duracak bir bariyer olmadığı için bütçe sonuna
+kadar sürdü:
+
+| | gerçek kat edilen | durduğu yer | hedefi aşma |
+|---|---|---|---|
+| 1418 | 4.39 m | (64.29, 24.49) | **2.42 m** |
+| 1424 | 5.24 m | (66.49, 25.89) | **4.53 m** |
+
+Bütçe 4.0 m'ydi ama gerçek yol 4.39 / 5.24 m çıktı — odometri kat edilen yolu **%10-31 eksik**
+ölçüyor (`can_odom`'un bilinen kusuru).
+
+**Düzeltme — durma kararı konumu bilen tarafa verildi.** Yeni alt komut:
+
+    5,4,2   hedefe EN YAKIN noktadan geçildi -> HEMEN DUR (sürünme yok)
+
+Planner `5,4,0`'dan sonra olayı tüketmiyor; hedefe olan mesafenin en küçüğünü izliyor ve mesafe
+`hedef_gecis_pay_m` (0.5) kadar artmaya başlayınca `5,4,2` gönderiyor.
+
+`1418`'in **gerçek GNSS izi** planner'a geri beslenerek ölçüldü:
+
+| | `5,4,2` ateşleme mesafesi |
+|---|---|
+| hızlandırılmış replay | 1.46 m |
+| **gerçek 4 Hz kadans** | **0.81 m** |
+| (sahada gerçekte durduğu) | 2.42 m |
+
+⚠️ Hızlandırılmış replay sayısı **şişkin**: planner'ın döngüsü metre başına daha az konum
+örneği görüyor, yani "uzaklaşmaya başladı" tespiti gecikiyor. Bu sınıf ölçümde replay mutlaka
+gerçek kadansta koşturulmalı. `hedef_creep_m` de 4.0 → **3.0** çekildi (yalnızca yedek tavan artık).
+
+⚠️ **`MISSION_END` terminal kapısı `5,4,2`'yi de engelliyordu** — kapı artık `cmd != 4` diyor:
+hedef alt komutları yalnızca durdurur ya da kısıtlar, asla hareket ettirmez. Bu yakalanmasaydı
+`5,4,2` sessizce yok sayılacak ve sürünme aynen devam edecekti.
+
+**Şerit tarafı:** `1418` hedefin 0.15 m yanından geçti, `1424` ise 1.69 m sağından (y=21..23
+bandında x 65.5..65.9, hedef x=64.02). Yani iki koşu arasındaki fark GNSS değil **şeritteki
+yanal konum**. Dönüş sonrası yön ise doğru oturuyor: `1424`'te dönüş bitiminde +66°, sonunda
++79.8° — gereken ~80.2°.
+
+**Dönüş açısı düzeltmesi bu koşularda ZATEN ETKİNDİ** (ilk yazımda "imajda yoktu" demiştim,
+yanlıştı). Bag adları saha saatini yansıtmıyor: mesaj epoch'ları koşuların **17:18–17:39**
+arasında olduğunu, imajın ise **16:53**'te derlendiğini gösteriyor. Kanıt davranışta da var —
+`PLANNER_TURN` süresi `1418`'de **8.6 s**, `1424`'te **9.9 s**; açık döngü sabit 7.3 s olurdu.
+Yani kapalı çevrim dönüş sahada çalıştı ve `1424`'te bitiş yönü +79.8° (gereken ~80.2°) çıktı.
+
+⚠️ **Deploy imajı bu oturumun dışında yeniden derlenmiş**: `254eb5e66ce7`, 2026-08-22 16:53,
+tar `~/robotaksi_deploy/robotaksi_humble.tar` 4.542.577.664 bayt (16:54). Eski tarların çoğu da
+silinmiş (kalan: `robotaksi_humble_0821_1919.tar`). İmaj ile şu anki kaynak arasındaki fark:
+
+| | imaj (16:53) | kaynak | |
+|---|---|---|---|
+| `pturn_lead_s` / kapalı çevrim dönüş | var | var | aynı |
+| `_pturn_kalan` (kesilen dönüş) | var | var | aynı |
+| `hedef_creep_m` | **4.0** | **3.0** | farklı |
+| `5,4,2` (`arg == 2`) | **yok** | var | farklı |
+| `hedef_gecis_pay_m` (planner) | **yok** | var | farklı |
+
+**LİDAR NEDEN DURDURMADI — ölçüldü.** `MISSION_END` süresince ID-4 `front`:
+
+| bag | front (sürünme boyunca) | yan koridorlar |
+|---|---|---|
+| `1418` | 16.7 → 11.3 → **99** | `right` 1.31 → **0.00** (sağda bariyer) |
+| `1424` | **99.00** (tamamen açık) | `left` **0.00** (solda bariyer) |
+
+Yani yolu kapatan bir engel ego koridoruna hiç girmedi; bariyerler aracın **yanındaydı**.
+`stop_distance` (2.2 m) altına inen hiçbir okuma yok, bu yüzden araç sürünme bütçesini sonuna
+kadar kullandı. Operatörün "bariyerlerin sağından geçti" sezgisi doğru.
+**Bu, `5,4,2`'nin gerekçesini kanıtlıyor**: duruşu lidara bırakmak, engelin koridorda olmadığı
+her durumda aracı hedefin ötesine taşıyor.
+
+## Komutlu dönüşün ÇIKIŞ hatası — asıl ölçü bu (2026-08-22 akşamı)
+
+`tk_0822` koşuları, dönüş sonrası yanal kaymanın **tamamen** dönüş çıkışındaki yön hatasının
+geometrisi olduğunu gösterdi. Şerit kontrolcüsünün katkısı bu mesafelerde ihmal edilebilir:
+
+| | çıkış yön hatası | gidilen yol | tahmin yanal | **ölçülen yanal** | sonuç |
+|---|---|---|---|---|---|
+| `1418` | −7.5° | 5.0 m | 0.31 m | **0.28 m** | 0.45 → 0.17 m, toparladı |
+| `1424` | **−14.7°** | 8.2 m | 1.14 m | **1.05 m** | −0.54 → −1.64 m, toparlayamadı |
+
+Yani araç şeritten kaymıyor — **çapraz duruyor ve çapraz gittiği için kayıyor.**
+
+**Şerit düğümü suçlu DEĞİL, ve kör de değil.** `1424` t=127 overlay'i: `Error: −124px (−1.02m)`,
+`path: TAZE` — 1 m saptığını biliyor. Ama çıktısı `Steering: 47`, yani nötrden 2 birim, çünkü
+`steer_kp=0.03` bilerek düşük (0.08 kapalı çevrimde aracı pistten çıkarmıştı). Ayrıca hata
+teriminin çoğu **yön**den geliyor ve doyuyor (`1418`: `Yon +150` = `heading_max_px` tavanı,
+`Yanal +26`), yani kontrolcü aracı şeride **paralel** yapıyor ama merkeze çekmiyor.
+
+**`PLANNER_TURN`'ün şeridi baskılaması da suçlu değil**: iki koşuda da aynıydı, `1418`
+toparladı, `1424` toparlamadı.
+
+**`1424` neden iki kat kötü: dönüşe SLALOMUN İÇİNDEN girdi.**
+`1418`: `LANE_FOLLOW@74s` → 17 s şerit takibi → `PLANNER_TURN@91s`.
+`1424`: `OBSTACLE_AVOID@89s` → **doğrudan** → `PLANNER_TURN@110s`.
+Öngörü terimi `_yaw_rate` EMA'sını kullanıyor ve EMA durumlar arasında taşınıyor; weave'den
+çıkarken yaw hızı yüksek okunuyor, "nasılsa daha çok döneceğim" denip faz erken bitiyor.
+
+**Uygulanan düzeltme: `pturn_lead_s` 0.8 → 0.4, `pturn_tol_deg` 2.0 → 0.0.**
+Önceki değerler **oturan** açıya göre seçilmişti; oysa çaprazlığı belirleyen **çıkış** anındaki
+hata (şerit takibi o anda devralıyor). Masa taraması, çıkış hatası / oturan hata:
+
+| lead / tol | çıkış | oturan |
+|---|---|---|
+| 0.8 / 2.0 (eski) | −5.5° | −3.1° |
+| **0.4 / 0.0 (yeni)** | **−1.7°** | **+0.8°** |
+| 0.0 / 0.0 | +0.1° | +2.5° |
+
+Hata açıdan bağımsız (40°..110° arasında −1.6..−1.8). lead→0 gidildikçe çıkış düzeliyor ama
+oturan hata aşmaya (+) kayıyor; 0.4/0.0 ikisini de küçük tutuyor ve çıkıştaki artık hâlâ
+"eksik" tarafta.
+
+⚠️ **Model mutlak değeri EKSİK tahmin ediyor**: aynı ayarda model −5.5° derken araçta −7.5° ve
+−14.7° ölçüldü. Yön güvenilir, sayı **sahada doğrulanmalı**. Bir sonraki koşuda bakılacak tek
+ölçü: `PLANNER_TURN` bittiği andaki yön hatası. **<5°** olursa 8 m'de yanal kayma 0.7 m'nin
+altında kalır ve `1424`'teki 1.05 m tekrar etmez.
+
+Bir sonraki adım olarak "dönüşten sonra ayrı hizalama fazı" (B) **bilerek ertelendi** — A'nın
+saha sonucu görülmeden yeni faz eklemek, bu dosyanın üç kez kaydettiği hatanın aynısı olur.
+
+**Deploy imajı yeniden derlendi 2026-08-22 19:28.** Image ID `2ef1bd329ca3`, tar
+`~/robotaksi_deploy/robotaksi_humble.tar` **4.542.582.272 bayt**, SHA-256
+`86b7bab22b1c9464fa351405b162c594486f5bd0ef6d139c4b90c74a2c7b9ef6`. Bir önceki
+(16:53 build'i, başka oturumda derlenmişti) `robotaksi_humble_0822_1653.tar` adıyla korundu.
+İmajın *içinde* doğrulandı: `pturn_lead_s=0.4`, `pturn_tol_deg=0.0`, `hedef_creep_m=3.0`,
+beyinde `arg == 2` (`5,4,2`), planner'da `hedef_gecis_pay`, `bee1_description` içinde `gnss_pose`.
+
+Doğrulama: 35 maddelik regresyon 35/35, `5,4,2` testi 8/8, dönüş açı taraması 6 açıda |hata|<1°,
+yaw yokken yedek yol korunuyor (7.3 s), slalom masa suite 7/8 (değişmedi).
